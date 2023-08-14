@@ -21,7 +21,9 @@ public class Board : MonoBehaviour
             for (int j = 0; j < _height; j++)
             {
                 Vector2 position = new Vector2(i, j);
-                Instantiate(_tilePrefab, position, Quaternion.identity);
+                GameObject tile = Instantiate(_tilePrefab, position, Quaternion.identity);
+                tile.transform.parent = this.transform;
+                tile.name = $"Tile ({i}, {j})";
             }
         }
     }
