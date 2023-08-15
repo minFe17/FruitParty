@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
 using Utils;
 
 public class Fruit : MonoBehaviour
 {
+    [SerializeField] EFruitType _fruitType;
     [SerializeField] float _moveSpeed;
 
     GameObject _otherFruit;
@@ -12,14 +14,19 @@ public class Fruit : MonoBehaviour
     Vector2 _finalTouchPos;
     Vector2 _position;
 
-    int _row;
     int _column;
+    int _row;
+    int _previousColumn;
+    int _previousRow;
     int _targetX;
     int _targetY;
     float _swipeAngle;
+    bool _isMatch;
 
-    public int Row { get => _row; set => _row = value; }
+    public EFruitType FruitType { get => _fruitType; }
     public int Column { get => _column; set => _column = value; }
+    public int Row { get => _row; set => _row = value; }
+    public bool IsMatch { get => _isMatch; set => _isMatch = value; }
 
 
     void Start()
@@ -27,13 +34,17 @@ public class Fruit : MonoBehaviour
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _targetX = (int)transform.position.x;
         _targetY = (int)transform.position.y;
-        _row = _targetY;
         _column = _targetX;
+        _row = _targetY;
+        _previousColumn = _column;
+        _previousRow = _row;
     }
 
     void Update()
     {
+        FindMatchs();
         MoveFruit();
+        MatchFruit();
     }
 
     void MoveFruit()
@@ -61,6 +72,15 @@ public class Fruit : MonoBehaviour
             _position = new Vector2(transform.position.x, _targetY);
             transform.position = _position;
             _fruitManager.AllFruits[_column, _row] = this.gameObject;
+        }
+    }
+
+    void MatchFruit()
+    {
+        if (_isMatch)
+        {
+            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+            sprite.color = new Color(0f, 0f, 0f, 1);
         }
     }
 
@@ -97,6 +117,49 @@ public class Fruit : MonoBehaviour
             _otherFruit = _fruitManager.AllFruits[_column, _row - 1];
             _otherFruit.GetComponent<Fruit>().Row += 1;
             _row -= 1;
+        }
+
+        StartCoroutine(CheckMoveRoutine());
+    }
+
+    void FindMatchs()
+    {
+        if (_column > 0 && _column < _fruitManager.Width - 1)
+        {
+            Fruit leftFruit = _fruitManager.AllFruits[_column - 1, _row].GetComponent<Fruit>();
+            Fruit rightFrite = _fruitManager.AllFruits[_column + 1, _row].GetComponent<Fruit>();
+            if (leftFruit.FruitType == _fruitType && rightFrite.FruitType == _fruitType)
+            {
+                leftFruit.IsMatch = true;
+                rightFrite.IsMatch = true;
+                _isMatch = true;
+            }
+        }
+        if (_row > 0 && _row < _fruitManager.Height - 1)
+        {
+            Fruit upFruit = _fruitManager.AllFruits[_column, _row + 1].GetComponent<Fruit>();
+            Fruit downFrite = _fruitManager.AllFruits[_column, _row - 1].GetComponent<Fruit>();
+            if (upFruit.FruitType == _fruitType && downFrite.FruitType == _fruitType)
+            {
+                upFruit.IsMatch = true;
+                downFrite.IsMatch = true;
+                _isMatch = true;
+            }
+        }
+    }
+
+    public IEnumerator CheckMoveRoutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        if (_otherFruit != null)
+        {
+            if (!_isMatch && !_otherFruit.GetComponent<Fruit>().IsMatch)
+            {
+                _otherFruit.GetComponent<Fruit>().Column = _column;
+                _otherFruit.GetComponent<Fruit>().Row = _row;
+                _column = _previousColumn;
+                _row = _previousRow;
+            }
         }
     }
 
