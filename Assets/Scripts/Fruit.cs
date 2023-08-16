@@ -21,6 +21,7 @@ public class Fruit : MonoBehaviour
     int _targetX;
     int _targetY;
     float _swipeAngle;
+    float _swipeResist = 1f;
     bool _isMatch;
 
     public EFruitType FruitType { get => _fruitType; }
@@ -60,7 +61,7 @@ public class Fruit : MonoBehaviour
         {
             _position = new Vector2(_targetX, transform.position.y);
             transform.position = _position;
-            _fruitManager.AllFruits[_column, _row] = this.gameObject;
+            _fruitManager.AllFruits[_column, _row] = this;
         }
         if (Mathf.Abs(_targetY - transform.position.y) > 0.1f)
         {
@@ -71,7 +72,7 @@ public class Fruit : MonoBehaviour
         {
             _position = new Vector2(transform.position.x, _targetY);
             transform.position = _position;
-            _fruitManager.AllFruits[_column, _row] = this.gameObject;
+            _fruitManager.AllFruits[_column, _row] = this;
         }
     }
 
@@ -88,33 +89,36 @@ public class Fruit : MonoBehaviour
     {
         float x = _finalTouchPos.x - _firstTouchPos.x;
         float y = _finalTouchPos.y - _firstTouchPos.y;
-        _swipeAngle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
-        SeleteMoveFruit();
+        if (Mathf.Abs(x) > _swipeResist || Mathf.Abs(y) > _swipeResist)
+        {
+            _swipeAngle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
+            SeleteMoveFruit();
+        }
     }
 
     void SeleteMoveFruit()
     {
         if (_swipeAngle > -45 && _swipeAngle <= 45 && _column < _fruitManager.Width)           //Right
         {
-            _otherFruit = _fruitManager.AllFruits[_column + 1, _row];
+            _otherFruit = _fruitManager.AllFruits[_column + 1, _row].gameObject;
             _otherFruit.GetComponent<Fruit>().Column -= 1;
             _column += 1;
         }
         else if (_swipeAngle > 45 && _swipeAngle <= 135 && _row < _fruitManager.Height)  //Up
         {
-            _otherFruit = _fruitManager.AllFruits[_column, _row + 1];
+            _otherFruit = _fruitManager.AllFruits[_column, _row + 1].gameObject;
             _otherFruit.GetComponent<Fruit>().Row -= 1;
             _row += 1;
         }
         else if (_swipeAngle > 135 || _swipeAngle <= -135 && _column > 0)              //Left
         {
-            _otherFruit = _fruitManager.AllFruits[_column - 1, _row];
+            _otherFruit = _fruitManager.AllFruits[_column - 1, _row].gameObject;
             _otherFruit.GetComponent<Fruit>().Column += 1;
             _column -= 1;
         }
         else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)           //Down
         {
-            _otherFruit = _fruitManager.AllFruits[_column, _row - 1];
+            _otherFruit = _fruitManager.AllFruits[_column, _row - 1].gameObject;
             _otherFruit.GetComponent<Fruit>().Row += 1;
             _row -= 1;
         }
@@ -128,22 +132,28 @@ public class Fruit : MonoBehaviour
         {
             Fruit leftFruit = _fruitManager.AllFruits[_column - 1, _row].GetComponent<Fruit>();
             Fruit rightFrite = _fruitManager.AllFruits[_column + 1, _row].GetComponent<Fruit>();
-            if (leftFruit.FruitType == _fruitType && rightFrite.FruitType == _fruitType)
+            if (leftFruit != null && rightFrite != null)
             {
-                leftFruit.IsMatch = true;
-                rightFrite.IsMatch = true;
-                _isMatch = true;
+                if (leftFruit.FruitType == _fruitType && rightFrite.FruitType == _fruitType)
+                {
+                    leftFruit.IsMatch = true;
+                    rightFrite.IsMatch = true;
+                    _isMatch = true;
+                }
             }
         }
         if (_row > 0 && _row < _fruitManager.Height - 1)
         {
             Fruit upFruit = _fruitManager.AllFruits[_column, _row + 1].GetComponent<Fruit>();
             Fruit downFrite = _fruitManager.AllFruits[_column, _row - 1].GetComponent<Fruit>();
-            if (upFruit.FruitType == _fruitType && downFrite.FruitType == _fruitType)
+            if (upFruit != null && downFrite != null)
             {
-                upFruit.IsMatch = true;
-                downFrite.IsMatch = true;
-                _isMatch = true;
+                if (upFruit.FruitType == _fruitType && downFrite.FruitType == _fruitType)
+                {
+                    upFruit.IsMatch = true;
+                    downFrite.IsMatch = true;
+                    _isMatch = true;
+                }
             }
         }
     }

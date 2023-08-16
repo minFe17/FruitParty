@@ -4,16 +4,13 @@ using UnityEngine;
 public class FruitManager : MonoBehaviour
 {
     // ╫л╠шео
-    GameObject[,] _allFruits;
+    Fruit[,] _allFruits;
     List<GameObject> _fruits = new List<GameObject>();
-
-    Board _board;
 
     int _width;
     int _height;
 
-    public GameObject[,] AllFruits { get => _allFruits; }
-    public Board Board { get => _board;}
+    public Fruit[,] AllFruits { get => _allFruits; }
     public int Width { get => _width; }
     public int Height { get => _height; }
 
@@ -21,23 +18,58 @@ public class FruitManager : MonoBehaviour
     {
         _width = x;
         _height = y;
-        _allFruits = new GameObject[x, y];
+        _allFruits = new Fruit[x, y];
     }
 
     public void CreateFruit(Transform parent, Vector2Int position)
     {
         if (_fruits.Count == 0)
             AddFruit();
-        int fruitNumber = Random.Range(0, _fruits.Count);
+        int fruitNumber = 0;
+        int iterations = 0;
+        do
+        {
+            fruitNumber = Random.Range(0, _fruits.Count);
+            iterations++;
+        }
+        while (MatchAt(position.x, position.y, fruitNumber) && iterations <= 100);
+
         GameObject fruit = Instantiate(_fruits[fruitNumber], parent.position, Quaternion.identity);
         fruit.transform.parent = parent;
-        _allFruits[position.x, position.y] = fruit;
+        _allFruits[position.x, position.y] = fruit.GetComponent<Fruit>();
     }
 
     void AddFruit()
     {
         for (int i = 0; i < (int)EFruitType.Max; i++)
             _fruits.Add(Resources.Load($"Prefabs/Fruits/{(EFruitType)i}") as GameObject);
+    }
+
+    bool MatchAt(int column, int row, int fruitNumber)
+    {
+        Fruit fruit = _fruits[fruitNumber].GetComponent<Fruit>();
+
+        if (column > 1 && row > 1)
+        {
+            if (_allFruits[column - 1, row].FruitType == fruit.FruitType && _allFruits[column - 2, row].FruitType == fruit.FruitType)
+                return true;
+            if (_allFruits[column, row - 1].FruitType == fruit.FruitType && _allFruits[column, row - 2].FruitType == fruit.FruitType)
+                return true;
+        }
+        else if (column <= 1 || row <= 1)
+        {
+            if (column > 1)
+            {
+                if (_allFruits[column - 1, row].FruitType == fruit.FruitType && _allFruits[column - 2, row].FruitType == fruit.FruitType)
+                    return true;
+            }
+            if (row > 1)
+            {
+                if (_allFruits[column, row - 1].FruitType == fruit.FruitType && _allFruits[column, row - 2].FruitType == fruit.FruitType)
+                    return true;
+            }
+        }
+        return false;
     }
 }
 
