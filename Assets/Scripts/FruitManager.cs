@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,6 +50,7 @@ public class FruitManager : MonoBehaviour
                     DestroyMatchFruit(i, j);
             }
         }
+        StartCoroutine(DecreaseRowRoutine());
     }
 
     void AddFruit()
@@ -91,6 +93,26 @@ public class FruitManager : MonoBehaviour
             Destroy(_allFruits[column, row].gameObject);
             _allFruits[column, row] = null;
         }
+    }
+
+    IEnumerator DecreaseRowRoutine()
+    {
+        int nullCount = 0;
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_allFruits[i, j] == null)
+                    nullCount++;
+                else if (nullCount > 0)
+                {
+                    _allFruits[i, j].Row -= nullCount;
+                    _allFruits[i, j] = null;
+                }
+            }
+            nullCount = 0;
+        }
+        yield return new WaitForSeconds(0.4f);
     }
 }
 

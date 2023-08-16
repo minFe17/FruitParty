@@ -56,17 +56,21 @@ public class Fruit : MonoBehaviour
         {
             _position = new Vector2(_targetX, transform.position.y);
             transform.position = Vector2.Lerp(transform.position, _position, _moveSpeed);
+            if (_fruitManager.AllFruits[_column, _row] != this)
+                _fruitManager.AllFruits[_column, _row] = this;
         }
         else
         {
             _position = new Vector2(_targetX, transform.position.y);
             transform.position = _position;
-            _fruitManager.AllFruits[_column, _row] = this;
         }
+
         if (Mathf.Abs(_targetY - transform.position.y) > 0.1f)
         {
             _position = new Vector2(transform.position.x, _targetY);
             transform.position = Vector2.Lerp(transform.position, _position, _moveSpeed);
+            if (_fruitManager.AllFruits[_column, _row] != this)
+                _fruitManager.AllFruits[_column, _row] = this;
         }
         else
         {
