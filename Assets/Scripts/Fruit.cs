@@ -7,8 +7,8 @@ public class Fruit : MonoBehaviour
     [SerializeField] EFruitType _fruitType;
     [SerializeField] float _moveSpeed;
 
-    GameObject _otherFruit;
     FruitManager _fruitManager;
+    Fruit _otherFruit;
 
     Vector2 _firstTouchPos;
     Vector2 _finalTouchPos;
@@ -98,28 +98,28 @@ public class Fruit : MonoBehaviour
 
     void SeleteMoveFruit()
     {
-        if (_swipeAngle > -45 && _swipeAngle <= 45 && _column < _fruitManager.Width)           //Right
+        if (_swipeAngle > -45 && _swipeAngle <= 45 && _column < _fruitManager.Width)    //Right
         {
-            _otherFruit = _fruitManager.AllFruits[_column + 1, _row].gameObject;
-            _otherFruit.GetComponent<Fruit>().Column -= 1;
+            _otherFruit = _fruitManager.AllFruits[_column + 1, _row];
+            _otherFruit.Column -= 1;
             _column += 1;
         }
-        else if (_swipeAngle > 45 && _swipeAngle <= 135 && _row < _fruitManager.Height)  //Up
+        else if (_swipeAngle > 45 && _swipeAngle <= 135 && _row < _fruitManager.Height) //Up
         {
-            _otherFruit = _fruitManager.AllFruits[_column, _row + 1].gameObject;
-            _otherFruit.GetComponent<Fruit>().Row -= 1;
+            _otherFruit = _fruitManager.AllFruits[_column, _row + 1];
+            _otherFruit.Row -= 1;
             _row += 1;
         }
-        else if (_swipeAngle > 135 || _swipeAngle <= -135 && _column > 0)              //Left
+        else if (_swipeAngle > 135 || _swipeAngle <= -135 && _column > 0)               //Left
         {
-            _otherFruit = _fruitManager.AllFruits[_column - 1, _row].gameObject;
-            _otherFruit.GetComponent<Fruit>().Column += 1;
+            _otherFruit = _fruitManager.AllFruits[_column - 1, _row];
+            _otherFruit.Column += 1;
             _column -= 1;
         }
-        else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)           //Down
+        else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)                  //Down
         {
-            _otherFruit = _fruitManager.AllFruits[_column, _row - 1].gameObject;
-            _otherFruit.GetComponent<Fruit>().Row += 1;
+            _otherFruit = _fruitManager.AllFruits[_column, _row - 1];
+            _otherFruit.Row += 1;
             _row -= 1;
         }
 
@@ -130,8 +130,8 @@ public class Fruit : MonoBehaviour
     {
         if (_column > 0 && _column < _fruitManager.Width - 1)
         {
-            Fruit leftFruit = _fruitManager.AllFruits[_column - 1, _row].GetComponent<Fruit>();
-            Fruit rightFrite = _fruitManager.AllFruits[_column + 1, _row].GetComponent<Fruit>();
+            Fruit leftFruit = _fruitManager.AllFruits[_column - 1, _row];
+            Fruit rightFrite = _fruitManager.AllFruits[_column + 1, _row];
             if (leftFruit != null && rightFrite != null)
             {
                 if (leftFruit.FruitType == _fruitType && rightFrite.FruitType == _fruitType)
@@ -144,8 +144,8 @@ public class Fruit : MonoBehaviour
         }
         if (_row > 0 && _row < _fruitManager.Height - 1)
         {
-            Fruit upFruit = _fruitManager.AllFruits[_column, _row + 1].GetComponent<Fruit>();
-            Fruit downFrite = _fruitManager.AllFruits[_column, _row - 1].GetComponent<Fruit>();
+            Fruit upFruit = _fruitManager.AllFruits[_column, _row + 1];
+            Fruit downFrite = _fruitManager.AllFruits[_column, _row - 1];
             if (upFruit != null && downFrite != null)
             {
                 if (upFruit.FruitType == _fruitType && downFrite.FruitType == _fruitType)
@@ -163,13 +163,17 @@ public class Fruit : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         if (_otherFruit != null)
         {
-            if (!_isMatch && !_otherFruit.GetComponent<Fruit>().IsMatch)
+            if (!_isMatch && !_otherFruit.IsMatch)
             {
-                _otherFruit.GetComponent<Fruit>().Column = _column;
-                _otherFruit.GetComponent<Fruit>().Row = _row;
+                _otherFruit.Column = _column;
+                _otherFruit.Row = _row;
                 _column = _previousColumn;
                 _row = _previousRow;
             }
+            else
+                _fruitManager.CheckMatchsFruit();
+
+            _otherFruit = null;
         }
     }
 

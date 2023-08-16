@@ -39,6 +39,18 @@ public class FruitManager : MonoBehaviour
         _allFruits[position.x, position.y] = fruit.GetComponent<Fruit>();
     }
 
+    public void CheckMatchsFruit()
+    {
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_allFruits[i, j] != null)
+                    DestroyMatchFruit(i, j);
+            }
+        }
+    }
+
     void AddFruit()
     {
         for (int i = 0; i < (int)EFruitType.Max; i++)
@@ -70,6 +82,15 @@ public class FruitManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    void DestroyMatchFruit(int column, int row)
+    {
+        if (_allFruits[column, row].IsMatch)
+        {
+            Destroy(_allFruits[column, row].gameObject);
+            _allFruits[column, row] = null;
+        }
     }
 }
 
