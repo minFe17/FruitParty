@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 public class FruitManager : MonoBehaviour
 {
@@ -166,6 +167,8 @@ public class FruitManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             CheckMatchsFruit();
         }
+        yield return new WaitForSeconds(0.5f);
+        GenericSingleton<GameManager>.Instance.GameState = EGameStateType.Move;
     }
 }
 

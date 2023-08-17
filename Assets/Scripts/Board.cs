@@ -32,6 +32,7 @@ public class Board : MonoBehaviour
                 _fruitManager.CreateFruit(tilePos, position);
             }
         }
+        GenericSingleton<GameManager>.Instance.GameState = EGameStateType.Move;
     }
 
     Transform CreateTile(Vector2 position)

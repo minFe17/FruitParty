@@ -8,6 +8,7 @@ public class Fruit : MonoBehaviour
     [SerializeField] float _moveSpeed;
 
     FruitManager _fruitManager;
+    GameManager _gameManager;
     Fruit _otherFruit;
 
     Vector2 _firstTouchPos;
@@ -33,6 +34,7 @@ public class Fruit : MonoBehaviour
     void Start()
     {
         _fruitManager = GenericSingleton<FruitManager>.Instance;
+        _gameManager = GenericSingleton<GameManager>.Instance;
         //_targetX = (int)transform.position.x;
         //_targetY = (int)transform.position.y;
         //_column = _targetX;
@@ -96,7 +98,10 @@ public class Fruit : MonoBehaviour
         {
             _swipeAngle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
             SeleteMoveFruit();
+            _gameManager.GameState = EGameStateType.Wait;
         }
+        else
+            _gameManager.GameState = EGameStateType.Move;
     }
 
     void SeleteMoveFruit()
@@ -180,22 +185,28 @@ public class Fruit : MonoBehaviour
                 _otherFruit.Row = _row;
                 _column = _previousColumn;
                 _row = _previousRow;
+                yield return new WaitForSeconds(0.5f);
+                _gameManager.GameState = EGameStateType.Move;
             }
             else
                 _fruitManager.CheckMatchsFruit();
-
+            
             _otherFruit = null;
         }
     }
 
     private void OnMouseDown()
     {
-        _firstTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (_gameManager.GameState == EGameStateType.Move)
+            _firstTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     private void OnMouseUp()
     {
-        _finalTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        CalculateAngle();
+        if (_gameManager.GameState == EGameStateType.Move)
+        {
+            _finalTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            CalculateAngle();
+        }
     }
 }
