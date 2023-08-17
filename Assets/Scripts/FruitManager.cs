@@ -95,6 +95,39 @@ public class FruitManager : MonoBehaviour
         }
     }
 
+    void RefillFruit()
+    {
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_allFruits[i, j] == null)
+                {
+                    Vector2 position = new Vector2(i, j);
+                    int fruitNumber = Random.Range(0, _fruits.Count);
+                    GameObject fruit = Instantiate(_fruits[fruitNumber], position, Quaternion.identity);
+                    _allFruits[i, j] = fruit.GetComponent<Fruit>();
+                }
+            }
+        }
+    }
+
+    bool MatchOnboard()
+    {
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_allFruits[i, j] != null)
+                {
+                    if (_allFruits[i, j].IsMatch)
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
     IEnumerator DecreaseRowRoutine()
     {
         int nullCount = 0;
@@ -113,6 +146,19 @@ public class FruitManager : MonoBehaviour
             nullCount = 0;
         }
         yield return new WaitForSeconds(0.4f);
+        StartCoroutine(FillFruitRoutine());
+    }
+
+    IEnumerator FillFruitRoutine()
+    {
+        RefillFruit();
+        yield return new WaitForSeconds(0.5f);
+
+        while(MatchOnboard())
+        {
+            yield return new WaitForSeconds(0.5f);
+            CheckMatchsFruit();
+        }
     }
 }
 
