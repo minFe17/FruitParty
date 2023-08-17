@@ -14,6 +14,7 @@ public class FruitManager : MonoBehaviour
     public Fruit[,] AllFruits { get => _allFruits; }
     public int Width { get => _width; }
     public int Height { get => _height; }
+    public int Offset { get; set; }
 
     public void Init(int x, int y)
     {
@@ -22,22 +23,26 @@ public class FruitManager : MonoBehaviour
         _allFruits = new Fruit[x, y];
     }
 
-    public void CreateFruit(Transform parent, Vector2Int position)
+    public void CreateFruit(Transform parent, Vector2 position)
     {
         if (_fruits.Count == 0)
             AddFruit();
         int fruitNumber = 0;
         int iterations = 0;
+        int x = (int)position.x;
+        int y = (int)position.y - Offset;
         do
         {
             fruitNumber = Random.Range(0, _fruits.Count);
             iterations++;
         }
-        while (MatchAt(position.x, position.y, fruitNumber) && iterations <= 100);
+        while (MatchAt(x, y, fruitNumber) && iterations <= 100);
 
-        GameObject fruit = Instantiate(_fruits[fruitNumber], parent.position, Quaternion.identity);
+        GameObject fruit = Instantiate(_fruits[fruitNumber], position, Quaternion.identity);
+        fruit.GetComponent<Fruit>().Column = x;
+        fruit.GetComponent<Fruit>().Row = y;
         fruit.transform.parent = parent;
-        _allFruits[position.x, position.y] = fruit.GetComponent<Fruit>();
+        _allFruits[x, y] = fruit.GetComponent<Fruit>();
     }
 
     public void CheckMatchsFruit()
@@ -103,10 +108,12 @@ public class FruitManager : MonoBehaviour
             {
                 if (_allFruits[i, j] == null)
                 {
-                    Vector2 position = new Vector2(i, j);
+                    Vector2 position = new Vector2(i, j + Offset);
                     int fruitNumber = Random.Range(0, _fruits.Count);
                     GameObject fruit = Instantiate(_fruits[fruitNumber], position, Quaternion.identity);
                     _allFruits[i, j] = fruit.GetComponent<Fruit>();
+                    fruit.GetComponent<Fruit>().Column = i;
+                    fruit.GetComponent<Fruit>().Row = j;
                 }
             }
         }
@@ -154,7 +161,7 @@ public class FruitManager : MonoBehaviour
         RefillFruit();
         yield return new WaitForSeconds(0.5f);
 
-        while(MatchOnboard())
+        while (MatchOnboard())
         {
             yield return new WaitForSeconds(0.5f);
             CheckMatchsFruit();

@@ -33,12 +33,11 @@ public class Fruit : MonoBehaviour
     void Start()
     {
         _fruitManager = GenericSingleton<FruitManager>.Instance;
-        _targetX = (int)transform.position.x;
-        _targetY = (int)transform.position.y;
-        _column = _targetX;
-        _row = _targetY;
-        _previousColumn = _column;
-        _previousRow = _row;
+        //_targetX = (int)transform.position.x;
+        //_targetY = (int)transform.position.y;
+        //_column = _targetX;
+        //_row = _targetY;
+
     }
 
     void Update()
@@ -104,24 +103,32 @@ public class Fruit : MonoBehaviour
     {
         if (_swipeAngle > -45 && _swipeAngle <= 45 && _column < _fruitManager.Width)    //Right
         {
+            _previousColumn = _column;
+            _previousRow = _row;
             _otherFruit = _fruitManager.AllFruits[_column + 1, _row];
             _otherFruit.Column -= 1;
             _column += 1;
         }
         else if (_swipeAngle > 45 && _swipeAngle <= 135 && _row < _fruitManager.Height) //Up
         {
+            _previousColumn = _column;
+            _previousRow = _row;
             _otherFruit = _fruitManager.AllFruits[_column, _row + 1];
             _otherFruit.Row -= 1;
             _row += 1;
         }
         else if (_swipeAngle > 135 || _swipeAngle <= -135 && _column > 0)               //Left
         {
+            _previousColumn = _column;
+            _previousRow = _row;
             _otherFruit = _fruitManager.AllFruits[_column - 1, _row];
             _otherFruit.Column += 1;
             _column -= 1;
         }
         else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)                  //Down
         {
+            _previousColumn = _column;
+            _previousRow = _row;
             _otherFruit = _fruitManager.AllFruits[_column, _row - 1];
             _otherFruit.Row += 1;
             _row -= 1;

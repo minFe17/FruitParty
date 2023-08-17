@@ -5,6 +5,7 @@ public class Board : MonoBehaviour
 {
     [SerializeField] int _width;
     [SerializeField] int _height;
+    [SerializeField] int _offset;
 
     Tile[,] _allTiles;
     GameObject _tilePrefab;
@@ -16,6 +17,7 @@ public class Board : MonoBehaviour
         _tilePrefab = Resources.Load("Prefabs/Tile") as GameObject;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _fruitManager.Init(_width, _height);
+        _fruitManager.Offset = _offset;
         Init();
     }
 
@@ -25,7 +27,7 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                Vector2Int position = new Vector2Int(i, j);
+                Vector2Int position = new Vector2Int(i, j + _offset);
                 Transform tilePos = CreateTile(position);
                 _fruitManager.CreateFruit(tilePos, position);
             }
