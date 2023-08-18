@@ -11,6 +11,7 @@ public class Fruit : MonoBehaviour
     GameManager _gameManager;
     MatchFinder _matchFinder;
     Fruit _otherFruit;
+    GameObject _destroyEffect;
 
     Vector2 _firstTouchPos;
     Vector2 _finalTouchPos;
@@ -25,6 +26,7 @@ public class Fruit : MonoBehaviour
     float _swipeAngle;
     float _swipeResist = 1f;
     bool _isMatch;
+    bool _onEffect;
 
     public EFruitType FruitType { get => _fruitType; }
     public int Column { get => _column; set => _column = value; }
@@ -37,6 +39,7 @@ public class Fruit : MonoBehaviour
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
+        _destroyEffect = Resources.Load("Prefabs/DestroyEffect") as GameObject;
     }
 
     void Update()
@@ -85,7 +88,12 @@ public class Fruit : MonoBehaviour
         if (_isMatch)
         {
             SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-            sprite.color = new Color(0f, 0f, 0f, 1);
+            sprite.color = new Color(0.5f, 0.5f, 0.5f, 1);
+            if (!_onEffect)
+            {
+                Instantiate(_destroyEffect, transform.position, Quaternion.identity);
+                _onEffect = true;
+            }
         }
     }
 
@@ -139,38 +147,6 @@ public class Fruit : MonoBehaviour
         }
 
         StartCoroutine(CheckMoveRoutine());
-    }
-
-    void FindMatchs()
-    {
-        if (_column > 0 && _column < _fruitManager.Width - 1)
-        {
-            Fruit leftFruit = _fruitManager.AllFruits[_column - 1, _row];
-            Fruit rightFrite = _fruitManager.AllFruits[_column + 1, _row];
-            if (leftFruit != null && rightFrite != null)
-            {
-                if (leftFruit.FruitType == _fruitType && rightFrite.FruitType == _fruitType)
-                {
-                    leftFruit.IsMatch = true;
-                    rightFrite.IsMatch = true;
-                    _isMatch = true;
-                }
-            }
-        }
-        if (_row > 0 && _row < _fruitManager.Height - 1)
-        {
-            Fruit upFruit = _fruitManager.AllFruits[_column, _row + 1];
-            Fruit downFrite = _fruitManager.AllFruits[_column, _row - 1];
-            if (upFruit != null && downFrite != null)
-            {
-                if (upFruit.FruitType == _fruitType && downFrite.FruitType == _fruitType)
-                {
-                    upFruit.IsMatch = true;
-                    downFrite.IsMatch = true;
-                    _isMatch = true;
-                }
-            }
-        }
     }
 
     public IEnumerator CheckMoveRoutine()
