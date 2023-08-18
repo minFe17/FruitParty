@@ -9,6 +9,8 @@ public class FruitManager : MonoBehaviour
     Fruit[,] _allFruits;
     List<GameObject> _fruits = new List<GameObject>();
 
+    MatchFinder _matchFinder;
+
     int _width;
     int _height;
 
@@ -22,6 +24,7 @@ public class FruitManager : MonoBehaviour
         _width = x;
         _height = y;
         _allFruits = new Fruit[x, y];
+        _matchFinder = GenericSingleton<MatchFinder>.Instance;
     }
 
     public void CreateFruit(Transform parent, Vector2 position)
@@ -96,6 +99,7 @@ public class FruitManager : MonoBehaviour
     {
         if (_allFruits[column, row].IsMatch)
         {
+            _matchFinder.MatchFruits.Remove(_allFruits[column,row]);
             Destroy(_allFruits[column, row].gameObject);
             _allFruits[column, row] = null;
         }

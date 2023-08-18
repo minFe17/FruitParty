@@ -9,6 +9,7 @@ public class Fruit : MonoBehaviour
 
     FruitManager _fruitManager;
     GameManager _gameManager;
+    MatchFinder _matchFinder;
     Fruit _otherFruit;
 
     Vector2 _firstTouchPos;
@@ -35,16 +36,11 @@ public class Fruit : MonoBehaviour
     {
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
-        //_targetX = (int)transform.position.x;
-        //_targetY = (int)transform.position.y;
-        //_column = _targetX;
-        //_row = _targetY;
-
+        _matchFinder = GenericSingleton<MatchFinder>.Instance;
     }
 
     void Update()
     {
-        FindMatchs();
         MoveFruit();
         MatchFruit();
     }
@@ -59,7 +55,9 @@ public class Fruit : MonoBehaviour
             transform.position = Vector2.Lerp(transform.position, _position, _moveSpeed);
             if (_fruitManager.AllFruits[_column, _row] != this)
                 _fruitManager.AllFruits[_column, _row] = this;
+            _matchFinder.FindAllMatch();
         }
+
         else
         {
             _position = new Vector2(_targetX, transform.position.y);
@@ -72,6 +70,7 @@ public class Fruit : MonoBehaviour
             transform.position = Vector2.Lerp(transform.position, _position, _moveSpeed);
             if (_fruitManager.AllFruits[_column, _row] != this)
                 _fruitManager.AllFruits[_column, _row] = this;
+            _matchFinder.FindAllMatch();
         }
         else
         {
@@ -190,7 +189,7 @@ public class Fruit : MonoBehaviour
             }
             else
                 _fruitManager.CheckMatchsFruit();
-            
+
             _otherFruit = null;
         }
     }
