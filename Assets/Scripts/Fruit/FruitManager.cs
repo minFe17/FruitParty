@@ -10,11 +10,13 @@ public class FruitManager : MonoBehaviour
     List<GameObject> _fruits = new List<GameObject>();
 
     MatchFinder _matchFinder;
+    Fruit _currentFruit;
 
     int _width;
     int _height;
 
     public Fruit[,] AllFruits { get => _allFruits; }
+    public Fruit CurrentFruit { get => _currentFruit; set => _currentFruit = value; }
     public int Width { get => _width; }
     public int Height { get => _height; }
     public int Offset { get; set; }
@@ -99,7 +101,13 @@ public class FruitManager : MonoBehaviour
     {
         if (_allFruits[column, row].IsMatch)
         {
-            _matchFinder.MatchFruits.Remove(_allFruits[column,row]);
+            Debug.Log(1);
+            if (_matchFinder.MatchFruits.Count == 4)
+            {
+                Debug.Log(2);
+                _matchFinder.CheckLineBomb();
+            }
+            _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
             Destroy(_allFruits[column, row].gameObject);
             _allFruits[column, row] = null;
         }
@@ -171,6 +179,8 @@ public class FruitManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             CheckMatchsFruit();
         }
+        _matchFinder.MatchFruits.Clear();
+        _currentFruit = null;
         yield return new WaitForSeconds(0.5f);
         GenericSingleton<GameManager>.Instance.GameState = EGameStateType.Move;
     }
@@ -185,5 +195,15 @@ public enum EFruitType
     Strawberry,
     Tomato,
     Watermelon,
+    Max,
+}
+
+public enum EColorType
+{
+    Red,
+    Orange,
+    Yellow,
+    Green,
+    Blue,
     Max,
 }

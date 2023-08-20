@@ -5,6 +5,7 @@ using Utils;
 public class Fruit : MonoBehaviour
 {
     [SerializeField] EFruitType _fruitType;
+    [SerializeField] protected EColorType _color;
     [SerializeField] float _moveSpeed;
 
     FruitManager _fruitManager;
@@ -17,22 +18,26 @@ public class Fruit : MonoBehaviour
     Vector2 _finalTouchPos;
     Vector2 _position;
 
-    int _column;
-    int _row;
+    protected int _column;
+    protected int _row;
+    protected bool _isMatch;
+    protected bool _isBomb;
+
     int _previousColumn;
     int _previousRow;
     int _targetX;
     int _targetY;
     float _swipeAngle;
     float _swipeResist = 1f;
-    bool _isMatch;
     bool _onEffect;
 
     public EFruitType FruitType { get => _fruitType; }
+    public EColorType ColorType { get => _color; }
+    public Fruit OtherFruit { get => _otherFruit; set => _otherFruit = value; }
     public int Column { get => _column; set => _column = value; }
     public int Row { get => _row; set => _row = value; }
     public bool IsMatch { get => _isMatch; set => _isMatch = value; }
-
+    public bool IsBomb { get => _isBomb; }
 
     void Start()
     {
@@ -60,7 +65,6 @@ public class Fruit : MonoBehaviour
                 _fruitManager.AllFruits[_column, _row] = this;
             _matchFinder.FindAllMatch();
         }
-
         else
         {
             _position = new Vector2(_targetX, transform.position.y);
@@ -108,7 +112,10 @@ public class Fruit : MonoBehaviour
             _gameManager.GameState = EGameStateType.Wait;
         }
         else
+        {
             _gameManager.GameState = EGameStateType.Move;
+            _fruitManager.CurrentFruit = this;
+        }
     }
 
     void SeleteMoveFruit()
@@ -162,12 +169,20 @@ public class Fruit : MonoBehaviour
                 _row = _previousRow;
                 yield return new WaitForSeconds(0.5f);
                 _gameManager.GameState = EGameStateType.Move;
+                _fruitManager.CurrentFruit = null;
             }
             else
                 _fruitManager.CheckMatchsFruit();
 
             _otherFruit = null;
         }
+    }
+
+    public void MakeLineBomb()
+    {
+        Debug.Log(5);
+        GameObject lineBomb = Instantiate(GenericSingleton<BombManager>.Instance.Bombs[(int)_color], transform.position, Quaternion.identity);
+        GenericSingleton<FruitManager>.Instance.AllFruits[(int)transform.position.x, (int)transform.position.y] = lineBomb.GetComponent<Fruit>();
     }
 
     private void OnMouseDown()
