@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2954278193462454132}
   - component: {fileID: 2816955881113907909}
   - component: {fileID: 2645281988055221910}
+  - component: {fileID: -7646896905617216993}
   m_Layer: 0
   m_Name: Orange
   m_TagString: Untagged
@@ -100,3 +101,19 @@ MonoBehaviour:
   _fruitType: 7
   _color: 1
   _moveSpeed: 0.3
+--- !u!58 &-7646896905617216993
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3020755638311978137}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.35

@@ -39,7 +39,7 @@ public class Fruit : MonoBehaviour
     public bool IsMatch { get => _isMatch; set => _isMatch = value; }
     public bool IsBomb { get => _isBomb; }
 
-    void Start()
+    protected virtual void Awake()
     {
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
@@ -47,7 +47,7 @@ public class Fruit : MonoBehaviour
         _destroyEffect = Resources.Load("Prefabs/DestroyEffect") as GameObject;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         MoveFruit();
         MatchFruit();
@@ -110,11 +110,12 @@ public class Fruit : MonoBehaviour
             _swipeAngle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
             SeleteMoveFruit();
             _gameManager.GameState = EGameStateType.Wait;
+            _fruitManager.CurrentFruit = this;
+
         }
         else
         {
             _gameManager.GameState = EGameStateType.Move;
-            _fruitManager.CurrentFruit = this;
         }
     }
 
@@ -180,9 +181,13 @@ public class Fruit : MonoBehaviour
 
     public void MakeLineBomb()
     {
-        Debug.Log(5);
-        GameObject lineBomb = Instantiate(GenericSingleton<BombManager>.Instance.Bombs[(int)_color], transform.position, Quaternion.identity);
-        GenericSingleton<FruitManager>.Instance.AllFruits[(int)transform.position.x, (int)transform.position.y] = lineBomb.GetComponent<Fruit>();
+        GameObject temp = Instantiate(GenericSingleton<BombManager>.Instance.Bombs[(int)_color], transform.position, Quaternion.identity);
+        Fruit lineBomb = temp.GetComponent<Fruit>();
+        GenericSingleton<FruitManager>.Instance.AllFruits[_column, _row] = lineBomb;
+        lineBomb.Column = _column;
+        lineBomb.Row = _row;
+        _matchFinder.MatchFruits.Clear();
+        Destroy(this.gameObject);
     }
 
     private void OnMouseDown()

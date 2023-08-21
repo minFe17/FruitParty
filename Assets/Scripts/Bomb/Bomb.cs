@@ -8,8 +8,9 @@ public class Bomb : Fruit
         _isBomb = true;
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if (_isMatch)
             OnEffect();
     }
@@ -28,6 +29,7 @@ public enum EBombType
 
 public enum ELineBombDirectionType
 {
+    None,
     Column,
     Row,
     Max,

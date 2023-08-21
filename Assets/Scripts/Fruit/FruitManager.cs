@@ -101,15 +101,21 @@ public class FruitManager : MonoBehaviour
     {
         if (_allFruits[column, row].IsMatch)
         {
-            Debug.Log(1);
-            if (_matchFinder.MatchFruits.Count == 4)
+            if (_matchFinder.MatchFruits.Count == 4 || _matchFinder.MatchFruits.Count == 7)
             {
-                Debug.Log(2);
+                _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
+                Destroy(_allFruits[column, row].gameObject);
                 _matchFinder.CheckLineBomb();
+                if (_allFruits[column, row] != _currentFruit && _allFruits[column,row] != _currentFruit.OtherFruit)
+                    _allFruits[column, row] = null;
             }
-            _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
-            Destroy(_allFruits[column, row].gameObject);
-            _allFruits[column, row] = null;
+            else
+            {
+                _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
+                Destroy(_allFruits[column, row].gameObject);
+                _allFruits[column, row] = null;
+            }
+
         }
     }
 
@@ -148,9 +154,10 @@ public class FruitManager : MonoBehaviour
         return false;
     }
 
-    IEnumerator DecreaseRowRoutine()
+    public IEnumerator DecreaseRowRoutine()
     {
         int nullCount = 0;
+
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)

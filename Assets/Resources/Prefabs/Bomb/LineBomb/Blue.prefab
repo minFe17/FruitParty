@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6480712313486542197}
   - component: {fileID: 7134746225502567298}
   - component: {fileID: 2659021193632576116}
+  - component: {fileID: -8515085302484412950}
   m_Layer: 0
   m_Name: Blue
   m_TagString: Untagged
@@ -100,3 +101,19 @@ MonoBehaviour:
   _fruitType: 7
   _color: 4
   _moveSpeed: 0.3
+--- !u!58 &-8515085302484412950
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573942379862283325}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.35
