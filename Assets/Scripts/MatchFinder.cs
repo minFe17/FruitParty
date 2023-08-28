@@ -44,6 +44,21 @@ public class MatchFinder : MonoBehaviour
         }
     }
 
+    public void MatchFruitOfType(EColorType color)
+    {
+        for(int i=0; i< _fruitManager.Width; i++)
+        {
+            for(int j=0; j<_fruitManager.Height; j++)
+            {
+                if (_fruitManager.AllFruits[i,j] != null)
+                {
+                    if (_fruitManager.AllFruits[i,j].ColorType == color)
+                        _fruitManager.AllFruits[i,j].IsMatch = true;
+                }
+            }
+        }
+    }
+
     public List<Fruit> GetColumnFruits(int column)
     {
         List<Fruit> fruits = new List<Fruit>();
@@ -116,7 +131,6 @@ public class MatchFinder : MonoBehaviour
                 }
             }
         }
-
     }
 
     void BombCount(out List<Fruit> fruitsList, out List<Fruit> bombs, Fruit[] fruits)

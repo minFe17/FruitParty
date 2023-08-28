@@ -8,10 +8,11 @@ public class Fruit : MonoBehaviour
     [SerializeField] protected EColorType _color;
     [SerializeField] float _moveSpeed;
 
+    protected EBombType _bombType;
+    protected MatchFinder _matchFinder;
+    protected Fruit _otherFruit;
     FruitManager _fruitManager;
     GameManager _gameManager;
-    MatchFinder _matchFinder;
-    Fruit _otherFruit;
     GameObject _destroyEffect;
 
     Vector2 _firstTouchPos;
@@ -33,6 +34,7 @@ public class Fruit : MonoBehaviour
 
     public EFruitType FruitType { get => _fruitType; }
     public EColorType ColorType { get => _color; }
+    public EBombType BombType { get => _bombType; }
     public Fruit OtherFruit { get => _otherFruit; set => _otherFruit = value; }
     public int Column { get => _column; set => _column = value; }
     public int Row { get => _row; set => _row = value; }
@@ -111,7 +113,6 @@ public class Fruit : MonoBehaviour
             SeleteMoveFruit();
             _gameManager.GameState = EGameStateType.Wait;
             _fruitManager.CurrentFruit = this;
-
         }
         else
         {
@@ -159,7 +160,12 @@ public class Fruit : MonoBehaviour
 
     public IEnumerator CheckMoveRoutine()
     {
-        yield return new WaitForSeconds(0.5f);
+        if (this.IsBomb && _bombType == EBombType.FruitBomb)
+            _isMatch = true;
+        else if (_otherFruit.IsBomb && _otherFruit.BombType == EBombType.FruitBomb)
+            _otherFruit.IsMatch = true;
+
+            yield return new WaitForSeconds(0.5f);
         if (_otherFruit != null)
         {
             if (!_isMatch && !_otherFruit.IsMatch)

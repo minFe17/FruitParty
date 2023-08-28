@@ -1,8 +1,5 @@
 public class Bomb : Fruit
 {
-    protected EBombType _bombType;
-    public EBombType BombType { get => _bombType; }
-
     void Start()
     {
         _isBomb = true;
@@ -23,7 +20,9 @@ public class Bomb : Fruit
 
 public enum EBombType
 {
+    None,
     LineBomb,
+    FruitBomb,
     Max,
 }
 
