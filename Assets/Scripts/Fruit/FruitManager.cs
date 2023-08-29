@@ -61,6 +61,7 @@ public class FruitManager : MonoBehaviour
                     DestroyMatchFruit(i, j);
             }
         }
+        _matchFinder.MatchFruits.Clear();
         StartCoroutine(DecreaseRowRoutine());
     }
 

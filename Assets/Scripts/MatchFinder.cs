@@ -46,14 +46,14 @@ public class MatchFinder : MonoBehaviour
 
     public void MatchFruitOfType(EColorType color)
     {
-        for(int i=0; i< _fruitManager.Width; i++)
+        for (int i = 0; i < _fruitManager.Width; i++)
         {
-            for(int j=0; j<_fruitManager.Height; j++)
+            for (int j = 0; j < _fruitManager.Height; j++)
             {
-                if (_fruitManager.AllFruits[i,j] != null)
+                if (_fruitManager.AllFruits[i, j] != null)
                 {
-                    if (_fruitManager.AllFruits[i,j].ColorType == color)
-                        _fruitManager.AllFruits[i,j].IsMatch = true;
+                    if (_fruitManager.AllFruits[i, j].ColorType == color)
+                        _fruitManager.AllFruits[i, j].IsMatch = true;
                 }
             }
         }
@@ -150,16 +150,17 @@ public class MatchFinder : MonoBehaviour
 
     void FruitMatch(Fruit[] fruits)
     {
-        if (!_matchFruits.Contains(fruits[0]))
-            _matchFruits.Add(fruits[0]);
-        if (!_matchFruits.Contains(fruits[1]))
-            _matchFruits.Add(fruits[1]);
-        if (!_matchFruits.Contains(fruits[2]))
-            _matchFruits.Add(fruits[2]);
+        AddMatchFruits(fruits[0]);
+        AddMatchFruits(fruits[1]);
+        AddMatchFruits(fruits[2]);
+    }
 
-        fruits[0].IsMatch = true;
-        fruits[1].IsMatch = true;
-        fruits[2].IsMatch = true;
+    void AddMatchFruits(Fruit fruit)
+    {
+        if (!_matchFruits.Contains(fruit))
+            _matchFruits.Add(fruit);
+        if (!fruit.IsMatch)
+            fruit.IsMatch = true;
     }
 
     IEnumerator FindAllMatchRoutine()
