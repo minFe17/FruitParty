@@ -22,6 +22,7 @@ public enum EBombType
 {
     None,
     LineBomb,
+    SquareBomb,
     FruitBomb,
     Max,
 }

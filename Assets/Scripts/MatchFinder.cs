@@ -59,6 +59,23 @@ public class MatchFinder : MonoBehaviour
         }
     }
 
+    public List<Fruit> GetSquareFruits(int column, int row)
+    {
+        List<Fruit> fruits = new List<Fruit>();
+        for (int i = column - 1; i <= column + 1; i++)
+        {
+            for (int j = row - 1; j <= row + 1; j++)
+            {
+                if (i >= 0 && i < _fruitManager.Width && j >= 0 && j < _fruitManager.Height)
+                {
+                    fruits.Add(_fruitManager.AllFruits[i, j]);
+                    _fruitManager.AllFruits[i, j].IsMatch = true;
+                }
+            }
+        }
+        return fruits;
+    }
+
     public List<Fruit> GetColumnFruits(int column)
     {
         List<Fruit> fruits = new List<Fruit>();
@@ -173,7 +190,6 @@ public class MatchFinder : MonoBehaviour
             for (int j = 0; j < _fruitManager.Height; j++)
             {
                 fruits[0] = _fruitManager.AllFruits[i, j];
-
                 if (fruits[0] != null)
                 {
                     if (i > 0 && i < _fruitManager.Width - 1)

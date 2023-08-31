@@ -187,7 +187,7 @@ public class Fruit : MonoBehaviour
 
     public void MakeLineBomb()
     {
-        GameObject temp = Instantiate(GenericSingleton<BombManager>.Instance.Bombs[(int)_color], transform.position, Quaternion.identity);
+        GameObject temp = Instantiate(GenericSingleton<BombManager>.Instance.LineBombs[(int)_color], transform.position, Quaternion.identity);
         Fruit lineBomb = temp.GetComponent<Fruit>();
         GenericSingleton<FruitManager>.Instance.AllFruits[_column, _row] = lineBomb;
         lineBomb.Column = _column;
