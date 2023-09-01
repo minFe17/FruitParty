@@ -25,25 +25,6 @@ public class MatchFinder : MonoBehaviour
         StartCoroutine(FindAllMatchRoutine());
     }
 
-    public void CheckLineBomb()
-    {
-        if (_fruitManager.CurrentFruit != null)
-        {
-            if (_fruitManager.CurrentFruit.IsMatch)
-            {
-                _fruitManager.CurrentFruit.MakeLineBomb();
-            }
-            else if (_fruitManager.CurrentFruit.OtherFruit != null)
-            {
-                Fruit otherFruit = _fruitManager.CurrentFruit.OtherFruit;
-                if (otherFruit.IsMatch)
-                {
-                    otherFruit.MakeLineBomb();
-                }
-            }
-        }
-    }
-
     public void MatchFruitOfType(EColorType color)
     {
         for (int i = 0; i < _fruitManager.Width; i++)

@@ -102,12 +102,12 @@ public class FruitManager : MonoBehaviour
     {
         if (_allFruits[column, row].IsMatch)
         {
-            if (_matchFinder.MatchFruits.Count == 4 || _matchFinder.MatchFruits.Count == 7)
+            if (_matchFinder.MatchFruits.Count >= 4)
             {
                 _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
                 Destroy(_allFruits[column, row].gameObject);
-                _matchFinder.CheckLineBomb();
-                if (_allFruits[column, row] != _currentFruit && _allFruits[column,row] != _currentFruit.OtherFruit)
+                CheckMakeBomb(column, row);
+                if (_allFruits[column, row] != _currentFruit && _allFruits[column, row] != _currentFruit.OtherFruit)
                     _allFruits[column, row] = null;
             }
             else
@@ -116,7 +116,94 @@ public class FruitManager : MonoBehaviour
                 Destroy(_allFruits[column, row].gameObject);
                 _allFruits[column, row] = null;
             }
+        }
+    }
 
+    void CheckMakeBomb(int column, int row)
+    {
+        if (_matchFinder.MatchFruits.Count == 4 || _matchFinder.MatchFruits.Count == 7)
+            CheckMakeLineBomb();
+        if (_matchFinder.MatchFruits.Count == 5 || _matchFinder.MatchFruits.Count == 8)
+        {
+            if (CreatableFruitBomb())
+                CheckMakeFruitBomb();
+            else
+                CheckMakeSquareBomb();
+        }
+    }
+
+    bool CreatableFruitBomb()
+    {
+        int numberColumn = 0;
+        int numberRow = 0;
+        Fruit firstFruit = _matchFinder.MatchFruits[0];
+
+        if (firstFruit != null)
+        {
+            foreach (Fruit fruit in _matchFinder.MatchFruits)
+            {
+                if (fruit.Column == firstFruit.Column)
+                    numberRow++;
+                if (fruit.Row == firstFruit.Row)
+                    numberColumn++;
+            }
+        }
+
+        if (numberColumn == 5 || numberRow == 5)
+            return true;
+        else
+            return false;
+    }
+
+    void CheckMakeLineBomb()
+    {
+        if (_currentFruit != null)
+        {
+            if (_currentFruit.IsMatch)
+            {
+                _currentFruit.MakeLineBomb();
+            }
+            else if (_currentFruit.OtherFruit != null && _currentFruit.OtherFruit.IsMatch)
+            {
+                _currentFruit.OtherFruit.MakeLineBomb();
+            }
+        }
+    }
+
+
+    void CheckMakeSquareBomb()
+    {
+        if (_currentFruit != null)
+        {
+            if (_currentFruit.IsMatch)
+            {
+                _currentFruit.MakeSquareBomb();
+            }
+            else if (_currentFruit.OtherFruit != null && _currentFruit.OtherFruit.IsMatch)
+            {
+                _currentFruit.OtherFruit.MakeSquareBomb();
+            }
+        }
+    }
+
+    void CheckMakeFruitBomb()
+    {
+        if (_currentFruit != null)
+        {
+            if (_currentFruit.IsMatch)
+            {
+                if (!_currentFruit.IsBomb)
+                    _currentFruit.MakeFruitBomb();
+                else if (_currentFruit.BombType != EBombType.FruitBomb)
+                    _currentFruit.MakeFruitBomb();
+            }
+            else if (_currentFruit.OtherFruit != null && _currentFruit.OtherFruit.IsMatch)
+            {
+                if (!_currentFruit.OtherFruit.IsBomb)
+                    _currentFruit.MakeFruitBomb();
+                else if (_currentFruit.OtherFruit.BombType != EBombType.FruitBomb)
+                    _currentFruit.MakeFruitBomb();
+            }
         }
     }
 

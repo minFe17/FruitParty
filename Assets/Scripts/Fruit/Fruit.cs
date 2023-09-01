@@ -12,6 +12,7 @@ public class Fruit : MonoBehaviour
     protected MatchFinder _matchFinder;
     protected Fruit _otherFruit;
     FruitManager _fruitManager;
+    BombManager _bombManager;
     GameManager _gameManager;
     GameObject _destroyEffect;
 
@@ -43,9 +44,10 @@ public class Fruit : MonoBehaviour
 
     protected virtual void Awake()
     {
-        _fruitManager = GenericSingleton<FruitManager>.Instance;
-        _gameManager = GenericSingleton<GameManager>.Instance;
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
+        _fruitManager = GenericSingleton<FruitManager>.Instance;
+        _bombManager = GenericSingleton<BombManager>.Instance;
+        _gameManager = GenericSingleton<GameManager>.Instance;
         _destroyEffect = Resources.Load("Prefabs/DestroyEffect") as GameObject;
     }
 
@@ -53,6 +55,24 @@ public class Fruit : MonoBehaviour
     {
         MoveFruit();
         MatchFruit();
+    }
+
+    public void MakeLineBomb()
+    {
+        GameObject temp = Instantiate(_bombManager.LineBombs[(int)_color], transform.position, Quaternion.identity);
+        MakeBomb(temp);
+    }
+
+    public void MakeSquareBomb()
+    {
+        GameObject temp = Instantiate(_bombManager.SquareBombs[(int)_color], transform.position, Quaternion.identity);
+        MakeBomb(temp);
+    }
+
+    public void MakeFruitBomb()
+    {
+        GameObject temp = Instantiate(_bombManager.FruitBomb, transform.position, Quaternion.identity);
+        MakeBomb(temp);
     }
 
     void MoveFruit()
@@ -158,6 +178,31 @@ public class Fruit : MonoBehaviour
         StartCoroutine(CheckMoveRoutine());
     }
 
+    void MakeBomb(GameObject bombGameObject)
+    {
+        Fruit bomb = bombGameObject.GetComponent<Fruit>();
+        GenericSingleton<FruitManager>.Instance.AllFruits[_column, _row] = bomb;
+        bomb.Column = _column;
+        bomb.Row = _row;
+        _matchFinder.MatchFruits.Clear();
+        Destroy(this.gameObject);
+    }
+
+    void OnMouseDown()
+    {
+        if (_gameManager.GameState == EGameStateType.Move)
+            _firstTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+    void OnMouseUp()
+    {
+        if (_gameManager.GameState == EGameStateType.Move)
+        {
+            _finalTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            CalculateAngle();
+        }
+    }
+
     public IEnumerator CheckMoveRoutine()
     {
         if (this.IsBomb && _bombType == EBombType.FruitBomb)
@@ -165,7 +210,7 @@ public class Fruit : MonoBehaviour
         else if (_otherFruit.IsBomb && _otherFruit.BombType == EBombType.FruitBomb)
             _otherFruit.IsMatch = true;
 
-            yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.5f);
         if (_otherFruit != null)
         {
             if (!_isMatch && !_otherFruit.IsMatch)
@@ -182,32 +227,6 @@ public class Fruit : MonoBehaviour
                 _fruitManager.CheckMatchsFruit();
 
             _otherFruit = null;
-        }
-    }
-
-    public void MakeLineBomb()
-    {
-        GameObject temp = Instantiate(GenericSingleton<BombManager>.Instance.LineBombs[(int)_color], transform.position, Quaternion.identity);
-        Fruit lineBomb = temp.GetComponent<Fruit>();
-        GenericSingleton<FruitManager>.Instance.AllFruits[_column, _row] = lineBomb;
-        lineBomb.Column = _column;
-        lineBomb.Row = _row;
-        _matchFinder.MatchFruits.Clear();
-        Destroy(this.gameObject);
-    }
-
-    private void OnMouseDown()
-    {
-        if (_gameManager.GameState == EGameStateType.Move)
-            _firstTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    }
-
-    private void OnMouseUp()
-    {
-        if (_gameManager.GameState == EGameStateType.Move)
-        {
-            _finalTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            CalculateAngle();
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +6,8 @@ public class BombManager : MonoBehaviour
     //╫л╠шео
     List<GameObject> _lineBombs = new List<GameObject>();
     List<GameObject> _squareBombs = new List<GameObject>();
+    FruitManager _fruitManager;
+    GameObject _fruitBomb;
 
     public List<GameObject> LineBombs
     {
@@ -25,6 +26,16 @@ public class BombManager : MonoBehaviour
             if (_squareBombs.Count == 0)
                 AddSquareBombs();
             return _squareBombs;
+        }
+    }
+
+    public GameObject FruitBomb
+    {
+        get
+        {
+            if(_fruitBomb == null)
+                _fruitBomb = Resources.Load("Prefabs/Bomb/FruitBomb") as GameObject;
+            return _fruitBomb;
         }
     }
 
