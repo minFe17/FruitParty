@@ -6,7 +6,6 @@ public class BombManager : MonoBehaviour
     //╫л╠шео
     List<GameObject> _lineBombs = new List<GameObject>();
     List<GameObject> _squareBombs = new List<GameObject>();
-    FruitManager _fruitManager;
     GameObject _fruitBomb;
 
     public List<GameObject> LineBombs
@@ -48,6 +47,6 @@ public class BombManager : MonoBehaviour
     void AddSquareBombs()
     {
         for (int i = 0; i < (int)EColorType.Max; i++)
-            _lineBombs.Add(Resources.Load($"Prefabs/Bomb/SquareBomb/{(EColorType)i}") as GameObject);
+            _squareBombs.Add(Resources.Load($"Prefabs/Bomb/SquareBomb/{(EColorType)i}") as GameObject);
     }
 }

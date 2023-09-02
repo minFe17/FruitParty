@@ -104,11 +104,13 @@ public class FruitManager : MonoBehaviour
         {
             if (_matchFinder.MatchFruits.Count >= 4)
             {
-                _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
                 Destroy(_allFruits[column, row].gameObject);
                 CheckMakeBomb(column, row);
                 if (_allFruits[column, row] != _currentFruit && _allFruits[column, row] != _currentFruit.OtherFruit)
+                {
+                    _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
                     _allFruits[column, row] = null;
+                }
             }
             else
             {

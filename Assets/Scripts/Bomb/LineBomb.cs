@@ -11,12 +11,12 @@ public class LineBomb : Bomb
 
     public override void OnEffect()
     {
-        if (_matchFinder.LineBombDirection == ELineBombDirectionType.None)
+        if (_matchFinder.LineBombDirection == ELineBombDirectionType.None || _matchFinder.LineBombDirection == ELineBombDirectionType.Max)
             _matchFinder.LineBombDirection = (ELineBombDirectionType)Random.Range(1, (int)ELineBombDirectionType.Max);
 
         if (_matchFinder.LineBombDirection == ELineBombDirectionType.Column)
             _matchFinder.MatchFruits.Union(_matchFinder.GetColumnFruits(_column));
-        if(_matchFinder.LineBombDirection == ELineBombDirectionType.Row)
+        else if(_matchFinder.LineBombDirection == ELineBombDirectionType.Row)
             _matchFinder.MatchFruits.Union(_matchFinder.GetRowFruits(_row));
 
         _matchFinder.LineBombDirection = ELineBombDirectionType.None;

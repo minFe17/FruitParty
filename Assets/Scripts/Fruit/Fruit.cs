@@ -129,9 +129,9 @@ public class Fruit : MonoBehaviour
         float y = _finalTouchPos.y - _firstTouchPos.y;
         if (Mathf.Abs(x) > _swipeResist || Mathf.Abs(y) > _swipeResist)
         {
+            _gameManager.GameState = EGameStateType.Wait;
             _swipeAngle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
             SeleteMoveFruit();
-            _gameManager.GameState = EGameStateType.Wait;
             _fruitManager.CurrentFruit = this;
         }
         else
@@ -140,42 +140,30 @@ public class Fruit : MonoBehaviour
         }
     }
 
+    void RealMoveFruit(Vector2Int direction)
+    {
+        _otherFruit = _fruitManager.AllFruits[_column + direction.x, _row + direction.y];
+        _previousColumn = _column;
+        _previousRow = _row;
+        _otherFruit.Column += -1 * direction.x;
+        _otherFruit.Row += -1 * direction.y;
+        _column += direction.x;
+        _row += direction.y;
+        StartCoroutine(CheckMoveRoutine());
+    }
+
     void SeleteMoveFruit()
     {
         if (_swipeAngle > -45 && _swipeAngle <= 45 && _column < _fruitManager.Width)    //Right
-        {
-            _previousColumn = _column;
-            _previousRow = _row;
-            _otherFruit = _fruitManager.AllFruits[_column + 1, _row];
-            _otherFruit.Column -= 1;
-            _column += 1;
-        }
+            RealMoveFruit(Vector2Int.right);
         else if (_swipeAngle > 45 && _swipeAngle <= 135 && _row < _fruitManager.Height) //Up
-        {
-            _previousColumn = _column;
-            _previousRow = _row;
-            _otherFruit = _fruitManager.AllFruits[_column, _row + 1];
-            _otherFruit.Row -= 1;
-            _row += 1;
-        }
+            RealMoveFruit(Vector2Int.up);
         else if (_swipeAngle > 135 || _swipeAngle <= -135 && _column > 0)               //Left
-        {
-            _previousColumn = _column;
-            _previousRow = _row;
-            _otherFruit = _fruitManager.AllFruits[_column - 1, _row];
-            _otherFruit.Column += 1;
-            _column -= 1;
-        }
+            RealMoveFruit(Vector2Int.left);
         else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)                  //Down
-        {
-            _previousColumn = _column;
-            _previousRow = _row;
-            _otherFruit = _fruitManager.AllFruits[_column, _row - 1];
-            _otherFruit.Row += 1;
-            _row -= 1;
-        }
-
-        StartCoroutine(CheckMoveRoutine());
+            RealMoveFruit(Vector2Int.down);
+        else
+            _gameManager.GameState = EGameStateType.Move;
     }
 
     void MakeBomb(GameObject bombGameObject)
