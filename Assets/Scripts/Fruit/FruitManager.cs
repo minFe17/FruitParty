@@ -172,7 +172,6 @@ public class FruitManager : MonoBehaviour
         }
     }
 
-
     void CheckMakeSquareBomb()
     {
         if (_currentFruit != null)

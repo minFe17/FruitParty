@@ -65,7 +65,7 @@ public class Fruit : MonoBehaviour
 
     public void MakeSquareBomb()
     {
-        GameObject temp = Instantiate(_bombManager.SquareBombs[(int)_color], transform.position, Quaternion.identity);
+        GameObject temp = Instantiate(_bombManager.SquareBombs[(int)_color], new Vector2(_column, _row), Quaternion.identity);
         MakeBomb(temp);
     }
 

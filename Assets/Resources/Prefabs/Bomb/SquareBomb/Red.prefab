@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fruitType: 7
   _color: 0
-  _moveSpeed: 0
+  _moveSpeed: 0.3
 --- !u!58 &8967230865842417786
 CircleCollider2D:
   m_ObjectHideFlags: 0
