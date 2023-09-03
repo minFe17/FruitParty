@@ -8,16 +8,19 @@ public class Board : MonoBehaviour
     [SerializeField] int _offset;
 
     Tile[,] _allTiles;
+    GameObject _cameraPrefab;
     GameObject _tilePrefab;
     FruitManager _fruitManager;
 
     void Start()
     {
         _allTiles = new Tile[_width, _height];
+        _cameraPrefab = Resources.Load("Prefabs/Main Camera") as GameObject;
         _tilePrefab = Resources.Load("Prefabs/Tile") as GameObject;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _fruitManager.Init(_width, _height);
         _fruitManager.Offset = _offset;
+        CreateCamera();
         Init();
     }
 
@@ -41,5 +44,12 @@ public class Board : MonoBehaviour
         tile.transform.parent = this.transform;
         tile.name = $"Tile ({position.x}, {position.y})";
         return tile.transform;
+    }
+
+    void CreateCamera()
+    {
+        GameObject mainCamera = Instantiate(_cameraPrefab);
+        mainCamera.GetComponent<CameraScalar>().SettingCamera(_width, _height);
+
     }
 }
