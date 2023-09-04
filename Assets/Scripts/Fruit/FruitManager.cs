@@ -77,22 +77,34 @@ public class FruitManager : MonoBehaviour
 
         if (column > 1 && row > 1)
         {
-            if (_allFruits[column - 1, row].FruitType == fruit.FruitType && _allFruits[column - 2, row].FruitType == fruit.FruitType)
-                return true;
-            if (_allFruits[column, row - 1].FruitType == fruit.FruitType && _allFruits[column, row - 2].FruitType == fruit.FruitType)
-                return true;
+            if (_allFruits[column - 1, row] != null && _allFruits[column - 2, row] != null)
+            {
+                if (_allFruits[column - 1, row].FruitType == fruit.FruitType && _allFruits[column - 2, row].FruitType == fruit.FruitType)
+                    return true;
+            }
+            if (_allFruits[column, row - 1] != null && _allFruits[column, row - 2] != null)
+            {
+                if (_allFruits[column, row - 1].FruitType == fruit.FruitType && _allFruits[column, row - 2].FruitType == fruit.FruitType)
+                    return true;
+            }
         }
         else if (column <= 1 || row <= 1)
         {
             if (column > 1)
             {
-                if (_allFruits[column - 1, row].FruitType == fruit.FruitType && _allFruits[column - 2, row].FruitType == fruit.FruitType)
-                    return true;
+                if (_allFruits[column - 1, row] != null && _allFruits[column - 2, row] != null)
+                {
+                    if (_allFruits[column - 1, row].FruitType == fruit.FruitType && _allFruits[column - 2, row].FruitType == fruit.FruitType)
+                        return true;
+                }
             }
             if (row > 1)
             {
-                if (_allFruits[column, row - 1].FruitType == fruit.FruitType && _allFruits[column, row - 2].FruitType == fruit.FruitType)
-                    return true;
+                if (_allFruits[column, row - 1] != null && _allFruits[column, row - 2] != null)
+                {
+                    if (_allFruits[column, row - 1].FruitType == fruit.FruitType && _allFruits[column, row - 2].FruitType == fruit.FruitType)
+                        return true;
+                }
             }
         }
         return false;
