@@ -1,11 +1,8 @@
-using UnityEngine;
-
-[System.Serializable]
 public class TileType
 {
-    [SerializeField] ETileKindType _tileKindType;
-    [SerializeField] int _x;
-    [SerializeField] int _y;
+    ETileKindType _tileKindType;
+    int _x;
+    int _y;
 
     public ETileKindType TileKindType { get => _tileKindType; set => _tileKindType = value; }
     public int X { get => _x; set => _x = value; }
