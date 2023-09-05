@@ -9,6 +9,7 @@ public class FruitManager : MonoBehaviour
     Fruit[,] _allFruits;
     List<GameObject> _fruits = new List<GameObject>();
 
+    Board _board;
     MatchFinder _matchFinder;
     Fruit _currentFruit;
 
@@ -21,11 +22,13 @@ public class FruitManager : MonoBehaviour
     public int Height { get => _height; }
     public int Offset { get; set; }
 
-    public void Init(int x, int y)
+    public void Init(int x, int y, Board board)
     {
         _width = x;
         _height = y;
+        _board = board;
         _allFruits = new Fruit[x, y];
+
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
     }
 
@@ -226,7 +229,7 @@ public class FruitManager : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                if (_allFruits[i, j] == null)
+                if (_allFruits[i, j] == null && !_board.BlankSpaces[i,j])
                 {
                     Vector2 position = new Vector2(i, j + Offset);
                     int fruitNumber = Random.Range(0, _fruits.Count);
@@ -255,23 +258,25 @@ public class FruitManager : MonoBehaviour
         return false;
     }
 
-    public IEnumerator DecreaseRowRoutine()
+    IEnumerator DecreaseRowRoutine()
     {
-        int nullCount = 0;
-
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
             {
-                if (_allFruits[i, j] == null)
-                    nullCount++;
-                else if (nullCount > 0)
+                if (!_board.BlankSpaces[i, j] && _allFruits[i, j] == null)
                 {
-                    _allFruits[i, j].Row -= nullCount;
-                    _allFruits[i, j] = null;
+                    for (int k = j + 1; k < _height; k++)
+                    {
+                        if (_allFruits[i, k] != null)
+                        {
+                            _allFruits[i, k].Row = j;
+                            _allFruits[i, k] = null;
+                            break;
+                        }
+                    }
                 }
             }
-            nullCount = 0;
         }
         yield return new WaitForSeconds(0.4f);
         StartCoroutine(FillFruitRoutine());

@@ -145,11 +145,16 @@ public class Fruit : MonoBehaviour
         _otherFruit = _fruitManager.AllFruits[_column + direction.x, _row + direction.y];
         _previousColumn = _column;
         _previousRow = _row;
-        _otherFruit.Column += -1 * direction.x;
-        _otherFruit.Row += -1 * direction.y;
-        _column += direction.x;
-        _row += direction.y;
-        StartCoroutine(CheckMoveRoutine());
+        if (_otherFruit != null)
+        {
+            _otherFruit.Column += -1 * direction.x;
+            _otherFruit.Row += -1 * direction.y;
+            _column += direction.x;
+            _row += direction.y;
+            StartCoroutine(CheckMoveRoutine());
+        }
+        else
+            _gameManager.GameState = EGameStateType.Move;
     }
 
     void SeleteMoveFruit()

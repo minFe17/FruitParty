@@ -16,6 +16,8 @@ public class Board : MonoBehaviour
     GameObject _tilePrefab;
     FruitManager _fruitManager;
 
+    public bool[,] BlankSpaces { get => _blankSpaces; }
+
     void Start()
     {
         _allTiles = new GameObject[_width, _height];
@@ -23,7 +25,7 @@ public class Board : MonoBehaviour
         _cameraPrefab = Resources.Load("Prefabs/Main Camera") as GameObject;
         _tilePrefab = Resources.Load("Prefabs/Tile") as GameObject;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
-        _fruitManager.Init(_width, _height);
+        _fruitManager.Init(_width, _height, this);
         _fruitManager.Offset = _offset;
         CreateCamera();
         Init();
