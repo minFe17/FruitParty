@@ -133,6 +133,9 @@ public class FruitManager : MonoBehaviour
                 Destroy(_allFruits[column, row].gameObject);
                 _allFruits[column, row] = null;
             }
+
+            if (_board.IceTiles[column, row] != null)
+                _board.IceTiles[column, row].TakeDamage();
         }
     }
 

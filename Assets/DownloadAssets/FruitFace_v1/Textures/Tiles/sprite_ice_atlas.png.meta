@@ -80,7 +80,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 630
+  spritePixelsToUnits: 500
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -142,9 +142,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 341
-        width: 449
-        height: 460
+        y: 646
+        width: 150
+        height: 155
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,10 +162,10 @@ TextureImporter:
       name: sprite_ice_atlas_1
       rect:
         serializedVersion: 2
-        x: 457
-        y: 614
-        width: 166
-        height: 187
+        x: 150
+        y: 646
+        width: 150
+        height: 155
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,13 +180,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_ice_atlas_2
+      name: sprite_ice_atlas_10
       rect:
         serializedVersion: 2
-        x: 631
-        y: 628
-        width: 170
-        height: 173
+        x: 0
+        y: 336
+        width: 150
+        height: 155
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -201,13 +201,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_ice_atlas_3
+      name: sprite_ice_atlas_2
       rect:
         serializedVersion: 2
-        x: 457
-        y: 398
-        width: 158
-        height: 208
+        x: 300
+        y: 646
+        width: 150
+        height: 155
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -222,13 +222,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_ice_atlas_4
+      name: sprite_ice_atlas_3
       rect:
         serializedVersion: 2
-        x: 623
-        y: 424
-        width: 141
-        height: 182
+        x: 450
+        y: 646
+        width: 150
+        height: 155
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -243,13 +243,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_ice_atlas_5
+      name: sprite_ice_atlas_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 197
-        height: 333
+        x: 600
+        y: 646
+        width: 150
+        height: 155
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -264,13 +264,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_ice_atlas_6
+      name: sprite_ice_atlas_5
       rect:
         serializedVersion: 2
-        x: 205
-        y: 169
-        width: 174
-        height: 164
+        x: 0
+        y: 491
+        width: 150
+        height: 155
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -285,13 +285,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_ice_atlas_7
+      name: sprite_ice_atlas_6
       rect:
         serializedVersion: 2
-        x: 387
-        y: 0
-        width: 173
-        height: 333
+        x: 150
+        y: 491
+        width: 150
+        height: 155
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -306,13 +306,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_ice_atlas_8
+      name: sprite_ice_atlas_7
       rect:
         serializedVersion: 2
-        x: 568
-        y: 180
-        width: 233
-        height: 210
+        x: 300
+        y: 491
+        width: 150
+        height: 155
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -327,13 +327,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_ice_atlas_9
+      name: sprite_ice_atlas_8
       rect:
         serializedVersion: 2
-        x: 205
-        y: 21
-        width: 161
-        height: 140
+        x: 450
+        y: 491
+        width: 150
+        height: 155
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -348,13 +348,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_ice_atlas_10
+      name: sprite_ice_atlas_9
       rect:
         serializedVersion: 2
-        x: 568
-        y: 0
-        width: 139
-        height: 172
+        x: 600
+        y: 491
+        width: 150
+        height: 155
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -368,10 +368,304 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_11
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 336
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e17b1bee6be44d844bbbb4fa4a1e8634
+      internalID: -1311841200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_12
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 336
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 528ab5e46611c44458e62deecf903b2d
+      internalID: -1762198470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_13
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 336
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc625d526cf56cd4ab256553d3411722
+      internalID: -1128604043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_14
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 336
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 480ebc4c8c1a7c24d8b91f3c8577022d
+      internalID: -1455029739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 181
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba212865147b588428251f075a2c04a1
+      internalID: -765118047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_16
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 181
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0db09607253d3154f8eb585325ce6cc6
+      internalID: -332433533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_17
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 181
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b52d51011d3398c45889d6fe8cbe7095
+      internalID: -1551234017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_18
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 181
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc7b8b6be7ab4a6459a5967d3ce15a8f
+      internalID: 711149599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_19
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 181
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 948d27b078dda734a821e0dab9d60de8
+      internalID: -1462860517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 26
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4645d38c4b469b4aab52172534e4c70
+      internalID: 1467763591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_21
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 26
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36f95dd1d18b5fe47baaa9397221c1bc
+      internalID: -1964210554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_22
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 26
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efae13dedc0051f469b85d11ebfbb45e
+      internalID: -1529842213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_23
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 26
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f950b424ce89e94999eb9ffff37b77d
+      internalID: 1211480346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_ice_atlas_24
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 26
+        width: 150
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d9d1dff9ee61dc4e8113e080c2ed36a
+      internalID: -805894114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 032b217d5850a4748b513de31d5ccc12
     internalID: 0
     vertices: []
     indices: 
@@ -381,15 +675,29 @@ TextureImporter:
     nameFileIdTable:
       sprite_ice_atlas_0: 21300000
       sprite_ice_atlas_1: 21300002
-      sprite_ice_atlas_10: 21300020
-      sprite_ice_atlas_2: 21300004
-      sprite_ice_atlas_3: 21300006
-      sprite_ice_atlas_4: 21300008
-      sprite_ice_atlas_5: 21300010
-      sprite_ice_atlas_6: 21300012
-      sprite_ice_atlas_7: 21300014
-      sprite_ice_atlas_8: 21300016
-      sprite_ice_atlas_9: 21300018
+      sprite_ice_atlas_10: 21300004
+      sprite_ice_atlas_11: -1311841200
+      sprite_ice_atlas_12: -1762198470
+      sprite_ice_atlas_13: -1128604043
+      sprite_ice_atlas_14: -1455029739
+      sprite_ice_atlas_15: -765118047
+      sprite_ice_atlas_16: -332433533
+      sprite_ice_atlas_17: -1551234017
+      sprite_ice_atlas_18: 711149599
+      sprite_ice_atlas_19: -1462860517
+      sprite_ice_atlas_2: 21300006
+      sprite_ice_atlas_20: 1467763591
+      sprite_ice_atlas_21: -1964210554
+      sprite_ice_atlas_22: -1529842213
+      sprite_ice_atlas_23: 1211480346
+      sprite_ice_atlas_24: -805894114
+      sprite_ice_atlas_3: 21300008
+      sprite_ice_atlas_4: 21300010
+      sprite_ice_atlas_5: 21300012
+      sprite_ice_atlas_6: 21300014
+      sprite_ice_atlas_7: 21300016
+      sprite_ice_atlas_8: 21300018
+      sprite_ice_atlas_9: 21300020
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

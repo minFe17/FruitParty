@@ -12,6 +12,6 @@ public class TileType
 public enum ETileKindType
 {
     Normal,
-    Breakable,
     Blank,
+    Ice,
 }
