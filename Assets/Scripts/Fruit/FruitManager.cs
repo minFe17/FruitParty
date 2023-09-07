@@ -54,7 +54,7 @@ public class FruitManager : MonoBehaviour
         _allFruits[x, y] = fruit.GetComponent<Fruit>();
     }
 
-    public void CheckMatchsFruit()
+    public void CheckMatchFruit()
     {
         for (int i = 0; i < _width; i++)
         {
@@ -232,7 +232,7 @@ public class FruitManager : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                if (_allFruits[i, j] == null && !_board.BlankSpaces[i,j])
+                if (_allFruits[i, j] == null && !_board.BlankSpaces[i, j])
                 {
                     Vector2 position = new Vector2(i, j + Offset);
                     int fruitNumber = Random.Range(0, _fruits.Count);
@@ -257,6 +257,117 @@ public class FruitManager : MonoBehaviour
                         return true;
                 }
             }
+        }
+        return false;
+    }
+
+    bool IsDeadlocked()
+    {
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_allFruits[i, j] != null)
+                {
+                    if (i < _width - 1)
+                    {
+                        if (SwitchAndCheck(i, j, Vector2.right))
+                            return false;
+                    }
+                    if (j < _height - 1)
+                    {
+                        if (SwitchAndCheck(i, j, Vector2.up))
+                            return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    bool SwitchAndCheck(int column, int row, Vector2 direction)
+    {
+        SwitchFruit(column, row, direction);
+        if (CheckForMatch())
+        {
+            SwitchFruit(column, row, direction);
+            return true;
+        }
+        SwitchFruit(column, row, direction);
+        return false;
+    }
+
+    void SwitchFruit(int column, int row, Vector2 direction)
+    {
+        Fruit temp = _allFruits[column + (int)direction.x, row + (int)direction.y] as Fruit;
+        _allFruits[column + (int)direction.x, row + (int)direction.y] = _allFruits[column, row];
+        _allFruits[column, row] = temp;
+    }
+
+    bool CheckForMatch()
+    {
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_allFruits[i, j] != null)
+                {
+                    List<Fruit> fruitsList;
+                    List<Fruit> bombs;
+                    if (i < _width - 2)
+                    {
+                        if (_allFruits[i + 1, j] != null && _allFruits[i + 2, j] != null)
+                        {
+                            Fruit[] fruits = { _allFruits[i, j], _allFruits[i + 1, j], _allFruits[i + 2, j] };
+                            _matchFinder.BombCount(out fruitsList, out bombs, fruits);
+                            if (bombs.Count != 0)
+                            {
+                                if (CheckBombMatch(fruitsList, bombs))
+                                    return true;
+                            }
+
+                            else if (_allFruits[i, j].FruitType == _allFruits[i + 1, j].FruitType && _allFruits[i, j].FruitType == _allFruits[i + 2, j].FruitType)
+                                return true;
+                        }
+                    }
+                    if (j < _height - 2)
+                    {
+                        if (_allFruits[i, j + 1] != null && _allFruits[i, j + 2] != null)
+                        {
+                            Fruit[] fruits = { _allFruits[i, j], _allFruits[i, j + 1], _allFruits[i, j + 2] };
+                            _matchFinder.BombCount(out fruitsList, out bombs, fruits);
+                            if (bombs.Count != 0)
+                            {
+                                if (CheckBombMatch(fruitsList, bombs))
+                                    return true;
+                            }
+
+                            else if (_allFruits[i, j].FruitType == _allFruits[i, j + 1].FruitType && _allFruits[i, j].FruitType == _allFruits[i, j + 2].FruitType)
+                                return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    bool CheckBombMatch(List<Fruit> fruits, List<Fruit> bombs)
+    {
+        if (bombs.Count == 3)
+        {
+            if (bombs[0].ColorType == bombs[1].ColorType && bombs[0].ColorType == bombs[2].ColorType)
+                return true;
+        }
+        else if (bombs.Count == 2)
+        {
+            if (bombs[0].ColorType == bombs[1].ColorType && bombs[0].ColorType == fruits[0].ColorType)
+                return true;
+        }
+        else if (bombs.Count == 1)
+        {
+            if (bombs[0].ColorType == fruits[0].ColorType && fruits[0].FruitType == fruits[1].FruitType)
+                return true;
         }
         return false;
     }
@@ -293,11 +404,14 @@ public class FruitManager : MonoBehaviour
         while (MatchOnboard())
         {
             yield return new WaitForSeconds(0.5f);
-            CheckMatchsFruit();
+            CheckMatchFruit();
         }
         _matchFinder.MatchFruits.Clear();
         _currentFruit = null;
         yield return new WaitForSeconds(0.5f);
+
+        if (IsDeadlocked())
+            Debug.Log("Deadlocked");
         GenericSingleton<GameManager>.Instance.GameState = EGameStateType.Move;
     }
 }

@@ -217,7 +217,7 @@ public class Fruit : MonoBehaviour
                 _fruitManager.CurrentFruit = null;
             }
             else
-                _fruitManager.CheckMatchsFruit();
+                _fruitManager.CheckMatchFruit();
 
             _otherFruit = null;
         }

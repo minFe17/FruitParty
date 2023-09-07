@@ -85,6 +85,21 @@ public class MatchFinder : MonoBehaviour
         return fruits;
     }
 
+    public void BombCount(out List<Fruit> fruitsList, out List<Fruit> bombs, Fruit[] fruits)
+    {
+        bombs = new List<Fruit>();
+        fruitsList = new List<Fruit>();
+
+        for (int i = 0; i < fruits.Length; i++)
+        {
+            if (fruits[i].IsBomb)
+            {
+                bombs.Add(fruits[i]);
+            }
+        }
+        fruitsList = fruits.Where(child => child != child.IsBomb).ToList();
+    }
+
     void FindFruitMatch(Fruit[] fruits, ELineBombDirectionType direction)
     {
         List<Fruit> fruitsList;
@@ -129,21 +144,6 @@ public class MatchFinder : MonoBehaviour
                 }
             }
         }
-    }
-
-    void BombCount(out List<Fruit> fruitsList, out List<Fruit> bombs, Fruit[] fruits)
-    {
-        bombs = new List<Fruit>();
-        fruitsList = new List<Fruit>();
-
-        for (int i = 0; i < fruits.Length; i++)
-        {
-            if (fruits[i].IsBomb)
-            {
-                bombs.Add(fruits[i]);
-            }
-        }
-        fruitsList = fruits.Where(child => child != child.IsBomb).ToList();
     }
 
     void FruitMatch(Fruit[] fruits)
