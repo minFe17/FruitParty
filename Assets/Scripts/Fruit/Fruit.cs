@@ -11,8 +11,10 @@ public class Fruit : MonoBehaviour
     protected EBombType _bombType;
     protected MatchFinder _matchFinder;
     protected Fruit _otherFruit;
+
     FruitManager _fruitManager;
     BombManager _bombManager;
+    HintManager _hintManager;
     GameManager _gameManager;
     GameObject _destroyEffect;
 
@@ -47,32 +49,15 @@ public class Fruit : MonoBehaviour
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _bombManager = GenericSingleton<BombManager>.Instance;
+        _hintManager = GenericSingleton<HintManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
-        _destroyEffect = Resources.Load("Prefabs/DestroyEffect") as GameObject;
+        _destroyEffect = Resources.Load("Prefabs/Effect/DestroyEffect") as GameObject;
     }
 
     protected virtual void Update()
     {
         MoveFruit();
         MatchFruit();
-    }
-
-    public void MakeLineBomb()
-    {
-        GameObject temp = Instantiate(_bombManager.LineBombs[(int)_color], transform.position, Quaternion.identity);
-        MakeBomb(temp);
-    }
-
-    public void MakeSquareBomb()
-    {
-        GameObject temp = Instantiate(_bombManager.SquareBombs[(int)_color], new Vector2(_column, _row), Quaternion.identity);
-        MakeBomb(temp);
-    }
-
-    public void MakeFruitBomb()
-    {
-        GameObject temp = Instantiate(_bombManager.FruitBomb, transform.position, Quaternion.identity);
-        MakeBomb(temp);
     }
 
     void MoveFruit()
@@ -181,8 +166,27 @@ public class Fruit : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+    public void MakeLineBomb()
+    {
+        GameObject temp = Instantiate(_bombManager.LineBombs[(int)_color], transform.position, Quaternion.identity);
+        MakeBomb(temp);
+    }
+
+    public void MakeSquareBomb()
+    {
+        GameObject temp = Instantiate(_bombManager.SquareBombs[(int)_color], new Vector2(_column, _row), Quaternion.identity);
+        MakeBomb(temp);
+    }
+
+    public void MakeFruitBomb()
+    {
+        GameObject temp = Instantiate(_bombManager.FruitBomb, transform.position, Quaternion.identity);
+        MakeBomb(temp);
+    }
+
     void OnMouseDown()
     {
+        _hintManager.DestroyHint();
         if (_gameManager.GameState == EGameStateType.Move)
             _firstTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }

@@ -9,13 +9,6 @@ public class CameraScalar : MonoBehaviour
 
     float _aspectRatio;
 
-    public void SettingCameraPosition(int width, int height)
-    {
-        Vector3 position = new Vector3(width / 2, height / 2, _cameraOffset);
-        transform.position = position;
-        SettingCameraSize(width, height);
-    }
-
     void SettingCameraSize(int width, int height)
     {
         _aspectRatio = _displawyHeight / (float)_displayWidth;
@@ -23,5 +16,12 @@ public class CameraScalar : MonoBehaviour
             Camera.main.orthographicSize = (width / 2 + _padding) / _aspectRatio;
         else
             Camera.main.orthographicSize = height / 2 + _padding;
+    }
+
+    public void SettingCameraPosition(int width, int height)
+    {
+        Vector3 position = new Vector3(width / 2, height / 2, _cameraOffset);
+        transform.position = position;
+        SettingCameraSize(width, height);
     }
 }

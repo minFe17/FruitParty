@@ -48,6 +48,7 @@ public class Board : MonoBehaviour
             }
         }
         GenericSingleton<GameManager>.Instance.GameState = EGameStateType.Move;
+        GenericSingleton<HintManager>.Instance.Init();
     }
 
     Transform CreateTile(int width, int height)

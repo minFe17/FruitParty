@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BombManager : MonoBehaviour
 {
-    //╫л╠шео
+    // ╫л╠шео
     List<GameObject> _lineBombs = new List<GameObject>();
     List<GameObject> _squareBombs = new List<GameObject>();
     GameObject _fruitBomb;

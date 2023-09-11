@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Utils;
 
 public class FruitManager : MonoBehaviour
@@ -32,43 +31,7 @@ public class FruitManager : MonoBehaviour
 
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
     }
-
-    public void CreateFruit(Transform parent, Vector2 position)
-    {
-        if (_fruits.Count == 0)
-            AddFruit();
-        int fruitNumber = 0;
-        int iterations = 0;
-        int x = (int)position.x;
-        int y = (int)position.y - Offset;
-        do
-        {
-            fruitNumber = Random.Range(0, _fruits.Count);
-            iterations++;
-        }
-        while (MatchAt(x, y, _fruits[fruitNumber]) && iterations <= 100);
-
-        GameObject fruit = Instantiate(_fruits[fruitNumber], position, Quaternion.identity);
-        fruit.GetComponent<Fruit>().Column = x;
-        fruit.GetComponent<Fruit>().Row = y;
-        fruit.transform.parent = parent;
-        _allFruits[x, y] = fruit.GetComponent<Fruit>();
-    }
-
-    public void CheckMatchFruit()
-    {
-        for (int i = 0; i < _width; i++)
-        {
-            for (int j = 0; j < _height; j++)
-            {
-                if (_allFruits[i, j] != null)
-                    DestroyMatchFruit(i, j);
-            }
-        }
-        _matchFinder.MatchFruits.Clear();
-        StartCoroutine(DecreaseRowRoutine());
-    }
-
+    
     void AddFruit()
     {
         for (int i = 0; i < (int)EFruitType.Max; i++)
@@ -325,21 +288,6 @@ public class FruitManager : MonoBehaviour
             ShuffleFruit();
     }
 
-    bool SwitchAndCheck(int column, int row, Vector2 direction)
-    {
-        SwitchFruit(column, row, direction);
-        if (CheckForMatch())
-        {
-            SwitchFruit(column, row, direction);
-            return true;
-        }
-        else
-        {
-            SwitchFruit(column, row, direction);
-            return false;
-        }
-    }
-
     void SwitchFruit(int column, int row, Vector2 direction)
     {
         Fruit temp = _allFruits[column + (int)direction.x, row + (int)direction.y] as Fruit;
@@ -413,6 +361,57 @@ public class FruitManager : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    public void CreateFruit(Transform parent, Vector2 position)
+    {
+        if (_fruits.Count == 0)
+            AddFruit();
+        int fruitNumber = 0;
+        int iterations = 0;
+        int x = (int)position.x;
+        int y = (int)position.y - Offset;
+        do
+        {
+            fruitNumber = Random.Range(0, _fruits.Count);
+            iterations++;
+        }
+        while (MatchAt(x, y, _fruits[fruitNumber]) && iterations <= 100);
+
+        GameObject fruit = Instantiate(_fruits[fruitNumber], position, Quaternion.identity);
+        fruit.GetComponent<Fruit>().Column = x;
+        fruit.GetComponent<Fruit>().Row = y;
+        fruit.transform.parent = parent;
+        _allFruits[x, y] = fruit.GetComponent<Fruit>();
+    }
+
+    public void CheckMatchFruit()
+    {
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_allFruits[i, j] != null)
+                    DestroyMatchFruit(i, j);
+            }
+        }
+        _matchFinder.MatchFruits.Clear();
+        StartCoroutine(DecreaseRowRoutine());
+    }
+
+    public bool SwitchAndCheck(int column, int row, Vector2 direction)
+    {
+        SwitchFruit(column, row, direction);
+        if (CheckForMatch())
+        {
+            SwitchFruit(column, row, direction);
+            return true;
+        }
+        else
+        {
+            SwitchFruit(column, row, direction);
+            return false;
+        }
     }
 
     IEnumerator DecreaseRowRoutine()
