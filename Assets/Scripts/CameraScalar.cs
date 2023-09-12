@@ -6,6 +6,7 @@ public class CameraScalar : MonoBehaviour
     [SerializeField] int _displayWidth;
     [SerializeField] int _displawyHeight;
     [SerializeField] float _padding;
+    [SerializeField] float _yOffset;
 
     float _aspectRatio;
 
@@ -20,7 +21,7 @@ public class CameraScalar : MonoBehaviour
 
     public void SettingCameraPosition(int width, int height)
     {
-        Vector3 position = new Vector3(width / 2, height / 2, _cameraOffset);
+        Vector3 position = new Vector3(width / 2, (height / 2) + _yOffset, _cameraOffset);
         transform.position = position;
         SettingCameraSize(width, height);
     }

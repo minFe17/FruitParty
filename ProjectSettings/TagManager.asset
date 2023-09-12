@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Tile
+    uniqueID: 872479331
+    locked: 0
+  - name: Fruit
+    uniqueID: 1059734781
+    locked: 0
+  - name: Bomb
+    uniqueID: 524979851
+    locked: 0

@@ -101,3 +101,4 @@ MonoBehaviour:
   _displayWidth: 16
   _displawyHeight: 10
   _padding: 2
+  _yOffset: 1

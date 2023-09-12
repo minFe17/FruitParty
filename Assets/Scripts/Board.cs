@@ -14,6 +14,7 @@ public class Board : MonoBehaviour
     IceTile[,] _iceTiles;
 
     GameObject _cameraPrefab;
+    GameObject _backgroundPrefab;
     GameObject _tilePrefab;
     GameObject _iceTilePrefab;
     FruitManager _fruitManager;
@@ -27,6 +28,7 @@ public class Board : MonoBehaviour
         _blankSpaces = new bool[_width, _height];
         _iceTiles = new IceTile[_width, _height];
         _cameraPrefab = Resources.Load("Prefabs/Main Camera") as GameObject;
+        _backgroundPrefab = Resources.Load("Prefabs/Background") as GameObject;
         _tilePrefab = Resources.Load("Prefabs/Tile/Tile") as GameObject;
         _iceTilePrefab = Resources.Load("Prefabs/Tile/IceTile") as GameObject;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
@@ -100,5 +102,12 @@ public class Board : MonoBehaviour
     {
         GameObject mainCamera = Instantiate(_cameraPrefab);
         mainCamera.GetComponent<CameraScalar>().SettingCameraPosition(_width, _height);
+        CreateBackground(mainCamera.GetComponent<Camera>());
+    }
+
+    void CreateBackground(Camera mainCamera)
+    {
+        GameObject background = Instantiate(_backgroundPrefab);
+        background.GetComponent<Canvas>().worldCamera = mainCamera;
     }
 }

@@ -10,7 +10,7 @@ public class HintManager : MonoBehaviour
     GameObject _currentHint;
 
     float _hintDelay;
-    float _hintDelayTime;
+    float _hintCoolTime;
 
     void Update()
     {
@@ -22,23 +22,29 @@ public class HintManager : MonoBehaviour
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _hintEffect = Resources.Load("Prefabs/Effect/HintEffect") as GameObject;
         _hintDelay = 10f;
-        _hintDelayTime = _hintDelay;
+        _hintCoolTime = _hintDelay;
     }
 
     void ShowHintTimeCheck()
     {
-        _hintDelayTime -= Time.deltaTime;
-        if (_hintDelayTime <= 0 && _currentHint == null)
+        GameManager gameManager = GenericSingleton<GameManager>.Instance;
+        if (gameManager.GameState == EGameStateType.Move)
         {
-            ShowHint();
-            _hintDelayTime = _hintDelay;
+            _hintCoolTime -= Time.deltaTime;
+            if (_hintCoolTime <= 0 && _currentHint == null)
+            {
+                ShowHint();
+                _hintCoolTime = _hintDelay;
+            }
         }
+        else
+            _hintCoolTime = _hintDelay;
     }
 
     void ShowHint()
     {
         Fruit movableFruit = PickOneRandomFruit();
-        if(movableFruit != null)
+        if (movableFruit != null)
         {
             _currentHint = Instantiate(_hintEffect, movableFruit.transform.position, Quaternion.identity);
         }
@@ -84,11 +90,11 @@ public class HintManager : MonoBehaviour
 
     public void DestroyHint()
     {
-        if(_currentHint != null)
+        if (_currentHint != null)
         {
             Destroy(_currentHint);
             _currentHint = null;
-            _hintDelayTime = _hintDelay;
+            _hintCoolTime = _hintDelay;
         }
     }
 }
