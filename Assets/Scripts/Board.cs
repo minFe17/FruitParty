@@ -35,6 +35,7 @@ public class Board : MonoBehaviour
         _fruitManager.Init(_width, _height, this);
         _fruitManager.Offset = _offset;
         CreateCamera();
+        GenericSingleton<UIManager>.Instance.CreateUI();
         Init();
     }
 

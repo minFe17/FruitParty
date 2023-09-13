@@ -11,10 +11,13 @@ public class FruitManager : MonoBehaviour
 
     Board _board;
     MatchFinder _matchFinder;
+    ScoreManager _scoreManager;
     Fruit _currentFruit;
 
     int _width;
     int _height;
+    int _baseFruitValue = 20;
+    int _streakValue = 1;
 
     public Fruit[,] AllFruits { get => _allFruits; }
     public Fruit CurrentFruit { get => _currentFruit; set => _currentFruit = value; }
@@ -30,8 +33,9 @@ public class FruitManager : MonoBehaviour
         _allFruits = new Fruit[x, y];
 
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
+        _scoreManager = GenericSingleton<ScoreManager>.Instance;
     }
-    
+
     void AddFruit()
     {
         for (int i = 0; i < (int)EFruitType.Max; i++)
@@ -81,6 +85,13 @@ public class FruitManager : MonoBehaviour
     {
         if (_allFruits[column, row].IsMatch)
         {
+            if (_board.IceTiles[column, row] != null)
+            {
+                _board.IceTiles[column, row].TakeDamage();
+                _streakValue--;
+            }
+            _scoreManager.AddScore(_baseFruitValue * _streakValue);
+
             if (_matchFinder.MatchFruits.Count >= 4)
             {
                 Destroy(_allFruits[column, row].gameObject);
@@ -98,8 +109,6 @@ public class FruitManager : MonoBehaviour
                 _allFruits[column, row] = null;
             }
 
-            if (_board.IceTiles[column, row] != null)
-                _board.IceTiles[column, row].TakeDamage();
         }
     }
 
@@ -265,7 +274,7 @@ public class FruitManager : MonoBehaviour
         {
             for (int j = 0; j <= _height; j++)
             {
-                if (!_board.BlankSpaces[i, j])
+                if (_board.BlankSpaces[i, j] == false)
                 {
                     int fruitIndex = Random.Range(0, newFruit.Count);
 
@@ -445,6 +454,7 @@ public class FruitManager : MonoBehaviour
 
         while (MatchOnboard())
         {
+            _streakValue++;
             yield return new WaitForSeconds(0.5f);
             CheckMatchFruit();
         }
@@ -455,6 +465,7 @@ public class FruitManager : MonoBehaviour
         if (IsDeadlocked())
             ShuffleFruit();
         GenericSingleton<GameManager>.Instance.GameState = EGameStateType.Move;
+        _streakValue = 1;
     }
 }
 
