@@ -11,6 +11,6 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int addScore)
     {
         _score += addScore;
-        GenericSingleton<UIManager>.Instance.UI.ShowScoreText();
+        GenericSingleton<UIManager>.Instance.UI.ShowScore();
     }
 }

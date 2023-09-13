@@ -105,8 +105,11 @@ public class MatchFinder : MonoBehaviour
             {
                 if (i >= 0 && i < _fruitManager.Width && j >= 0 && j < _fruitManager.Height)
                 {
-                    fruits.Add(_fruitManager.AllFruits[i, j]);
-                    _fruitManager.AllFruits[i, j].IsMatch = true;
+                    if (_fruitManager.AllFruits[i,j] != null)
+                    {
+                        fruits.Add(_fruitManager.AllFruits[i, j]);
+                        _fruitManager.AllFruits[i, j].IsMatch = true;
+                    }
                 }
             }
         }

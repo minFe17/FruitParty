@@ -11,7 +11,10 @@ public class UI : MonoBehaviour
     [Header("ScoreUI")]
     [SerializeField] Text _scoreText;
 
-    public void ShowScoreText()
+    [Header("EventImage")]
+    [SerializeField] Image _shuffleImage;
+
+    public void ShowScore()
     {
         int score = GenericSingleton<ScoreManager>.Instance.Score;
         _scoreText.text = score.ToString();

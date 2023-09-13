@@ -12,12 +12,14 @@ public class FruitManager : MonoBehaviour
     Board _board;
     MatchFinder _matchFinder;
     ScoreManager _scoreManager;
+    GameManager _gameManager;
     Fruit _currentFruit;
 
     int _width;
     int _height;
     int _baseFruitValue = 20;
     int _streakValue = 1;
+    float _refillDealy = 0.5f;
 
     public Fruit[,] AllFruits { get => _allFruits; }
     public Fruit CurrentFruit { get => _currentFruit; set => _currentFruit = value; }
@@ -34,6 +36,7 @@ public class FruitManager : MonoBehaviour
 
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
+        _gameManager = GenericSingleton<GameManager>.Instance;
     }
 
     void AddFruit()
@@ -209,6 +212,15 @@ public class FruitManager : MonoBehaviour
                 {
                     Vector2 position = new Vector2(i, j + Offset);
                     int fruitNumber = Random.Range(0, _fruits.Count);
+                    int iterations = 0;
+
+                    while (MatchAt(i, j, _fruits[fruitNumber]) && iterations < 100)
+                    {
+                        iterations++;
+                        fruitNumber = Random.Range(0, _fruits.Count);
+                    }
+
+                    iterations = 0;
                     GameObject fruit = Instantiate(_fruits[fruitNumber], position, Quaternion.identity);
                     _allFruits[i, j] = fruit.GetComponent<Fruit>();
                     fruit.GetComponent<Fruit>().Column = i;
@@ -256,45 +268,6 @@ public class FruitManager : MonoBehaviour
             }
         }
         return true;
-    }
-
-    void ShuffleFruit()
-    {
-        List<Fruit> newFruit = new List<Fruit>();
-        for (int i = 0; i < _width; i++)
-        {
-            for (int j = 0; j < _height; j++)
-            {
-                if (_allFruits[i, j] != null)
-                    newFruit.Add(_allFruits[i, j]);
-            }
-        }
-
-        for (int i = 0; i <= _width; i++)
-        {
-            for (int j = 0; j <= _height; j++)
-            {
-                if (_board.BlankSpaces[i, j] == false)
-                {
-                    int fruitIndex = Random.Range(0, newFruit.Count);
-
-                    int iterations = 0;
-                    while (MatchAt(i, j, newFruit[fruitIndex].gameObject) && iterations <= 100)
-                    {
-                        fruitIndex = Random.Range(0, _fruits.Count);
-                        iterations++;
-                    }
-
-                    Fruit fruit = newFruit[fruitIndex];
-                    fruit.Column = i;
-                    fruit.Row = j;
-                    _allFruits[i, j] = newFruit[fruitIndex];
-                    newFruit.Remove(newFruit[fruitIndex]);
-                }
-            }
-        }
-        if (IsDeadlocked())
-            ShuffleFruit();
     }
 
     void SwitchFruit(int column, int row, Vector2 direction)
@@ -443,29 +416,77 @@ public class FruitManager : MonoBehaviour
                 }
             }
         }
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(_refillDealy * 0.5f);
         StartCoroutine(FillFruitRoutine());
     }
 
     IEnumerator FillFruitRoutine()
     {
         RefillFruit();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_refillDealy);
 
         while (MatchOnboard())
         {
             _streakValue++;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(_refillDealy * 2);
             CheckMatchFruit();
         }
         _matchFinder.MatchFruits.Clear();
         _currentFruit = null;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_refillDealy);
 
         if (IsDeadlocked())
-            ShuffleFruit();
-        GenericSingleton<GameManager>.Instance.GameState = EGameStateType.Move;
+            StartCoroutine(ShuffleFruit());
+        _gameManager.GameState = EGameStateType.Move;
         _streakValue = 1;
+    }
+
+    IEnumerator ShuffleFruit()
+    {
+        yield return new WaitForSeconds(0.5f);
+        //이미지 보이기
+        _gameManager.GameState = EGameStateType.Wait;
+
+        List<Fruit> newFruit = new List<Fruit>();
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_allFruits[i, j] != null)
+                    newFruit.Add(_allFruits[i, j]);
+            }
+        }
+
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_board.BlankSpaces[i, j] == false)
+                {
+                    int fruitIndex = Random.Range(0, newFruit.Count);
+
+                    int iterations = 0;
+                    while (MatchAt(i, j, newFruit[fruitIndex].gameObject) && iterations <= 100)
+                    {
+                        fruitIndex = Random.Range(0, _fruits.Count);
+                        iterations++;
+                    }
+
+                    Fruit fruit = newFruit[fruitIndex];
+                    fruit.Column = i;
+                    fruit.Row = j;
+                    _allFruits[i, j] = newFruit[fruitIndex];
+                    newFruit.Remove(newFruit[fruitIndex]);
+                }
+            }
+        }
+        if (IsDeadlocked())
+            ShuffleFruit();
+        else
+        {
+            _gameManager.GameState = EGameStateType.Move;
+            //이미지 숨기기
+        }
     }
 }
 
