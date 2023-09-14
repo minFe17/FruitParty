@@ -12,6 +12,7 @@ public class UI : MonoBehaviour
     [SerializeField] Text _scoreText;
 
     [Header("EventImage")]
+    [SerializeField] GameObject _eventPanel;
     [SerializeField] Image _shuffleImage;
 
     public void ShowScore()
