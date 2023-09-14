@@ -96,26 +96,6 @@ public class MatchFinder : MonoBehaviour
         }
     }
 
-    public List<Fruit> GetSquareFruits(int column, int row)
-    {
-        List<Fruit> fruits = new List<Fruit>();
-        for (int i = column - 1; i <= column + 1; i++)
-        {
-            for (int j = row - 1; j <= row + 1; j++)
-            {
-                if (i >= 0 && i < _fruitManager.Width && j >= 0 && j < _fruitManager.Height)
-                {
-                    if (_fruitManager.AllFruits[i,j] != null)
-                    {
-                        fruits.Add(_fruitManager.AllFruits[i, j]);
-                        _fruitManager.AllFruits[i, j].IsMatch = true;
-                    }
-                }
-            }
-        }
-        return fruits;
-    }
-
     public List<Fruit> GetColumnFruits(int column)
     {
         List<Fruit> fruits = new List<Fruit>();
@@ -123,8 +103,12 @@ public class MatchFinder : MonoBehaviour
         {
             if (_fruitManager.AllFruits[column, i] != null)
             {
-                fruits.Add(_fruitManager.AllFruits[column, i]);
-                _fruitManager.AllFruits[column, i].IsMatch = true;
+                Fruit fruit = _fruitManager.AllFruits[column, i];
+                if (fruit.IsBomb && fruit.BombType == EBombType.LineBomb)
+                    _lineBombDirection = ELineBombDirectionType.Row;
+
+                fruits.Add(fruit);
+                fruit.IsMatch = true;
             }
         }
         return fruits;
@@ -137,8 +121,33 @@ public class MatchFinder : MonoBehaviour
         {
             if (_fruitManager.AllFruits[i, row] != null)
             {
-                fruits.Add(_fruitManager.AllFruits[i, row]);
-                _fruitManager.AllFruits[i, row].IsMatch = true;
+                Fruit fruit = _fruitManager.AllFruits[i, row];
+                if (fruit.IsBomb && fruit.BombType == EBombType.LineBomb)
+                    _lineBombDirection = ELineBombDirectionType.Column;
+
+                fruits.Add(fruit);
+                fruit.IsMatch = true;
+            }
+        }
+        return fruits;
+    }
+
+    public List<Fruit> GetSquareFruits(int column, int row)
+    {
+        List<Fruit> fruits = new List<Fruit>();
+        for (int i = column - 1; i <= column + 1; i++)
+        {
+            for (int j = row - 1; j <= row + 1; j++)
+            {
+                if (i >= 0 && i < _fruitManager.Width && j >= 0 && j < _fruitManager.Height)
+                {
+                    if (_fruitManager.AllFruits[i, j] != null)
+                    {
+                        Fruit fruit = _fruitManager.AllFruits[i, j];
+                        fruits.Add(fruit);
+                        fruit.IsMatch = true;
+                    }
+                }
             }
         }
         return fruits;

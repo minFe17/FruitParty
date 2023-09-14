@@ -19,7 +19,7 @@ public class FruitManager : MonoBehaviour
     int _height;
     int _baseFruitValue = 20;
     int _streakValue = 1;
-    float _refillDealy = 0.5f;
+    float _refillDelay = 0.5f;
 
     public Fruit[,] AllFruits { get => _allFruits; }
     public Fruit CurrentFruit { get => _currentFruit; set => _currentFruit = value; }
@@ -416,24 +416,24 @@ public class FruitManager : MonoBehaviour
                 }
             }
         }
-        yield return new WaitForSeconds(_refillDealy * 0.5f);
+        yield return new WaitForSeconds(_refillDelay * 0.5f);
         StartCoroutine(FillFruitRoutine());
     }
 
     IEnumerator FillFruitRoutine()
     {
         RefillFruit();
-        yield return new WaitForSeconds(_refillDealy);
+        yield return new WaitForSeconds(_refillDelay);
 
         while (MatchOnboard())
         {
             _streakValue++;
-            yield return new WaitForSeconds(_refillDealy * 2);
+            yield return new WaitForSeconds(_refillDelay * 2);
             CheckMatchFruit();
         }
         _matchFinder.MatchFruits.Clear();
         _currentFruit = null;
-        yield return new WaitForSeconds(_refillDealy);
+        yield return new WaitForSeconds(_refillDelay);
 
         if (IsDeadlocked())
             StartCoroutine(ShuffleFruit());
