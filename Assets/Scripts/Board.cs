@@ -4,6 +4,7 @@ using Utils;
 
 public class Board : MonoBehaviour
 {
+    [Header("Board Size")]
     [SerializeField] int _width;
     [SerializeField] int _height;
     [SerializeField] int _offset;
@@ -13,33 +14,27 @@ public class Board : MonoBehaviour
     bool[,] _blankSpaces;
     IceTile[,] _iceTiles;
 
+    AudioClip _bgmAudio;
     GameObject _cameraPrefab;
     GameObject _backgroundPrefab;
+
+    [Header("Tile Prefabs")]
     GameObject _tilePrefab;
     GameObject _iceTilePrefab;
+
     FruitManager _fruitManager;
 
     public bool[,] BlankSpaces { get => _blankSpaces; }
-    public IceTile[,] IceTiles { get => _iceTiles; } 
+    public IceTile[,] IceTiles { get => _iceTiles; }
 
     void Start()
     {
-        _allTiles = new GameObject[_width, _height];
-        _blankSpaces = new bool[_width, _height];
-        _iceTiles = new IceTile[_width, _height];
-        _cameraPrefab = Resources.Load("Prefabs/Main Camera") as GameObject;
-        _backgroundPrefab = Resources.Load("Prefabs/Background") as GameObject;
-        _tilePrefab = Resources.Load("Prefabs/Tile/Tile") as GameObject;
-        _iceTilePrefab = Resources.Load("Prefabs/Tile/IceTile") as GameObject;
-        _fruitManager = GenericSingleton<FruitManager>.Instance;
-        _fruitManager.Init(_width, _height, this);
-        _fruitManager.Offset = _offset;
-        CreateCamera();
-        GenericSingleton<UIManager>.Instance.CreateUI();
         Init();
+        CreateCamera();
+        CreateBoard();
     }
 
-    void Init()
+    void CreateBoard()
     {
         for (int i = 0; i < _width; i++)
         {
@@ -52,6 +47,32 @@ public class Board : MonoBehaviour
         }
         GenericSingleton<GameManager>.Instance.GameState = EGameStateType.Move;
         GenericSingleton<HintManager>.Instance.Init();
+    }
+
+    void Init()
+    {
+        InitTileArray();
+        LoadResource();
+
+        _fruitManager = GenericSingleton<FruitManager>.Instance;
+        _fruitManager.Init(_width, _height, this);
+        _fruitManager.Offset = _offset;
+    }
+
+    void InitTileArray()
+    {
+        _allTiles = new GameObject[_width, _height];
+        _blankSpaces = new bool[_width, _height];
+        _iceTiles = new IceTile[_width, _height];
+    }
+
+    void LoadResource()
+    {
+        _bgmAudio = Resources.Load("Prefabs/AudioClip/BGM") as AudioClip;
+        _cameraPrefab = Resources.Load("Prefabs/Main Camera") as GameObject;
+        _backgroundPrefab = Resources.Load("Prefabs/Background") as GameObject;
+        _tilePrefab = Resources.Load("Prefabs/Tile/Tile") as GameObject;
+        _iceTilePrefab = Resources.Load("Prefabs/Tile/IceTile") as GameObject;
     }
 
     Transform CreateTile(int width, int height)
@@ -104,11 +125,20 @@ public class Board : MonoBehaviour
         GameObject mainCamera = Instantiate(_cameraPrefab);
         mainCamera.GetComponent<CameraScalar>().SettingCameraPosition(_width, _height);
         CreateBackground(mainCamera.GetComponent<Camera>());
+        StartBGM();
     }
 
     void CreateBackground(Camera mainCamera)
     {
         GameObject background = Instantiate(_backgroundPrefab);
         background.GetComponent<Canvas>().worldCamera = mainCamera;
+        GenericSingleton<UIManager>.Instance.CreateUI();
+    }
+
+    void StartBGM()
+    {
+        SoundManager soundManager = GenericSingleton<SoundManager>.Instance;
+        soundManager.Init();
+        soundManager.StartBGM(_bgmAudio);
     }
 }

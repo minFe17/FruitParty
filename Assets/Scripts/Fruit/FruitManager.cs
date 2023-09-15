@@ -8,11 +8,13 @@ public class FruitManager : MonoBehaviour
     // ╫л╠шео
     Fruit[,] _allFruits;
     List<GameObject> _fruits = new List<GameObject>();
+    List<AudioClip> _matchAudios = new List<AudioClip>();
 
     Board _board;
     MatchFinder _matchFinder;
     ScoreManager _scoreManager;
     GameManager _gameManager;
+    SoundManager _soundManager;
     Fruit _currentFruit;
 
     int _width;
@@ -37,12 +39,21 @@ public class FruitManager : MonoBehaviour
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
+        _soundManager = GenericSingleton<SoundManager>.Instance;
+
+        AddMatchAudio();
     }
 
     void AddFruit()
     {
         for (int i = 0; i < (int)EFruitType.Max; i++)
             _fruits.Add(Resources.Load($"Prefabs/Fruits/{(EFruitType)i}") as GameObject);
+    }
+
+    void AddMatchAudio()
+    {
+        _matchAudios.Add(Resources.Load("Prefabs/AudioClip/FruitMatch/FruitMatch1") as AudioClip);
+        _matchAudios.Add(Resources.Load("Prefabs/AudioClip/FruitMatch/FruitMatch2") as AudioClip);
     }
 
     bool MatchAt(int column, int row, GameObject fruit)
@@ -88,12 +99,15 @@ public class FruitManager : MonoBehaviour
     {
         if (_allFruits[column, row].IsMatch)
         {
+            PlayMatchAudio();
+
             if (_board.IceTiles[column, row] != null)
             {
                 _board.IceTiles[column, row].TakeDamage();
                 _streakValue--;
             }
             _scoreManager.AddScore(_baseFruitValue * _streakValue);
+
 
             if (_matchFinder.MatchFruits.Count >= 4)
             {
@@ -111,7 +125,6 @@ public class FruitManager : MonoBehaviour
                 Destroy(_allFruits[column, row].gameObject);
                 _allFruits[column, row] = null;
             }
-
         }
     }
 
@@ -343,6 +356,12 @@ public class FruitManager : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    void PlayMatchAudio()
+    {
+        int randomAudio = Random.Range(0, _matchAudios.Count);
+        _soundManager.PlaySFX(_matchAudios[randomAudio]);
     }
 
     public void CreateFruit(Transform parent, Vector2 position)
