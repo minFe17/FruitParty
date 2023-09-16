@@ -100,14 +100,9 @@ public class FruitManager : MonoBehaviour
         if (_allFruits[column, row].IsMatch)
         {
             PlayMatchAudio();
-
-            if (_board.IceTiles[column, row] != null)
-            {
-                _board.IceTiles[column, row].TakeDamage();
-                _streakValue--;
-            }
+            CheckIceTiles(column, row);
+            
             _scoreManager.AddScore(_baseFruitValue * _streakValue);
-
 
             if (_matchFinder.MatchFruits.Count >= 4)
             {
@@ -125,6 +120,15 @@ public class FruitManager : MonoBehaviour
                 Destroy(_allFruits[column, row].gameObject);
                 _allFruits[column, row] = null;
             }
+        }
+    }
+
+    void CheckIceTiles(int column, int row)
+    {
+        if (_board.IceTiles[column, row] != null)
+        {
+            _board.IceTiles[column, row].TakeDamage();
+            _streakValue--;
         }
     }
 

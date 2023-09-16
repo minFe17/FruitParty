@@ -14,7 +14,6 @@ public class Board : MonoBehaviour
     bool[,] _blankSpaces;
     IceTile[,] _iceTiles;
 
-    AudioClip _bgmAudio;
     GameObject _cameraPrefab;
     GameObject _backgroundPrefab;
 
@@ -34,6 +33,17 @@ public class Board : MonoBehaviour
         CreateBoard();
     }
 
+    void Init()
+    {
+        SetTileArray();
+        LoadResource();
+
+        GenericSingleton<GameManager>.Instance.Init();
+        _fruitManager = GenericSingleton<FruitManager>.Instance;
+        _fruitManager.Init(_width, _height, this);
+        _fruitManager.Offset = _offset;
+    }
+
     void CreateBoard()
     {
         for (int i = 0; i < _width; i++)
@@ -45,21 +55,10 @@ public class Board : MonoBehaviour
                 _fruitManager.CreateFruit(tilePos, position);
             }
         }
-        GenericSingleton<GameManager>.Instance.GameState = EGameStateType.Move;
         GenericSingleton<HintManager>.Instance.Init();
     }
 
-    void Init()
-    {
-        InitTileArray();
-        LoadResource();
-
-        _fruitManager = GenericSingleton<FruitManager>.Instance;
-        _fruitManager.Init(_width, _height, this);
-        _fruitManager.Offset = _offset;
-    }
-
-    void InitTileArray()
+    void SetTileArray()
     {
         _allTiles = new GameObject[_width, _height];
         _blankSpaces = new bool[_width, _height];
@@ -68,7 +67,6 @@ public class Board : MonoBehaviour
 
     void LoadResource()
     {
-        _bgmAudio = Resources.Load("Prefabs/AudioClip/BGM") as AudioClip;
         _cameraPrefab = Resources.Load("Prefabs/Main Camera") as GameObject;
         _backgroundPrefab = Resources.Load("Prefabs/Background") as GameObject;
         _tilePrefab = Resources.Load("Prefabs/Tile/Tile") as GameObject;
@@ -125,7 +123,6 @@ public class Board : MonoBehaviour
         GameObject mainCamera = Instantiate(_cameraPrefab);
         mainCamera.GetComponent<CameraScalar>().SettingCameraPosition(_width, _height);
         CreateBackground(mainCamera.GetComponent<Camera>());
-        StartBGM();
     }
 
     void CreateBackground(Camera mainCamera)
@@ -133,12 +130,5 @@ public class Board : MonoBehaviour
         GameObject background = Instantiate(_backgroundPrefab);
         background.GetComponent<Canvas>().worldCamera = mainCamera;
         GenericSingleton<UIManager>.Instance.CreateUI();
-    }
-
-    void StartBGM()
-    {
-        SoundManager soundManager = GenericSingleton<SoundManager>.Instance;
-        soundManager.Init();
-        soundManager.StartBGM(_bgmAudio);
     }
 }

@@ -13,7 +13,13 @@ public class UI : MonoBehaviour
 
     [Header("EventImage")]
     [SerializeField] GameObject _eventPanel;
-    [SerializeField] Image _shuffleImage;
+
+    public void Init()
+    {
+        UIManager uiManager = GenericSingleton<UIManager>.Instance;
+        uiManager.UI = this;
+        uiManager.EventPanel = _eventPanel.GetComponent<EventPanel>();
+    }
 
     public void ShowScore()
     {
