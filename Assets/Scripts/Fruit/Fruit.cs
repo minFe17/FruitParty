@@ -120,9 +120,7 @@ public class Fruit : MonoBehaviour
             _fruitManager.CurrentFruit = this;
         }
         else
-        {
             _gameManager.GameState = EGameStateType.Move;
-        }
     }
 
     void RealMoveFruit(Vector2Int direction)

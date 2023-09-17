@@ -37,7 +37,7 @@ public class Board : MonoBehaviour
     {
         SetTileArray();
         LoadResource();
-
+        GenericSingleton<UIManager>.Instance.CreateUI();
         GenericSingleton<GameManager>.Instance.Init();
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _fruitManager.Init(_width, _height, this);
@@ -129,6 +129,5 @@ public class Board : MonoBehaviour
     {
         GameObject background = Instantiate(_backgroundPrefab);
         background.GetComponent<Canvas>().worldCamera = mainCamera;
-        GenericSingleton<UIManager>.Instance.CreateUI();
     }
 }

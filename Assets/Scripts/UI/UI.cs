@@ -26,4 +26,13 @@ public class UI : MonoBehaviour
         int score = GenericSingleton<ScoreManager>.Instance.Score;
         _scoreText.text = score.ToString();
     }
+
+    public void ShowRemainTime()
+    {
+        GameManager gameManager = GenericSingleton<GameManager>.Instance;
+        float currentTime = gameManager.CurrentTime;
+        float maxTime = gameManager.MaxTime;
+        _timeBar.fillAmount = currentTime / maxTime;
+        _timeText.text = (int)currentTime + "";
+    }
 }
