@@ -33,6 +33,6 @@ public class UI : MonoBehaviour
         float currentTime = gameManager.CurrentTime;
         float maxTime = gameManager.MaxTime;
         _timeBar.fillAmount = currentTime / maxTime;
-        _timeText.text = (int)currentTime + "";
+        _timeText.text = string.Format("{0:0.#}", currentTime);
     }
 }
