@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
 
     public void CreateUI()
     {
-        GameObject temp = Resources.Load("Prefabs/UI") as GameObject;
+        GameObject temp = Resources.Load("Prefabs/UI/UI") as GameObject;
         GameObject ui = Instantiate(temp, transform.position, Quaternion.identity);
         ui.GetComponent<UI>().Init();
     }
