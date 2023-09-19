@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     float _time;
     float _currentTime;
-    float _addTimeAmount;
+    float _addTimeAmount = 1f;
     float _maxTime = 100f;
     bool _isGameStart;
 
@@ -20,8 +20,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (_isGameStart == true)
-            CheckTime();
+        CheckTime();
     }
 
     public void Init()
@@ -36,30 +35,36 @@ public class GameManager : MonoBehaviour
 
     void CheckTime()
     {
-        _time += Time.deltaTime;
-        if (_time >= 1f)
-        {
-            _currentTime -= 1f;
-            _time = 0f;
-            _uiManager.UI.ShowRemainTime();
-        }
-        
-        if (_currentTime <= 0)
-            GameOver();
-    }
+        if (_gameState == EGameStateType.GameOver || _gameState == EGameStateType.Pause)
+            return;
 
-    void AddTime()
-    {
-        _currentTime += _addTimeAmount;
-        if (_currentTime >= _maxTime)
-            _currentTime = _maxTime;
-        _uiManager.UI.ShowRemainTime();
+        if (_isGameStart)
+        {
+            _time += Time.deltaTime;
+            if (_time >= 1f)
+            {
+                _currentTime -= 1f;
+                _time = 0f;
+                _uiManager.UI.ShowRemainTime();
+            }
+            if (_currentTime <= 0)
+                GameOver();
+        }
     }
 
     void GameOver()
     {
+        _gameState = EGameStateType.GameOver;
         // 게임오버 UI 띄우기
         // 게임오버 UI는 화면이 어두워지고 위에서 아래로 UI 내려오기
+    }
+
+    public void AddTime(int streak)
+    {
+        _currentTime = _currentTime + (_addTimeAmount * streak);
+        if (_currentTime >= _maxTime)
+            _currentTime = _maxTime;
+        _uiManager.UI.ShowRemainTime();
     }
 }
 
@@ -67,4 +72,6 @@ public enum EGameStateType
 {
     Move,
     Wait,
+    GameOver,
+    Pause,
 }

@@ -19,7 +19,7 @@ public class FruitManager : MonoBehaviour
 
     int _width;
     int _height;
-    int _baseFruitValue = 20;
+    int _baseFruitScore = 20;
     int _streakValue = 1;
     float _refillDelay = 0.5f;
 
@@ -102,8 +102,8 @@ public class FruitManager : MonoBehaviour
             PlayMatchAudio();
             CheckIceTiles(column, row);
             
-            _scoreManager.AddScore(_baseFruitValue * _streakValue);
-
+            _scoreManager.AddScore(_baseFruitScore * _streakValue);
+            _gameManager.AddTime(_streakValue);
             if (_matchFinder.MatchFruits.Count >= 4)
             {
                 Destroy(_allFruits[column, row].gameObject);
@@ -466,9 +466,9 @@ public class FruitManager : MonoBehaviour
 
     IEnumerator ShuffleFruit()
     {
-        yield return new WaitForSeconds(0.5f);
         //이미지 보이기
-        _gameManager.GameState = EGameStateType.Wait;
+        yield return new WaitForSeconds(0.5f / 2);
+        _gameManager.GameState = EGameStateType.Pause;
 
         List<Fruit> newFruit = new List<Fruit>();
         for (int i = 0; i < _width; i++)
@@ -507,8 +507,9 @@ public class FruitManager : MonoBehaviour
             ShuffleFruit();
         else
         {
-            _gameManager.GameState = EGameStateType.Move;
             //이미지 숨기기
+            yield return new WaitForSeconds(0.5f / 2);
+            _gameManager.GameState = EGameStateType.Move;
         }
     }
 }
