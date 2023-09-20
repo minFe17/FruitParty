@@ -5,8 +5,12 @@ using Utils;
 
 public class GameOverUI : MonoBehaviour
 {
+    [Header("Score")]
     [SerializeField] GameObject _scorePanel;
     [SerializeField] Text _scoreText;
+
+    [Header("NewHighScore")]
+    [SerializeField] GameObject _newHighScore;
 
     ScoreManager _scoreManager;
 

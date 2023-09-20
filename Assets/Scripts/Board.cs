@@ -17,7 +17,6 @@ public class Board : MonoBehaviour
     GameObject _cameraPrefab;
     GameObject _backgroundPrefab;
 
-    [Header("Tile Prefabs")]
     GameObject _tilePrefab;
     GameObject _iceTilePrefab;
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class IceTile : MonoBehaviour
 {
-    [SerializeField] List<GameObject> _iceBreakIndex;
+    [SerializeField] List<GameObject> _ice;
 
     Board _board;
     int _x;
@@ -18,10 +18,10 @@ public class IceTile : MonoBehaviour
 
     public void TakeDamage()
     {
-        _iceBreakIndex[0].SetActive(false);
-        _iceBreakIndex.RemoveAt(0);
+        _ice[0].SetActive(false);
+        _ice.RemoveAt(0);
 
-        if (_iceBreakIndex.Count == 0)
+        if (_ice.Count == 0)
         {
             _board.IceTiles[_x, _y] = null;
             Destroy(this.gameObject);

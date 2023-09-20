@@ -1,4 +1,4 @@
-public class Bomb : Fruit
+public abstract class Bomb : Fruit
 {
     void Start()
     {
@@ -12,10 +12,7 @@ public class Bomb : Fruit
             OnEffect();
     }
 
-    public virtual void OnEffect()
-    {
-
-    }
+    public abstract void OnEffect();
 }
 
 public enum EBombType

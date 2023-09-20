@@ -2,10 +2,13 @@ using UnityEngine;
 
 public class CameraScalar : MonoBehaviour
 {
-    [SerializeField] int _cameraOffset;
+    [Header("Camera Size")]
     [SerializeField] int _displayWidth;
     [SerializeField] int _displawyHeight;
     [SerializeField] float _padding;
+
+    [Header("Camera Position")]
+    [SerializeField] int _cameraOffset;
     [SerializeField] float _yOffset;
 
     float _aspectRatio;

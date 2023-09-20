@@ -362,7 +362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6613085478861438290
 RectTransform:
   m_ObjectHideFlags: 0
@@ -435,7 +435,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scorePanel: {fileID: 6628387324869507296}
-  _scoreText: {fileID: 0}
+  _scoreText: {fileID: 6318539728392005584}
+  _newHighScore: {fileID: 896282288433058086}
 --- !u!95 &7161044830231201949
 Animator:
   serializedVersion: 5
