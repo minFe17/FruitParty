@@ -55,8 +55,7 @@ public class GameManager : MonoBehaviour
     void GameOver()
     {
         _gameState = EGameStateType.GameOver;
-        // 게임오버 UI 띄우기
-        // 게임오버 UI는 화면이 어두워지고 위에서 아래로 UI 내려오기
+        _uiManager.GameOverUI.SetActive(true);
     }
 
     public void AddTime(int streak)

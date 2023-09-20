@@ -11,14 +11,18 @@ public class UI : MonoBehaviour
     [Header("ScoreUI")]
     [SerializeField] Text _scoreText;
 
-    [Header("EventImage")]
-    [SerializeField] GameObject _eventPanel;
+    [Header("EventUI")]
+    [SerializeField] EventPanel _eventUI;
+
+    [Header("GameOverUI")]
+    [SerializeField] GameObject _gameOverUI;
 
     public void Init()
     {
         UIManager uiManager = GenericSingleton<UIManager>.Instance;
         uiManager.UI = this;
-        uiManager.EventPanel = _eventPanel.GetComponent<EventPanel>();
+        uiManager.EventUI = _eventUI;
+        uiManager.GameOverUI = _gameOverUI;
     }
 
     public void ShowScore()

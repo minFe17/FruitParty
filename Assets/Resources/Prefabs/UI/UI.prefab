@@ -354,13 +354,15 @@ GameObject:
   - component: {fileID: 6613085478861438290}
   - component: {fileID: 40968008598178713}
   - component: {fileID: 2862428573001626839}
+  - component: {fileID: 5996969755964174869}
+  - component: {fileID: 7161044830231201949}
   m_Layer: 5
   m_Name: GameOverPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6613085478861438290
 RectTransform:
   m_ObjectHideFlags: 0
@@ -420,6 +422,41 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5996969755964174869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2884444329878022043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab239da2dec83924bad89b1c15c7b8d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scorePanel: {fileID: 6628387324869507296}
+  _scoreText: {fileID: 0}
+--- !u!95 &7161044830231201949
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2884444329878022043}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f1c92798b8e39e3459438326719cc032, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2899604545913951085
 GameObject:
   m_ObjectHideFlags: 0
@@ -621,7 +658,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1599470695573860553}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5996969755964174869}
+        m_TargetAssemblyTypeName: GameOverUI, Assembly-CSharp
+        m_MethodName: ToLobby
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5547036561722853686
 GameObject:
   m_ObjectHideFlags: 0
@@ -1083,7 +1132,8 @@ MonoBehaviour:
   _timeBar: {fileID: 5738032308678619132}
   _timeText: {fileID: 5738032309228227978}
   _scoreText: {fileID: 5738032308713088324}
-  _eventPanel: {fileID: 5547036561722853686}
+  _eventUI: {fileID: 2622780473657892424}
+  _gameOverUI: {fileID: 2884444329878022043}
 --- !u!1 &5738032309228228084
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,7 +1379,7 @@ GameObject:
   - component: {fileID: 9075622531790486205}
   - component: {fileID: 7117235776935699744}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ScorePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1354,11 +1404,11 @@ RectTransform:
   m_Father: {fileID: 6613085478861438290}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 300}
   m_SizeDelta: {x: 300, y: 150}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &9075622531790486205
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1518,4 +1568,16 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5147631421248621893}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5996969755964174869}
+        m_TargetAssemblyTypeName: GameOverUI, Assembly-CSharp
+        m_MethodName: Retry
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
