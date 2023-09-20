@@ -24,7 +24,7 @@ public class GameOverUI : MonoBehaviour
 
     void ShowScore()
     {
-        
+        _scoreText.text = string.Format("{0:D2}", _scoreManager.Score);
     }
 
     public void Retry()
