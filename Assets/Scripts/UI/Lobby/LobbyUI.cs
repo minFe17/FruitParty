@@ -3,11 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class LobbyUI : MonoBehaviour
 {
-    [SerializeField] GameObject _otherUI;
+    Animator _animator;
 
     void Start()
     {
-        _otherUI.SetActive(false);
+        _animator = GetComponent<Animator>();
+        ReadHighScore();
     }
 
     void ReadHighScore()
@@ -15,14 +16,18 @@ public class LobbyUI : MonoBehaviour
 
     }
 
-    public void ShowScoreAndPlayButton()
-    {
-        ReadHighScore();
-        _otherUI.SetActive(true);
-    }
-
     public void GameStart()
     {
         SceneManager.LoadScene("InGameScene");
+    }
+
+    public void OpenOption()
+    {
+        _animator.SetBool("isOpenOption", true);
+    }
+
+    public void CloseOption()
+    {
+        _animator.SetBool("isOpenOption", false);
     }
 }
