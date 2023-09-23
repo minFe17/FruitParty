@@ -14,8 +14,18 @@ public class UI : MonoBehaviour
     [Header("EventUI")]
     [SerializeField] EventPanel _eventUI;
 
+    [Header("GameStopUI")]
+    [SerializeField] GameObject _stopUI;
+
     [Header("GameOverUI")]
     [SerializeField] GameObject _gameOverUI;
+
+    Animator _animator;
+
+    void Start()
+    {
+        _animator = GetComponent<Animator>();
+    }
 
     public void Init()
     {
@@ -23,6 +33,22 @@ public class UI : MonoBehaviour
         uiManager.UI = this;
         uiManager.EventUI = _eventUI;
         uiManager.GameOverUI = _gameOverUI;
+    }
+
+    void GameStart()
+    {
+        StartBGM();
+        GameManager gameManager = GenericSingleton<GameManager>.Instance;
+        gameManager.GameState = EGameStateType.Move;
+        gameManager.IsGameStart = true;
+    }
+
+    void StartBGM()
+    {
+        SoundManager soundManager = GenericSingleton<SoundManager>.Instance;
+        AudioClip bgmAudio = Resources.Load("Prefabs/AudioClip/BGM") as AudioClip;
+        soundManager.Init();    // 로비에서 Init()이랑 csv 파일 체크
+        soundManager.StartBGM(bgmAudio);
     }
 
     public void ShowScore()
@@ -38,5 +64,16 @@ public class UI : MonoBehaviour
         float maxTime = gameManager.MaxTime;
         _timeBar.fillAmount = currentTime / maxTime;
         _timeText.text = string.Format("{0:0.#}", currentTime);
+    }
+
+    public void Stop()
+    {
+        _stopUI.SetActive(true);
+        _animator.SetBool("isStop", true);
+    }
+
+    public void Play()
+    {
+        _animator.SetBool("isStop", false);
     }
 }

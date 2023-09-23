@@ -911,15 +911,13 @@ GameObject:
   - component: {fileID: 8374295100761187393}
   - component: {fileID: 3751744238014982391}
   - component: {fileID: 914449358200304419}
-  - component: {fileID: 7969834181103318159}
-  - component: {fileID: 943282439493701581}
   m_Layer: 5
   m_Name: FadePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8374295100761187393
 RectTransform:
   m_ObjectHideFlags: 0
@@ -961,8 +959,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -978,39 +976,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!95 &7969834181103318159
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2867903369242101410}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 986f63bc576023044bdbfbda046c0ce9, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &943282439493701581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2867903369242101410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db6eb23770e251f43b14d33a51838b24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2884444329878022043
 GameObject:
   m_ObjectHideFlags: 0
@@ -1023,7 +988,6 @@ GameObject:
   - component: {fileID: 40968008598178713}
   - component: {fileID: 2862428573001626839}
   - component: {fileID: 5996969755964174869}
-  - component: {fileID: 7161044830231201949}
   m_Layer: 5
   m_Name: GameOverPanel
   m_TagString: Untagged
@@ -1105,27 +1069,6 @@ MonoBehaviour:
   _scorePanel: {fileID: 6628387324869507296}
   _scoreText: {fileID: 6318539728392005584}
   _newHighScore: {fileID: 896282288433058086}
---- !u!95 &7161044830231201949
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2884444329878022043}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f1c92798b8e39e3459438326719cc032, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2899604545913951085
 GameObject:
   m_ObjectHideFlags: 0
@@ -1881,6 +1824,7 @@ GameObject:
   - component: {fileID: 5738032309188441261}
   - component: {fileID: 5738032309188441262}
   - component: {fileID: 5738032309188441263}
+  - component: {fileID: 5744653646908616787}
   - component: {fileID: 7583571192948739145}
   m_Layer: 5
   m_Name: UI
@@ -1975,6 +1919,27 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!95 &5744653646908616787
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5738032309188441256}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e48e4766ddadd10418c9c4330afea99a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &7583571192948739145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1991,6 +1956,7 @@ MonoBehaviour:
   _timeText: {fileID: 5738032309228227978}
   _scoreText: {fileID: 5738032308713088324}
   _eventUI: {fileID: 2622780473657892424}
+  _stopUI: {fileID: 7226239153276063244}
   _gameOverUI: {fileID: 2884444329878022043}
 --- !u!1 &5738032309228228084
 GameObject:
@@ -2808,7 +2774,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1775637963333405397}
   - component: {fileID: 4959805845194922459}
-  - component: {fileID: 6633637323579160170}
   m_Layer: 5
   m_Name: StopPanel
   m_TagString: Untagged
@@ -2845,27 +2810,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7226239153276063244}
   m_CullTransparentMesh: 1
---- !u!95 &6633637323579160170
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7226239153276063244}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9a315e130a2193548a055b0c086804c4, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7418688905782121025
 GameObject:
   m_ObjectHideFlags: 0
@@ -2986,7 +2930,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 602527260750848884}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7583571192948739145}
+        m_TargetAssemblyTypeName: UI, Assembly-CSharp
+        m_MethodName: Stop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8220128207782542147
 GameObject:
   m_ObjectHideFlags: 0
