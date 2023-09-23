@@ -17,7 +17,6 @@ public class SoundManager : MonoBehaviour
         _index = 0;
         if (_soundController == null)
             CreateSoundController();
-        CheckCsvFile();
     }
 
     void CreateSoundController()
@@ -27,7 +26,7 @@ public class SoundManager : MonoBehaviour
         _soundController = soundController.GetComponent<SoundController>();
     }
 
-    void CheckCsvFile()
+    public void CheckCsvFile()
     {
         if(!GenericSingleton<SoundCsv>.Instance.ReadSound())
         {

@@ -1,33 +1,44 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utils;
 
 public class LobbyUI : MonoBehaviour
 {
     Animator _animator;
+    SoundManager _soundManager;
+    AudioClip _buttonAudio;
 
     void Start()
     {
         _animator = GetComponent<Animator>();
+        _soundManager = GenericSingleton<SoundManager>.Instance;
+        _buttonAudio = Resources.Load("Prefabs/AudioClip/Button") as AudioClip;
+        _soundManager.Init();
+        _soundManager.CheckCsvFile();
         ReadHighScore();
     }
 
     void ReadHighScore()
     {
-
+        // ScoreManager에 함수
+        // 파일 읽기
+        // 없으면 ---
     }
 
-    public void GameStart()
+    void MoveGameScene()
     {
         SceneManager.LoadScene("InGameScene");
     }
 
-    public void OpenOption()
+    public void GameStart()
     {
-        _animator.SetBool("isOpenOption", true);
+        _soundManager.PlaySFX(_buttonAudio);
+        Invoke("MoveGameScene", 0.1f);
     }
 
-    public void CloseOption()
+    public void OpenOption()
     {
-        _animator.SetBool("isOpenOption", false);
+        _soundManager.PlaySFX(_buttonAudio);
+        _animator.SetBool("isOpenOption", true);
     }
 }

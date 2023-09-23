@@ -899,7 +899,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8295077095137399637}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6096541498658474100}
+        m_TargetAssemblyTypeName: GameStopUI, Assembly-CSharp
+        m_MethodName: Resume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2867903369242101410
 GameObject:
   m_ObjectHideFlags: 0
@@ -2774,6 +2786,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1775637963333405397}
   - component: {fileID: 4959805845194922459}
+  - component: {fileID: 6096541498658474100}
   m_Layer: 5
   m_Name: StopPanel
   m_TagString: Untagged
@@ -2810,6 +2823,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7226239153276063244}
   m_CullTransparentMesh: 1
+--- !u!114 &6096541498658474100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7226239153276063244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88bd43da86cd2342a9964007a81cc6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 5744653646908616787}
 --- !u!1 &7418688905782121025
 GameObject:
   m_ObjectHideFlags: 0
@@ -3177,7 +3203,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3911516267547526971}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6096541498658474100}
+        m_TargetAssemblyTypeName: GameStopUI, Assembly-CSharp
+        m_MethodName: ToLobby
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8694959421402319613
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,11 +20,17 @@ public class UI : MonoBehaviour
     [Header("GameOverUI")]
     [SerializeField] GameObject _gameOverUI;
 
+    GameManager _gameManager;
+    SoundManager _soundManager;
     Animator _animator;
+    AudioClip _buttonAudio;
 
     void Start()
     {
+        _gameManager = GenericSingleton<GameManager>.Instance;
+        _soundManager = GenericSingleton<SoundManager>.Instance;
         _animator = GetComponent<Animator>();
+        _buttonAudio = Resources.Load("Prefabs/AudioClip/Button") as AudioClip;
     }
 
     public void Init()
@@ -47,7 +53,7 @@ public class UI : MonoBehaviour
     {
         SoundManager soundManager = GenericSingleton<SoundManager>.Instance;
         AudioClip bgmAudio = Resources.Load("Prefabs/AudioClip/BGM") as AudioClip;
-        soundManager.Init();    // 로비에서 Init()이랑 csv 파일 체크
+        soundManager.Init();
         soundManager.StartBGM(bgmAudio);
     }
 
@@ -68,12 +74,13 @@ public class UI : MonoBehaviour
 
     public void Stop()
     {
-        _stopUI.SetActive(true);
         _animator.SetBool("isStop", true);
+        _soundManager.PlaySFX(_buttonAudio);
+        _gameManager.GameState = EGameStateType.Pause;
     }
 
-    public void Play()
+    public void GameOver()
     {
-        _animator.SetBool("isStop", false);
+        _animator.SetBool("isGameOver", true);
     }
 }

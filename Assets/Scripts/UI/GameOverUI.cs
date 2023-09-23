@@ -13,17 +13,24 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] GameObject _newHighScore;
 
     ScoreManager _scoreManager;
+    SoundManager _soundManager;
+    AudioClip _buttonAudio;
+
+    string _sceneName;
 
     void Start()
     {
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
+        _soundManager = GenericSingleton<SoundManager>.Instance;
+        _buttonAudio = Resources.Load("Prefabs/AudioClip/Button") as AudioClip;
         ShowScore();
         CheckNewHighScore();
     }
 
     void CheckNewHighScore()
     {
-
+        // ScoreManager 속성
+        // 최고점수보다 높으면 신기록!! UI보여준 후 파일 쓰기
     }
 
     void ShowScore()
@@ -31,13 +38,22 @@ public class GameOverUI : MonoBehaviour
         _scoreText.text = string.Format("{0:D2}", _scoreManager.Score);
     }
 
+    void ChangeScene()
+    {
+        SceneManager.LoadScene(_sceneName);
+    }
+
     public void Retry()
     {
-        SceneManager.LoadScene("InGameScene");
+        _soundManager.PlaySFX(_buttonAudio);
+        _sceneName = "InGameScene";
+        Invoke("ChangeScene", 0.1f);
     }
 
     public void ToLobby()
     {
-        SceneManager.LoadScene("Lobby");
+        _soundManager.PlaySFX(_buttonAudio);
+        _sceneName = "Lobby";
+        Invoke("ChangeScene", 0.1f);
     }
 }
