@@ -54,4 +54,15 @@ public class SoundManager : MonoBehaviour
         if (_index == _soundController.SFX.Count)
             _index = 0;
     }
+
+    public void ChangeBGMVolumn()
+    {
+        _soundController.BGM.volume = _bgmSound;
+    }
+
+    public void ChangeSFXVolumn()
+    {
+        for (int i = 0; i < _soundController.SFX.Count; i++)
+            _soundController.SFX[i].volume = _sfxSound;
+    }
 }
