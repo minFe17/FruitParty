@@ -9,15 +9,12 @@ public class SoundOptionUI : MonoBehaviour
 
     SoundManager _soundManager;
 
-    void Awake()
+    void Start()
     {
         _soundManager = GenericSingleton<SoundManager>.Instance;
 
         _bgmSlider.value = _soundManager.BgmSound;
         _sfxSlider.value = _soundManager.SFXSound;
-
-        _soundManager.ChangeBGMVolumn();
-        _soundManager.ChangeSFXVolumn();
     }
 
     public void ContollerBGMSlider()

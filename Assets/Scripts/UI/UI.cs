@@ -22,15 +22,15 @@ public class UI : MonoBehaviour
 
     GameManager _gameManager;
     SoundManager _soundManager;
+    AudioClipManager _audioClipManager;
     Animator _animator;
-    AudioClip _buttonAudio;
 
     void Start()
     {
         _gameManager = GenericSingleton<GameManager>.Instance;
         _soundManager = GenericSingleton<SoundManager>.Instance;
+        _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
         _animator = GetComponent<Animator>();
-        _buttonAudio = Resources.Load("Prefabs/AudioClip/Button") as AudioClip;
     }
 
     public void Init()
@@ -38,7 +38,6 @@ public class UI : MonoBehaviour
         UIManager uiManager = GenericSingleton<UIManager>.Instance;
         uiManager.UI = this;
         uiManager.EventUI = _eventUI;
-        uiManager.GameOverUI = _gameOverUI;
     }
 
     void GameStart()
@@ -52,9 +51,8 @@ public class UI : MonoBehaviour
     void StartBGM()
     {
         SoundManager soundManager = GenericSingleton<SoundManager>.Instance;
-        AudioClip bgmAudio = Resources.Load("Prefabs/AudioClip/BGM") as AudioClip;
         soundManager.Init();
-        soundManager.StartBGM(bgmAudio);
+        soundManager.StartBGM(_audioClipManager.InGameBGM);
     }
 
     public void ShowScore()
@@ -75,12 +73,13 @@ public class UI : MonoBehaviour
     public void Stop()
     {
         _animator.SetBool("isStop", true);
-        _soundManager.PlaySFX(_buttonAudio);
+        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
         _gameManager.GameState = EGameStateType.Pause;
     }
 
     public void GameOver()
     {
-        _animator.SetBool("isGameOver", true);
+        _gameOverUI.SetActive(true);
+        _animator.SetTrigger("doGameOver");
     }
 }

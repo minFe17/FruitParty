@@ -3,20 +3,31 @@ using Utils;
 
 public class SoundManager : MonoBehaviour
 {
-    // ΩÃ±€≈Ê
+    // ΩÃ±€≈œ
+    CSVManager _csvManager;
     SoundController _soundController;
+
     int _index;
     float _bgmSound;
     float _sfxSound;
-    
+
     public float BgmSound { get { return _bgmSound; } set { _bgmSound = value; } }
     public float SFXSound { get { return _sfxSound; } set { _sfxSound = value; } }
+
+    void Start()
+    {
+        _csvManager = GenericSingleton<CSVManager>.Instance;
+        _csvManager.ReadSoundData();
+    }
 
     public void Init()
     {
         _index = 0;
         if (_soundController == null)
             CreateSoundController();
+
+        ChangeBGMVolumn();
+        ChangeSFXVolumn();
     }
 
     void CreateSoundController()
@@ -24,15 +35,6 @@ public class SoundManager : MonoBehaviour
         GameObject temp = Resources.Load("Prefabs/SoundController") as GameObject;
         GameObject soundController = Instantiate(temp);
         _soundController = soundController.GetComponent<SoundController>();
-    }
-
-    public void CheckCsvFile()
-    {
-        if(!GenericSingleton<SoundCsv>.Instance.ReadSound())
-        {
-            _bgmSound = 0.5f;
-            _sfxSound = 0.5f;
-        }
     }
 
     public void StartBGM(AudioClip audio)

@@ -7,7 +7,7 @@ using Utils;
 
 public class SoundCsv : MonoBehaviour
 {
-    // ΩÃ±€≈Ê
+    // ΩÃ±€≈œ
     string _soundDataFilePath;
     public string SoundDataFilePath
     {

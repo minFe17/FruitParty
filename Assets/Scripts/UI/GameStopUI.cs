@@ -8,13 +8,15 @@ public class GameStopUI : MonoBehaviour
 
     GameManager _gameManager;
     SoundManager _soundManager;
-    AudioClip _buttonAudio;
+    AudioClipManager _audioClipManager;
+    CSVManager _csvManager;
 
     void Start()
     {
         _gameManager = GenericSingleton<GameManager>.Instance;
         _soundManager = GenericSingleton<SoundManager>.Instance;
-        _buttonAudio = Resources.Load("Prefabs/AudioClip/Button") as AudioClip;
+        _csvManager = GenericSingleton<CSVManager>.Instance;
+        _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
     }
 
     void MoveLobbyScene()
@@ -24,16 +26,16 @@ public class GameStopUI : MonoBehaviour
 
     public void Resume()
     {
-        _soundManager.PlaySFX(_buttonAudio);
+        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
         _animator.SetBool("isStop", false);
         _gameManager.GameState = EGameStateType.Move;
-        //파일 쓰기
+        _csvManager.WriteSoundData();
     }
 
     public void ToLobby()
     {
-        _soundManager.PlaySFX(_buttonAudio);
-        // 파일 쓰기
+        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
+        _csvManager.WriteSoundData();
         Invoke("MoveLobbyScene", 0.1f);
     }
 }

@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
     void GameOver()
     {
         _gameState = EGameStateType.GameOver;
-        _uiManager.GameOverUI.SetActive(true);
+        _uiManager.UI.GameOver();
     }
 
     public void AddTime(int streak)

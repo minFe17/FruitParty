@@ -14,7 +14,7 @@ public class GameOverUI : MonoBehaviour
 
     ScoreManager _scoreManager;
     SoundManager _soundManager;
-    AudioClip _buttonAudio;
+    AudioClipManager _audioClipManager;
 
     string _sceneName;
 
@@ -22,15 +22,17 @@ public class GameOverUI : MonoBehaviour
     {
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
         _soundManager = GenericSingleton<SoundManager>.Instance;
-        _buttonAudio = Resources.Load("Prefabs/AudioClip/Button") as AudioClip;
+        _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
         ShowScore();
         CheckNewHighScore();
+        _soundManager.StopBGM();
+        _soundManager.PlaySFX(_audioClipManager.GameOverSFX);
     }
 
     void CheckNewHighScore()
     {
-        // ScoreManager 속성
-        // 최고점수보다 높으면 신기록!! UI보여준 후 파일 쓰기
+        if (_scoreManager.CheckHighScore())
+            _newHighScore.SetActive(true);
     }
 
     void ShowScore()
@@ -45,14 +47,14 @@ public class GameOverUI : MonoBehaviour
 
     public void Retry()
     {
-        _soundManager.PlaySFX(_buttonAudio);
+        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
         _sceneName = "InGameScene";
         Invoke("ChangeScene", 0.1f);
     }
 
     public void ToLobby()
     {
-        _soundManager.PlaySFX(_buttonAudio);
+        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
         _sceneName = "Lobby";
         Invoke("ChangeScene", 0.1f);
     }
