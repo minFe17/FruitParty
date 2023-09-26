@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils;
+using Random = UnityEngine.Random;
 
 public class FruitManager : MonoBehaviour
 {
@@ -94,25 +96,13 @@ public class FruitManager : MonoBehaviour
         {
             PlayMatchAudio();
             CheckIceTiles(column, row);
-            
+
             _scoreManager.AddScore(_baseFruitScore * _streakValue);
             _gameManager.AddTime(_streakValue);
-            if (_matchFinder.MatchFruits.Count >= 4)
-            {
-                Destroy(_allFruits[column, row].gameObject);
-                CheckMakeBomb();
-                if (_allFruits[column, row] != _currentFruit && _allFruits[column, row] != _currentFruit.OtherFruit)
-                {
-                    _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
-                    _allFruits[column, row] = null;
-                }
-            }
-            else
-            {
-                _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
-                Destroy(_allFruits[column, row].gameObject);
-                _allFruits[column, row] = null;
-            }
+
+            _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
+            Destroy(_allFruits[column, row].gameObject);
+            _allFruits[column, row] = null;
         }
     }
 
@@ -128,24 +118,22 @@ public class FruitManager : MonoBehaviour
     void CheckMakeBomb()
     {
         EBombType makeableBomb = MakeableBombType();
-        switch (makeableBomb)
-        {
-            case EBombType.LineBomb:
-                CheckMakeLineBomb();
-                break;
-            case EBombType.SquareBomb:
-                CheckMakeSquareBomb();
-                break;
-            case EBombType.FruitBomb:
-                CheckMakeFruitBomb();
-                break;
-        }
+        Action makeBomb = null;
+
+        if (makeableBomb == EBombType.LineBomb)
+            makeBomb += _currentFruit.MakeLineBomb;
+        else if (makeableBomb == EBombType.SquareBomb)
+            makeBomb += _currentFruit.MakeSquareBomb;
+        else if (makeableBomb == EBombType.FruitBomb)
+            makeBomb += _currentFruit.MakeFruitBomb;
+
+        MakeBomb(makeBomb);
     }
 
     EBombType MakeableBombType()
     {
         List<Fruit> matchFruits = _matchFinder.MatchFruits as List<Fruit>;
-        for(int i=0; i< matchFruits.Count; i++)
+        for (int i = 0; i < matchFruits.Count; i++)
         {
             Fruit fruit = matchFruits[i];
             int column = fruit.Column;
@@ -153,16 +141,16 @@ public class FruitManager : MonoBehaviour
             int columnMatch = 0;
             int rowMatch = 0;
 
-            for(int j = 0; j<matchFruits.Count; j++)
+            for (int j = 0; j < matchFruits.Count; j++)
             {
                 Fruit nextFruit = matchFruits[j];
                 if (nextFruit == fruit)
                     continue;
-                if(nextFruit.Column == column && nextFruit.FruitType == fruit.FruitType)
+                if (nextFruit.Column == column && nextFruit.FruitType == fruit.FruitType)
                     columnMatch++;
                 if (nextFruit.Row == row && nextFruit.FruitType == fruit.FruitType)
                     rowMatch++;
-                if(fruit.IsBomb || nextFruit.IsBomb)
+                if (fruit.IsBomb || nextFruit.IsBomb)
                 {
                     if (nextFruit.Column == column && nextFruit.ColorType == fruit.ColorType)
                         columnMatch++;
@@ -170,63 +158,27 @@ public class FruitManager : MonoBehaviour
                         rowMatch++;
                 }
             }
-            if(columnMatch == 4 || rowMatch == 4)
+            if (columnMatch == 4 || rowMatch == 4)
                 return EBombType.FruitBomb;
-            if (columnMatch == 2 && rowMatch == 2)
+            else if (columnMatch == 2 && rowMatch == 2)
                 return EBombType.SquareBomb;
-            if(columnMatch == 3 || rowMatch == 3)
+            else if (columnMatch == 3 || rowMatch == 3)
                 return EBombType.LineBomb;
         }
         return EBombType.None;
     }
 
-    void CheckMakeLineBomb()
+    void MakeBomb(Action makeBomb)
     {
         if (_currentFruit != null)
         {
             if (_currentFruit.IsMatch)
             {
-                _currentFruit.MakeLineBomb();
+                makeBomb();
             }
             else if (_currentFruit.OtherFruit != null && _currentFruit.OtherFruit.IsMatch)
             {
-                _currentFruit.OtherFruit.MakeLineBomb();
-            }
-        }
-    }
-
-    void CheckMakeSquareBomb()
-    {
-        if (_currentFruit != null)
-        {
-            if (_currentFruit.IsMatch)
-            {
-                _currentFruit.MakeSquareBomb();
-            }
-            else if (_currentFruit.OtherFruit != null && _currentFruit.OtherFruit.IsMatch)
-            {
-                _currentFruit.OtherFruit.MakeSquareBomb();
-            }
-        }
-    }
-
-    void CheckMakeFruitBomb()
-    {
-        if (_currentFruit != null)
-        {
-            if (_currentFruit.IsMatch)
-            {
-                if (!_currentFruit.IsBomb)
-                    _currentFruit.MakeFruitBomb();
-                else if (_currentFruit.BombType != EBombType.FruitBomb)
-                    _currentFruit.MakeFruitBomb();
-            }
-            else if (_currentFruit.OtherFruit != null && _currentFruit.OtherFruit.IsMatch)
-            {
-                if (!_currentFruit.OtherFruit.IsBomb)
-                    _currentFruit.MakeFruitBomb();
-                else if (_currentFruit.OtherFruit.BombType != EBombType.FruitBomb)
-                    _currentFruit.MakeFruitBomb();
+                makeBomb();
             }
         }
     }
@@ -261,6 +213,7 @@ public class FruitManager : MonoBehaviour
 
     bool MatchOnboard()
     {
+        _matchFinder.FindAllMatch();
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
@@ -404,6 +357,10 @@ public class FruitManager : MonoBehaviour
 
     public void CheckMatchFruit()
     {
+        if (_matchFinder.MatchFruits.Count >= 4)
+            CheckMakeBomb();
+        _matchFinder.MatchFruits.Clear();
+
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
@@ -412,7 +369,6 @@ public class FruitManager : MonoBehaviour
                     DestroyMatchFruit(i, j);
             }
         }
-        _matchFinder.MatchFruits.Clear();
         StartCoroutine(DecreaseRowRoutine());
     }
 
@@ -459,16 +415,16 @@ public class FruitManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_refillDelay);
         RefillFruit();
-
+        yield return new WaitForSeconds(_refillDelay);
         while (MatchOnboard())
         {
+            yield return new WaitForSeconds(_refillDelay);
             _streakValue++;
-            yield return new WaitForSeconds(_refillDelay * 2);
             CheckMatchFruit();
+            yield break;
         }
         _matchFinder.MatchFruits.Clear();
         _currentFruit = null;
-        yield return new WaitForSeconds(_refillDelay);
 
         if (IsDeadlocked())
             StartCoroutine(ShuffleFruit());

@@ -18,8 +18,8 @@ public class Fruit : MonoBehaviour
     GameManager _gameManager;
     GameObject _destroyEffect;
 
-    Vector2 _firstTouchPos;
-    Vector2 _finalTouchPos;
+    Vector2 _firstTouchPos = Vector2.zero;
+    Vector2 _finalTouchPos = Vector2.zero;
     Vector2 _position;
 
     protected int _column;
@@ -69,8 +69,10 @@ public class Fruit : MonoBehaviour
             _position = new Vector2(_targetX, transform.position.y);
             transform.position = Vector2.Lerp(transform.position, _position, _moveSpeed);
             if (_fruitManager.AllFruits[_column, _row] != this)
+            {
                 _fruitManager.AllFruits[_column, _row] = this;
-            _matchFinder.FindAllMatch();
+                _matchFinder.FindAllMatch();
+            }
         }
         else
         {
@@ -83,14 +85,15 @@ public class Fruit : MonoBehaviour
             _position = new Vector2(transform.position.x, _targetY);
             transform.position = Vector2.Lerp(transform.position, _position, _moveSpeed);
             if (_fruitManager.AllFruits[_column, _row] != this)
+            {
                 _fruitManager.AllFruits[_column, _row] = this;
-            _matchFinder.FindAllMatch();
+                _matchFinder.FindAllMatch();
+            }
         }
         else
         {
             _position = new Vector2(transform.position.x, _targetY);
             transform.position = _position;
-            _fruitManager.AllFruits[_column, _row] = this;
         }
     }
 
@@ -123,6 +126,20 @@ public class Fruit : MonoBehaviour
             _gameManager.GameState = EGameStateType.Move;
     }
 
+    void SeleteMoveFruit()
+    {
+        if (_swipeAngle > -45 && _swipeAngle <= 45 && _column < _fruitManager.Width)    //Right
+            RealMoveFruit(Vector2Int.right);
+        else if (_swipeAngle > 45 && _swipeAngle <= 135 && _row < _fruitManager.Height) //Up
+            RealMoveFruit(Vector2Int.up);
+        else if (_swipeAngle > 135 || _swipeAngle <= -135 && _column > 0)               //Left
+            RealMoveFruit(Vector2Int.left);
+        else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)                  //Down
+            RealMoveFruit(Vector2Int.down);
+        else
+            _gameManager.GameState = EGameStateType.Move;
+    }
+
     void RealMoveFruit(Vector2Int direction)
     {
         _otherFruit = _fruitManager.AllFruits[_column + direction.x, _row + direction.y];
@@ -136,20 +153,6 @@ public class Fruit : MonoBehaviour
             _row += direction.y;
             StartCoroutine(CheckMoveRoutine());
         }
-        else
-            _gameManager.GameState = EGameStateType.Move;
-    }
-
-    void SeleteMoveFruit()
-    {
-        if (_swipeAngle > -45 && _swipeAngle <= 45 && _column < _fruitManager.Width)    //Right
-            RealMoveFruit(Vector2Int.right);
-        else if (_swipeAngle > 45 && _swipeAngle <= 135 && _row < _fruitManager.Height) //Up
-            RealMoveFruit(Vector2Int.up);
-        else if (_swipeAngle > 135 || _swipeAngle <= -135 && _column > 0)               //Left
-            RealMoveFruit(Vector2Int.left);
-        else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)                  //Down
-            RealMoveFruit(Vector2Int.down);
         else
             _gameManager.GameState = EGameStateType.Move;
     }
@@ -198,7 +201,7 @@ public class Fruit : MonoBehaviour
         }
     }
 
-    public IEnumerator CheckMoveRoutine()
+    IEnumerator CheckMoveRoutine()
     {
         if (this.IsBomb && _bombType == EBombType.FruitBomb)
             _isMatch = true;

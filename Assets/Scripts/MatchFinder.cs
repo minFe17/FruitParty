@@ -176,8 +176,8 @@ public class MatchFinder : MonoBehaviour
     IEnumerator FindAllMatchRoutine()
     {
         Fruit[] fruits = new Fruit[3];
+        yield return null;
 
-        yield return new WaitForSeconds(0.2f);
         for (int i = 0; i < _fruitManager.Width; i++)
         {
             for (int j = 0; j < _fruitManager.Height; j++)
