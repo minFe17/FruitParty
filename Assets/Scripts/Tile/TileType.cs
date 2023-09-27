@@ -14,4 +14,5 @@ public enum ETileKindType
     Normal,
     Blank,
     Ice,
+    Lock,
 }

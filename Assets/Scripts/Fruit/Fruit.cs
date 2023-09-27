@@ -145,13 +145,18 @@ public class Fruit : MonoBehaviour
         _otherFruit = _fruitManager.AllFruits[_column + direction.x, _row + direction.y];
         _previousColumn = _column;
         _previousRow = _row;
-        if (_otherFruit != null)
+        if (_fruitManager.Board.LockTiles[_column, _row] == null && _fruitManager.Board.LockTiles[_column + direction.x, _row + direction.y] == null) //TileManager 스크립트 구현후 제거 예정 (_fruitManager.Board 대신 TileManager에 있는 LockTiles 속성 사용)
         {
-            _otherFruit.Column += -1 * direction.x;
-            _otherFruit.Row += -1 * direction.y;
-            _column += direction.x;
-            _row += direction.y;
-            StartCoroutine(CheckMoveRoutine());
+            if (_otherFruit != null)
+            {
+                _otherFruit.Column += -1 * direction.x;
+                _otherFruit.Row += -1 * direction.y;
+                _column += direction.x;
+                _row += direction.y;
+                StartCoroutine(CheckMoveRoutine());
+            }
+            else
+                _gameManager.GameState = EGameStateType.Move;
         }
         else
             _gameManager.GameState = EGameStateType.Move;

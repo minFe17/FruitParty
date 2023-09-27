@@ -31,6 +31,8 @@ public class FruitManager : MonoBehaviour
     public int Height { get => _height; }
     public int Offset { get; set; }
 
+    public Board Board { get => _board; } // TileManager 스크립트 구현 후 제거 예정
+
     public void Init(int x, int y, Board board)
     {
         _width = x;
@@ -95,7 +97,8 @@ public class FruitManager : MonoBehaviour
         if (_allFruits[column, row].IsMatch)
         {
             PlayMatchAudio();
-            CheckIceTiles(column, row);
+            CheckIceTile(column, row);
+            CheckLockTile(column,row);
 
             _scoreManager.AddScore(_baseFruitScore * _streakValue);
             _gameManager.AddTime(_streakValue);
@@ -106,11 +109,21 @@ public class FruitManager : MonoBehaviour
         }
     }
 
-    void CheckIceTiles(int column, int row)
+    void CheckIceTile(int column, int row)
     {
         if (_board.IceTiles[column, row] != null)
         {
             _board.IceTiles[column, row].TakeDamage();
+            _streakValue--;
+        }
+    }
+
+    void CheckLockTile(int column, int row)
+    {
+        if (_board.LockTiles[column, row] != null)
+        {
+            _board.LockTiles[column, row].DestroyTile();
+            _board.LockTiles[column, row] = null; // tileManager 구현 후 제거
             _streakValue--;
         }
     }

@@ -13,17 +13,20 @@ public class Board : MonoBehaviour
     GameObject[,] _allTiles;
     bool[,] _blankSpaces;
     IceTile[,] _iceTiles;
+    LockTile[,] _lockTiles;
 
     GameObject _cameraPrefab;
     GameObject _backgroundPrefab;
 
     GameObject _tilePrefab;
     GameObject _iceTilePrefab;
+    GameObject _lockTilePrefab;
 
     FruitManager _fruitManager;
 
     public bool[,] BlankSpaces { get => _blankSpaces; }
     public IceTile[,] IceTiles { get => _iceTiles; }
+    public LockTile[,] LockTiles { get => _lockTiles; }
 
     void Start()
     {
@@ -62,6 +65,7 @@ public class Board : MonoBehaviour
         _allTiles = new GameObject[_width, _height];
         _blankSpaces = new bool[_width, _height];
         _iceTiles = new IceTile[_width, _height];
+        _lockTiles = new LockTile[_width, _height];
     }
 
     void LoadResource()
@@ -70,6 +74,7 @@ public class Board : MonoBehaviour
         _backgroundPrefab = Resources.Load("Prefabs/Background") as GameObject;
         _tilePrefab = Resources.Load("Prefabs/Tile/Tile") as GameObject;
         _iceTilePrefab = Resources.Load("Prefabs/Tile/IceTile") as GameObject;
+        _lockTilePrefab = Resources.Load("Prefabs/Tile/LockTile") as GameObject;
     }
 
     Transform CreateTile(int width, int height)
@@ -88,16 +93,16 @@ public class Board : MonoBehaviour
         {
             if (_boardLayout[i].TileKindType == ETileKindType.Blank)
             {
-                GenerateBlankSpaces(_boardLayout[i]);
+                GenerateBlankTiles(_boardLayout[i]);
             }
             else if (_boardLayout[i].TileKindType == ETileKindType.Ice)
             {
-                GenerateIceSpaces(_boardLayout[i]);
+                GenerateIceTiles(_boardLayout[i]);
             }
         }
     }
 
-    void GenerateBlankSpaces(TileType tile)
+    void GenerateBlankTiles(TileType tile)
     {
         int x = tile.X;
         int y = tile.Y;
@@ -109,12 +114,19 @@ public class Board : MonoBehaviour
         }
     }
 
-    void GenerateIceSpaces(TileType tile)
+    void GenerateIceTiles(TileType tile)
     {
         Vector2 position = new Vector3(tile.X, tile.Y);
         GameObject iceTile = Instantiate(_iceTilePrefab, position, Quaternion.identity);
         _iceTiles[tile.X, tile.Y] = iceTile.GetComponent<IceTile>();
         iceTile.GetComponent<IceTile>().Init(this, tile.X, tile.Y);
+    }
+
+    void GenerateLockSpaces(TileType tile)
+    {
+        Vector2 position = new Vector3(tile.X, tile.Y);
+        GameObject lockTile = Instantiate(_lockTilePrefab, position, Quaternion.identity);
+        _lockTiles[tile.X, tile.Y] = lockTile.GetComponent<LockTile>();
     }
 
     void CreateCamera()
