@@ -96,7 +96,7 @@ public class FruitManager : MonoBehaviour
         {
             PlayMatchAudio();
             CheckIceTile(column, row);
-            CheckLockTile(column,row);
+            CheckLockTile(column, row);
 
             _scoreManager.AddScore(_baseFruitScore * _streakValue);
             _gameManager.AddTime(_streakValue);

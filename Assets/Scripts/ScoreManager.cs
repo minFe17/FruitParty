@@ -22,6 +22,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (_score > _highScore)
         {
+            _highScore = _score;
             _csvManager.WriteHighScoreData();
             return true;
         }

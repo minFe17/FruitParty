@@ -6,6 +6,7 @@ public class TileManager : MonoBehaviour
 {
     // ╫л╠шео
     List<TileType> _boardLayout = new List<TileType>();
+    GameObject _tiles;
 
     [Header("Tile Array")]
     GameObject[,] _allTiles;
@@ -25,6 +26,7 @@ public class TileManager : MonoBehaviour
     public void Init(int width, int height)
     {
         LoadTilePrefab();
+        _tiles = new GameObject("Tiles");
         _allTiles = new GameObject[width, height];
         _blankSpaces = new bool[width, height];
         _iceTiles = new IceTile[width, height];
@@ -83,7 +85,7 @@ public class TileManager : MonoBehaviour
     {
         Vector2 position = new Vector2(width, height);
         GameObject tile = Instantiate(_tilePrefab, position, Quaternion.identity);
-        tile.transform.parent = this.transform;
+        tile.transform.parent = _tiles.transform;
         tile.name = $"Tile ({width}, {height})";
         _allTiles[width, height] = tile;
         return tile.transform;
