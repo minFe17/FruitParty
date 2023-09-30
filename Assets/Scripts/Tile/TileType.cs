@@ -15,4 +15,5 @@ public enum ETileKindType
     Blank,
     Ice,
     Lock,
+    Max,
 }

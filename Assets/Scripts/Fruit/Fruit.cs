@@ -16,6 +16,7 @@ public class Fruit : MonoBehaviour
     BombManager _bombManager;
     HintManager _hintManager;
     GameManager _gameManager;
+    TileManager _tileManager;
     GameObject _destroyEffect;
 
     Vector2 _firstTouchPos = Vector2.zero;
@@ -51,6 +52,7 @@ public class Fruit : MonoBehaviour
         _bombManager = GenericSingleton<BombManager>.Instance;
         _hintManager = GenericSingleton<HintManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
+        _tileManager = GenericSingleton<TileManager>.Instance;
         _destroyEffect = Resources.Load("Prefabs/Effect/DestroyEffect") as GameObject;
     }
 
@@ -145,7 +147,7 @@ public class Fruit : MonoBehaviour
         _otherFruit = _fruitManager.AllFruits[_column + direction.x, _row + direction.y];
         _previousColumn = _column;
         _previousRow = _row;
-        if (_fruitManager.Board.LockTiles[_column, _row] == null && _fruitManager.Board.LockTiles[_column + direction.x, _row + direction.y] == null) //TileManager 스크립트 구현후 제거 예정 (_fruitManager.Board 대신 TileManager에 있는 LockTiles 속성 사용)
+        if (_tileManager.LockTiles[_column, _row] == null && _tileManager.LockTiles[_column + direction.x, _row + direction.y] == null)
         {
             if (_otherFruit != null)
             {

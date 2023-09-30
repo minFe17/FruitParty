@@ -11,10 +11,10 @@ public class FruitManager : MonoBehaviour
     Fruit[,] _allFruits;
     List<GameObject> _fruits = new List<GameObject>();
 
-    Board _board;
     MatchFinder _matchFinder;
     ScoreManager _scoreManager;
     GameManager _gameManager;
+    TileManager _tileManager;
     SoundManager _soundManager;
     AudioClipManager _audioClipManager;
     Fruit _currentFruit;
@@ -31,18 +31,16 @@ public class FruitManager : MonoBehaviour
     public int Height { get => _height; }
     public int Offset { get; set; }
 
-    public Board Board { get => _board; } // TileManager 스크립트 구현 후 제거 예정
-
-    public void Init(int x, int y, Board board)
+    public void Init(int x, int y)
     {
         _width = x;
         _height = y;
-        _board = board;
         _allFruits = new Fruit[x, y];
 
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
+        _tileManager = GenericSingleton<TileManager>.Instance;
         _soundManager = GenericSingleton<SoundManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
     }
@@ -111,19 +109,19 @@ public class FruitManager : MonoBehaviour
 
     void CheckIceTile(int column, int row)
     {
-        if (_board.IceTiles[column, row] != null)
+        if (_tileManager.IceTiles[column, row] != null)
         {
-            _board.IceTiles[column, row].TakeDamage();
+            _tileManager.IceTiles[column, row].TakeDamage();
             _streakValue--;
         }
     }
 
     void CheckLockTile(int column, int row)
     {
-        if (_board.LockTiles[column, row] != null)
+        if (_tileManager.LockTiles[column, row] != null)
         {
-            _board.LockTiles[column, row].DestroyTile();
-            _board.LockTiles[column, row] = null; // tileManager 구현 후 제거
+            _tileManager.LockTiles[column, row].DestroyTile();
+            _tileManager.LockTiles[column, row] = null;
             _streakValue--;
         }
     }
@@ -202,7 +200,7 @@ public class FruitManager : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                if (_allFruits[i, j] == null && !_board.BlankSpaces[i, j])
+                if (_allFruits[i, j] == null && !_tileManager.BlankSpaces[i, j])
                 {
                     Vector2 position = new Vector2(i, j + Offset);
                     int fruitNumber = Random.Range(0, _fruits.Count);
@@ -406,7 +404,7 @@ public class FruitManager : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                if (!_board.BlankSpaces[i, j] && _allFruits[i, j] == null)
+                if (!_tileManager.BlankSpaces[i, j] && _allFruits[i, j] == null)
                 {
                     for (int k = j + 1; k < _height; k++)
                     {
@@ -465,7 +463,7 @@ public class FruitManager : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                if (_board.BlankSpaces[i, j] == false)
+                if (_tileManager.BlankSpaces[i, j] == false)
                 {
                     int fruitIndex = Random.Range(0, newFruit.Count);
 

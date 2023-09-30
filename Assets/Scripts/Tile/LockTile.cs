@@ -1,10 +1,8 @@
-using UnityEngine;
-
-public class LockTile : MonoBehaviour
+public class LockTile : Tile
 {
     public void DestroyTile()
     {
-        //tileManager 구현 후 lockTiles 배열에서 제거
+        _tileManager.LockTiles[_x, _y] = null;
         Destroy(this.gameObject);
     }
 }
