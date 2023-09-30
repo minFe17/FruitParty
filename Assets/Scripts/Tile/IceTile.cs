@@ -11,9 +11,12 @@ public class IceTile : Tile
         _ice.RemoveAt(0);
 
         if (_ice.Count == 0)
-        {
-            _tileManager.IceTiles[_x, _y] = null;
-            Destroy(this.gameObject);
-        }
+            DestroyTile();
+    }
+
+    void DestroyTile()
+    {
+        _tileManager.IceTiles[_x, _y] = null;
+        Destroy(this.gameObject);
     }
 }

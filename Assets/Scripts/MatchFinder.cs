@@ -10,6 +10,7 @@ public class MatchFinder : MonoBehaviour
     List<Fruit> _matchFruits = new List<Fruit>();
     ELineBombDirectionType _lineBombDirection;
     FruitManager _fruitManager;
+    TileManager _tileManager;
     bool _useBomb;
 
     public List<Fruit> MatchFruits { get => _matchFruits; }
@@ -18,6 +19,7 @@ public class MatchFinder : MonoBehaviour
     void Start()
     {
         _fruitManager = GenericSingleton<FruitManager>.Instance;
+        _tileManager = GenericSingleton<TileManager>.Instance;
     }
 
     void FindFruitMatch(Fruit[] fruits, ELineBombDirectionType direction)

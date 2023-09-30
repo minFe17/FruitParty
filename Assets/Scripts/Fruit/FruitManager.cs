@@ -97,6 +97,7 @@ public class FruitManager : MonoBehaviour
             PlayMatchAudio();
             CheckIceTile(column, row);
             CheckLockTile(column, row);
+            HitConcrete(column, row);
 
             _scoreManager.AddScore(_baseFruitScore * _streakValue);
             _gameManager.AddTime(_streakValue);
@@ -121,8 +122,32 @@ public class FruitManager : MonoBehaviour
         if (_tileManager.LockTiles[column, row] != null)
         {
             _tileManager.LockTiles[column, row].DestroyTile();
-            _tileManager.LockTiles[column, row] = null;
             _streakValue--;
+        }
+    }
+
+    void HitConcrete(int column, int row)
+    {
+        if (column > 0)
+        {
+            if (_tileManager.ConcreteTiles[column - 1, row])
+                _tileManager.ConcreteTiles[column - 1, row].DestroyTile();
+        }
+        if (column < _width - 1)
+        {
+            if (_tileManager.ConcreteTiles[column + 1, row])
+                _tileManager.ConcreteTiles[column + 1, row].DestroyTile();
+        }
+
+        if (row > 0)
+        {
+            if (_tileManager.ConcreteTiles[column, row - 1])
+                _tileManager.ConcreteTiles[column, row - 1].DestroyTile();
+        }
+        if (row < _height - 1)
+        {
+            if (_tileManager.ConcreteTiles[column, row + 1])
+                _tileManager.ConcreteTiles[column, row + 1].DestroyTile();
         }
     }
 
@@ -200,7 +225,7 @@ public class FruitManager : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                if (_allFruits[i, j] == null && !_tileManager.BlankSpaces[i, j])
+                if (_allFruits[i, j] == null && !_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null)
                 {
                     Vector2 position = new Vector2(i, j + Offset);
                     int fruitNumber = Random.Range(0, _fruits.Count);
@@ -404,7 +429,7 @@ public class FruitManager : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                if (!_tileManager.BlankSpaces[i, j] && _allFruits[i, j] == null)
+                if (_allFruits[i, j] == null && !_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null)
                 {
                     for (int k = j + 1; k < _height; k++)
                     {
@@ -463,7 +488,7 @@ public class FruitManager : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                if (_tileManager.BlankSpaces[i, j] == false)
+                if (!_tileManager.BlankTiles[i, j])
                 {
                     int fruitIndex = Random.Range(0, newFruit.Count);
 
