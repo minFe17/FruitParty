@@ -74,12 +74,12 @@ public class HintManager : MonoBehaviour
                 {
                     if (i < _fruitManager.Width - 1)
                     {
-                        if (_fruitManager.SwitchAndCheck(i, j, Vector2.right))
+                        if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.right))
                             movableFruits.Add(_fruitManager.AllFruits[i, j]);
                     }
                     if (j < _fruitManager.Height - 1)
                     {
-                        if (_fruitManager.SwitchAndCheck(i, j, Vector2.up))
+                        if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.up))
                             movableFruits.Add(_fruitManager.AllFruits[i, j]);
                     }
                 }

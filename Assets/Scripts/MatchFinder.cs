@@ -155,6 +155,28 @@ public class MatchFinder : MonoBehaviour
         return fruits;
     }
 
+    public void HitConcreteColumnLineBomb(int column)
+    {
+        for (int i = 0; i < _fruitManager.Height; i++)
+        {
+            if (_tileManager.ConcreteTiles[column, i] != null)
+            {
+                _tileManager.ConcreteTiles[column, i].DestroyTile();
+            }
+        }
+    }
+
+    public void HitConcreteRowLineBomb(int row)
+    {
+        for (int i = 0; i < _fruitManager.Width; i++)
+        {
+            if (_tileManager.ConcreteTiles[i, row] != null)
+            {
+                _tileManager.ConcreteTiles[i, row].DestroyTile();
+            }
+        }
+    }
+
     public void BombCount(out List<Fruit> fruitsList, out List<Fruit> bombs, Fruit[] fruits)
     {
         bombs = new List<Fruit>();

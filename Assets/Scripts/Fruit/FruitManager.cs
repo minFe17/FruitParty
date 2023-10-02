@@ -97,7 +97,7 @@ public class FruitManager : MonoBehaviour
             PlayMatchAudio();
             CheckIceTile(column, row);
             CheckLockTile(column, row);
-            HitConcrete(column, row);
+            CheckConcreteTile(column, row);
 
             _scoreManager.AddScore(_baseFruitScore * _streakValue);
             _gameManager.AddTime(_streakValue);
@@ -126,7 +126,7 @@ public class FruitManager : MonoBehaviour
         }
     }
 
-    void HitConcrete(int column, int row)
+    void CheckConcreteTile(int column, int row)
     {
         if (column > 0)
         {
@@ -274,12 +274,12 @@ public class FruitManager : MonoBehaviour
                 {
                     if (i < _width - 1)
                     {
-                        if (SwitchAndCheck(i, j, Vector2.right))
+                        if (SwitchAndCheck(i, j, Vector2Int.right))
                             return false;
                     }
                     if (j < _height - 1)
                     {
-                        if (SwitchAndCheck(i, j, Vector2.up))
+                        if (SwitchAndCheck(i, j, Vector2Int.up))
                             return false;
                     }
                 }
@@ -288,11 +288,14 @@ public class FruitManager : MonoBehaviour
         return true;
     }
 
-    void SwitchFruit(int column, int row, Vector2 direction)
+    void SwitchFruit(int column, int row, Vector2Int direction)
     {
-        Fruit temp = _allFruits[column + (int)direction.x, row + (int)direction.y] as Fruit;
-        _allFruits[column + (int)direction.x, row + (int)direction.y] = _allFruits[column, row];
-        _allFruits[column, row] = temp;
+        if (_allFruits[column + direction.x, row + direction.y] != null)
+        {
+            Fruit temp = _allFruits[column + direction.x, row + direction.y] as Fruit;
+            _allFruits[column + (int)direction.x, row + (int)direction.y] = _allFruits[column, row];
+            _allFruits[column, row] = temp;
+        }
     }
 
     bool CheckForMatch()
@@ -408,7 +411,7 @@ public class FruitManager : MonoBehaviour
         StartCoroutine(DecreaseRowRoutine());
     }
 
-    public bool SwitchAndCheck(int column, int row, Vector2 direction)
+    public bool SwitchAndCheck(int column, int row, Vector2Int direction)
     {
         SwitchFruit(column, row, direction);
         if (CheckForMatch())
@@ -488,7 +491,7 @@ public class FruitManager : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                if (!_tileManager.BlankTiles[i, j])
+                if (!_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null)
                 {
                     int fruitIndex = Random.Range(0, newFruit.Count);
 

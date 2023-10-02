@@ -18,9 +18,15 @@ public class LineBomb : Bomb
                 _matchFinder.LineBombDirection = (ELineBombDirectionType)Random.Range(1, (int)ELineBombDirectionType.Max);
 
             if (_matchFinder.LineBombDirection == ELineBombDirectionType.Column)
+            {
                 _matchFinder.MatchFruits.Union(_matchFinder.GetColumnFruits(_column));
+                _matchFinder.HitConcreteColumnLineBomb(_column);
+            }
             else if (_matchFinder.LineBombDirection == ELineBombDirectionType.Row)
+            {
                 _matchFinder.MatchFruits.Union(_matchFinder.GetRowFruits(_row));
+                _matchFinder.HitConcreteRowLineBomb(_row);
+            }
 
             _matchFinder.LineBombDirection = ELineBombDirectionType.None;
 
