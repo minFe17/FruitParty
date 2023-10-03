@@ -10,10 +10,10 @@ public class Fruit : MonoBehaviour
 
     protected EBombType _bombType;
     protected MatchFinder _matchFinder;
+    protected BombManager _bombManager;
     protected Fruit _otherFruit;
 
     FruitManager _fruitManager;
-    BombManager _bombManager;
     HintManager _hintManager;
     GameManager _gameManager;
     TileManager _tileManager;
@@ -48,8 +48,8 @@ public class Fruit : MonoBehaviour
     protected virtual void Awake()
     {
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
-        _fruitManager = GenericSingleton<FruitManager>.Instance;
         _bombManager = GenericSingleton<BombManager>.Instance;
+        _fruitManager = GenericSingleton<FruitManager>.Instance;
         _hintManager = GenericSingleton<HintManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;

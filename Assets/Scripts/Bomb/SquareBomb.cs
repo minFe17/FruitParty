@@ -10,6 +10,7 @@ public class SquareBomb : Bomb
 
     public override void OnEffect()
     {
-        _matchFinder.MatchFruits.Union(_matchFinder.GetSquareFruits(_column, _row));
+        _matchFinder.MatchFruits.Union(_bombManager.GetSquareFruits(_column, _row));
+        _bombManager.HitConcreteSquareBomb(_column, _row);
     }
 }

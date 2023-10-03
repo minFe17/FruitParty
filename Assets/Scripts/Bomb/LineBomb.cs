@@ -12,26 +12,25 @@ public class LineBomb : Bomb
 
     public override void OnEffect()
     {
-        if(!_isUse)
+        ELineBombDirectionType lineDirection = _bombManager.LineBombDirection;
+        if (!_isUse)
         {
-            if (_matchFinder.LineBombDirection == ELineBombDirectionType.None || _matchFinder.LineBombDirection == ELineBombDirectionType.Max)
-                _matchFinder.LineBombDirection = (ELineBombDirectionType)Random.Range(1, (int)ELineBombDirectionType.Max);
+            if (lineDirection == ELineBombDirectionType.None || lineDirection == ELineBombDirectionType.Max)
+                lineDirection = (ELineBombDirectionType)Random.Range(1, (int)ELineBombDirectionType.Max);
 
-            if (_matchFinder.LineBombDirection == ELineBombDirectionType.Column)
+            if (lineDirection == ELineBombDirectionType.Column)
             {
-                _matchFinder.MatchFruits.Union(_matchFinder.GetColumnFruits(_column));
-                _matchFinder.HitConcreteColumnLineBomb(_column);
+                _matchFinder.MatchFruits.Union(_bombManager.GetColumnFruits(_column));
+                _bombManager.HitConcreteColumnLineBomb(_column);
             }
-            else if (_matchFinder.LineBombDirection == ELineBombDirectionType.Row)
+            else if (lineDirection == ELineBombDirectionType.Row)
             {
-                _matchFinder.MatchFruits.Union(_matchFinder.GetRowFruits(_row));
-                _matchFinder.HitConcreteRowLineBomb(_row);
+                _matchFinder.MatchFruits.Union(_bombManager.GetRowFruits(_row));
+                _bombManager.HitConcreteRowLineBomb(_row);
             }
 
-            _matchFinder.LineBombDirection = ELineBombDirectionType.None;
-
+            _bombManager.LineBombDirection = ELineBombDirectionType.None;
             _isUse = true;
         }
-        
     }
 }
