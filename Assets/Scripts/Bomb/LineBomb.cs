@@ -21,12 +21,12 @@ public class LineBomb : Bomb
             if (lineDirection == ELineBombDirectionType.Column)
             {
                 _matchFinder.MatchFruits.Union(_bombManager.GetColumnFruits(_column));
-                _bombManager.HitConcreteColumnLineBomb(_column);
+                _bombManager.HitTileColumnLineBomb(_column);
             }
             else if (lineDirection == ELineBombDirectionType.Row)
             {
                 _matchFinder.MatchFruits.Union(_bombManager.GetRowFruits(_row));
-                _bombManager.HitConcreteRowLineBomb(_row);
+                _bombManager.HitTileRowLineBomb(_row);
             }
 
             _bombManager.LineBombDirection = ELineBombDirectionType.None;

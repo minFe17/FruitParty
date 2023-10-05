@@ -95,9 +95,7 @@ public class FruitManager : MonoBehaviour
         if (_allFruits[column, row].IsMatch)
         {
             PlayMatchAudio();
-            CheckIceTile(column, row);
-            CheckLockTile(column, row);
-            CheckConcreteTile(column, row);
+            CheckTile(column, row);
 
             _scoreManager.AddScore(_baseFruitScore * _streakValue);
             _gameManager.AddTime(_streakValue);
@@ -108,46 +106,66 @@ public class FruitManager : MonoBehaviour
         }
     }
 
-    void CheckIceTile(int column, int row)
+    void CheckTile(int column, int row)
     {
-        if (_tileManager.IceTiles[column, row] != null)
-        {
-            _tileManager.IceTiles[column, row].TakeDamage();
-            _streakValue--;
-        }
+        CheckHaveFruitTile(column, row);
+        CheckHitTile(column, row);
     }
 
-    void CheckLockTile(int column, int row)
+    void CheckHaveFruitTile(int column, int row)
     {
         if (_tileManager.LockTiles[column, row] != null)
         {
             _tileManager.LockTiles[column, row].DestroyTile();
             _streakValue--;
+            return;
+        }
+        if (_tileManager.IceTiles[column, row] != null)
+        {
+            _tileManager.IceTiles[column, row].TakeDamage();
+            _streakValue--;
+            return;
+        }
+    }
+
+    void CheckHitTile(int column, int row)
+    {
+        if (column > 0)
+        {
+            CheckConcreteTile(column - 1, row);
+            CheckLavaTile(column - 1, row);
+
+        }
+        if (column < _width - 1)
+        {
+            CheckConcreteTile(column + 1, row);
+            CheckLavaTile(column + 1, row);
+        }
+
+        if (row > 0)
+        {
+            CheckConcreteTile(column, row - 1);
+            CheckLavaTile(column, row - 1);
+        }
+        if (row < _height - 1)
+        {
+            CheckConcreteTile(column, row + 1);
+            CheckLavaTile(column, row + 1);
         }
     }
 
     void CheckConcreteTile(int column, int row)
     {
-        if (column > 0)
-        {
-            if (_tileManager.ConcreteTiles[column - 1, row])
-                _tileManager.ConcreteTiles[column - 1, row].DestroyTile();
-        }
-        if (column < _width - 1)
-        {
-            if (_tileManager.ConcreteTiles[column + 1, row])
-                _tileManager.ConcreteTiles[column + 1, row].DestroyTile();
-        }
+        if (_tileManager.ConcreteTiles[column, row])
+            _tileManager.ConcreteTiles[column, row].DestroyTile();
+    }
 
-        if (row > 0)
+    void CheckLavaTile(int column, int row)
+    {
+        if (_tileManager.LavaTiles[column, row])
         {
-            if (_tileManager.ConcreteTiles[column, row - 1])
-                _tileManager.ConcreteTiles[column, row - 1].DestroyTile();
-        }
-        if (row < _height - 1)
-        {
-            if (_tileManager.ConcreteTiles[column, row + 1])
-                _tileManager.ConcreteTiles[column, row + 1].DestroyTile();
+            _tileManager.LavaTiles[column, row].DestroyTile();
+            _tileManager.CreateMoreLavaTile = true;
         }
     }
 
@@ -225,7 +243,7 @@ public class FruitManager : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                if (_allFruits[i, j] == null && !_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null)
+                if (_allFruits[i, j] == null && !_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null && _tileManager.LavaTiles[i, j] == null)
                 {
                     Vector2 position = new Vector2(i, j + Offset);
                     int fruitNumber = Random.Range(0, _fruits.Count);
@@ -432,7 +450,7 @@ public class FruitManager : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                if (_allFruits[i, j] == null && !_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null)
+                if (_allFruits[i, j] == null && !_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null && _tileManager.LavaTiles[i, j] == null)
                 {
                     for (int k = j + 1; k < _height; k++)
                     {
@@ -464,17 +482,22 @@ public class FruitManager : MonoBehaviour
         }
         _matchFinder.MatchFruits.Clear();
         _currentFruit = null;
+        _tileManager.CheckCreateMoreLavaTiles();
 
         if (IsDeadlocked())
             StartCoroutine(ShuffleFruit());
+        yield return new WaitForSeconds(_refillDelay);
+
+        System.GC.Collect();
         _gameManager.GameState = EGameStateType.Move;
+        _tileManager.CreateMoreLavaTile = true;
         _streakValue = 1;
     }
 
     IEnumerator ShuffleFruit()
     {
         //이미지 보이기
-        yield return new WaitForSeconds(0.5f / 2);
+        yield return new WaitForSeconds(0.5f);
         _gameManager.GameState = EGameStateType.Pause;
 
         List<Fruit> newFruit = new List<Fruit>();
@@ -487,11 +510,13 @@ public class FruitManager : MonoBehaviour
             }
         }
 
+        yield return new WaitForSeconds(0.5f);
+
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
             {
-                if (!_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null)
+                if (!_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null && _tileManager.LavaTiles[i, j] == null)
                 {
                     int fruitIndex = Random.Range(0, newFruit.Count);
 

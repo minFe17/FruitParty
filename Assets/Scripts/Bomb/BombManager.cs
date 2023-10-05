@@ -64,6 +64,21 @@ public class BombManager : MonoBehaviour
             _squareBombs.Add(Resources.Load($"Prefabs/Bomb/SquareBomb/{(EColorType)i}") as GameObject);
     }
 
+    void CheckConcreteTile(int column, int row)
+    {
+        if (_tileManager.ConcreteTiles[column, row])
+            _tileManager.ConcreteTiles[column, row].DestroyTile();
+    }
+
+    void CheckLavaTile(int column, int row)
+    {
+        if (_tileManager.LavaTiles[column, row])
+        {
+            _tileManager.LavaTiles[column, row].DestroyTile();
+            _tileManager.CreateMoreLavaTile = true;
+        }
+    }
+
     public List<Fruit> GetColumnFruits(int column)
     {
         List<Fruit> fruits = new List<Fruit>();
@@ -121,29 +136,25 @@ public class BombManager : MonoBehaviour
         return fruits;
     }
 
-    public void HitConcreteColumnLineBomb(int column)
+    public void HitTileColumnLineBomb(int column)
     {
         for (int i = 0; i < _fruitManager.Height; i++)
         {
-            if (_tileManager.ConcreteTiles[column, i] != null)
-            {
-                _tileManager.ConcreteTiles[column, i].DestroyTile();
-            }
+            CheckConcreteTile(column, i);
+            CheckLavaTile(column, i);
         }
     }
 
-    public void HitConcreteRowLineBomb(int row)
+    public void HitTileRowLineBomb(int row)
     {
         for (int i = 0; i < _fruitManager.Width; i++)
         {
-            if (_tileManager.ConcreteTiles[i, row] != null)
-            {
-                _tileManager.ConcreteTiles[i, row].DestroyTile();
-            }
+            CheckConcreteTile(i, row);
+            CheckLavaTile(i, row);
         }
     }
 
-    public void HitConcreteSquareBomb(int column, int row)
+    public void HitTileSquareBomb(int column, int row)
     {
         for (int i = column - 1; i <= column + 1; i++)
         {
@@ -151,10 +162,8 @@ public class BombManager : MonoBehaviour
             {
                 if (i >= 0 && i < _fruitManager.Width && j >= 0 && j < _fruitManager.Height)
                 {
-                    if (_tileManager.ConcreteTiles[i, j] != null)
-                    {
-                        _tileManager.ConcreteTiles[i, j].DestroyTile();
-                    }
+                    CheckConcreteTile(i, j);
+                    CheckLavaTile(i, j);
                 }
             }
         }

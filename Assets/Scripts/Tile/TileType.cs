@@ -16,5 +16,6 @@ public enum ETileKindType
     Ice,
     Lock,
     Concrete,
+    Lava,
     Max,
 }
