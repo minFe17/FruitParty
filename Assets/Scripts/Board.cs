@@ -30,6 +30,7 @@ public class Board : MonoBehaviour
         _fruitManager.Init(_width, _height);
         _fruitManager.Offset = _offset;
         _tileManager.Init(_width, _height);
+        GenericSingleton<EventManager>.Instance.Init();
     }
 
     void CreateBoard()

@@ -5,17 +5,31 @@ public class ScoreManager : MonoBehaviour
 {
     // ╫л╠шео
     CSVManager _csvManager;
+    EventManager _eventManager;
     int _score;
     int _highScore;
 
     public int Score { get => _score; }
     public int HighScore { get => _highScore; set => _highScore = value; }
 
-    public void AddScore(int addScore)
+    void ShowScore()
     {
         UIManager uiManager = GenericSingleton<UIManager>.Instance;
-        _score += addScore;
         uiManager.UI.ShowScore();
+    }
+
+    void CheckEvent()
+    {
+        if (_eventManager == null)
+            _eventManager = GenericSingleton<EventManager>.Instance;
+        _eventManager.OnEvent();
+    }
+
+    public void AddScore(int addScore)
+    {
+        _score += addScore;
+        ShowScore();
+        CheckEvent();
     }
 
     public bool CheckHighScore()

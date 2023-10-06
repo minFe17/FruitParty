@@ -15,6 +15,7 @@ public class FruitManager : MonoBehaviour
     ScoreManager _scoreManager;
     GameManager _gameManager;
     TileManager _tileManager;
+    EventManager _eventManager;
     SoundManager _soundManager;
     AudioClipManager _audioClipManager;
     Fruit _currentFruit;
@@ -41,6 +42,7 @@ public class FruitManager : MonoBehaviour
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;
+        _eventManager = GenericSingleton<EventManager>.Instance;
         _soundManager = GenericSingleton<SoundManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
     }
@@ -49,45 +51,6 @@ public class FruitManager : MonoBehaviour
     {
         for (int i = 0; i < (int)EFruitType.Max; i++)
             _fruits.Add(Resources.Load($"Prefabs/Fruits/{(EFruitType)i}") as GameObject);
-    }
-
-    bool MatchAt(int column, int row, GameObject fruit)
-    {
-        Fruit fruitType = fruit.GetComponent<Fruit>();
-
-        if (column > 1 && row > 1)
-        {
-            if (_allFruits[column - 1, row] != null && _allFruits[column - 2, row] != null)
-            {
-                if (_allFruits[column - 1, row].FruitType == fruitType.FruitType && _allFruits[column - 2, row].FruitType == fruitType.FruitType)
-                    return true;
-            }
-            if (_allFruits[column, row - 1] != null && _allFruits[column, row - 2] != null)
-            {
-                if (_allFruits[column, row - 1].FruitType == fruitType.FruitType && _allFruits[column, row - 2].FruitType == fruitType.FruitType)
-                    return true;
-            }
-        }
-        else if (column <= 1 || row <= 1)
-        {
-            if (column > 1)
-            {
-                if (_allFruits[column - 1, row] != null && _allFruits[column - 2, row] != null)
-                {
-                    if (_allFruits[column - 1, row].FruitType == fruitType.FruitType && _allFruits[column - 2, row].FruitType == fruitType.FruitType)
-                        return true;
-                }
-            }
-            if (row > 1)
-            {
-                if (_allFruits[column, row - 1] != null && _allFruits[column, row - 2] != null)
-                {
-                    if (_allFruits[column, row - 1].FruitType == fruitType.FruitType && _allFruits[column, row - 2].FruitType == fruitType.FruitType)
-                        return true;
-                }
-            }
-        }
-        return false;
     }
 
     void DestroyMatchFruit(int column, int row)
@@ -282,30 +245,6 @@ public class FruitManager : MonoBehaviour
         return false;
     }
 
-    bool IsDeadlocked()
-    {
-        for (int i = 0; i < _width; i++)
-        {
-            for (int j = 0; j < _height; j++)
-            {
-                if (_allFruits[i, j] != null)
-                {
-                    if (i < _width - 1)
-                    {
-                        if (SwitchAndCheck(i, j, Vector2Int.right))
-                            return false;
-                    }
-                    if (j < _height - 1)
-                    {
-                        if (SwitchAndCheck(i, j, Vector2Int.up))
-                            return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
     void SwitchFruit(int column, int row, Vector2Int direction)
     {
         if (_allFruits[column + direction.x, row + direction.y] != null)
@@ -412,6 +351,45 @@ public class FruitManager : MonoBehaviour
         _allFruits[x, y] = fruit.GetComponent<Fruit>();
     }
 
+    public bool MatchAt(int column, int row, GameObject fruit)
+    {
+        Fruit fruitType = fruit.GetComponent<Fruit>();
+
+        if (column > 1 && row > 1)
+        {
+            if (_allFruits[column - 1, row] != null && _allFruits[column - 2, row] != null)
+            {
+                if (_allFruits[column - 1, row].FruitType == fruitType.FruitType && _allFruits[column - 2, row].FruitType == fruitType.FruitType)
+                    return true;
+            }
+            if (_allFruits[column, row - 1] != null && _allFruits[column, row - 2] != null)
+            {
+                if (_allFruits[column, row - 1].FruitType == fruitType.FruitType && _allFruits[column, row - 2].FruitType == fruitType.FruitType)
+                    return true;
+            }
+        }
+        else if (column <= 1 || row <= 1)
+        {
+            if (column > 1)
+            {
+                if (_allFruits[column - 1, row] != null && _allFruits[column - 2, row] != null)
+                {
+                    if (_allFruits[column - 1, row].FruitType == fruitType.FruitType && _allFruits[column - 2, row].FruitType == fruitType.FruitType)
+                        return true;
+                }
+            }
+            if (row > 1)
+            {
+                if (_allFruits[column, row - 1] != null && _allFruits[column, row - 2] != null)
+                {
+                    if (_allFruits[column, row - 1].FruitType == fruitType.FruitType && _allFruits[column, row - 2].FruitType == fruitType.FruitType)
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void CheckMatchFruit()
     {
         if (_matchFinder.MatchFruits.Count >= 4)
@@ -427,6 +405,30 @@ public class FruitManager : MonoBehaviour
             }
         }
         StartCoroutine(DecreaseRowRoutine());
+    }
+
+    public bool IsDeadlocked()
+    {
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_allFruits[i, j] != null)
+                {
+                    if (i < _width - 1)
+                    {
+                        if (SwitchAndCheck(i, j, Vector2Int.right))
+                            return false;
+                    }
+                    if (j < _height - 1)
+                    {
+                        if (SwitchAndCheck(i, j, Vector2Int.up))
+                            return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public bool SwitchAndCheck(int column, int row, Vector2Int direction)
@@ -485,64 +487,13 @@ public class FruitManager : MonoBehaviour
         _tileManager.CheckCreateMoreLavaTiles();
 
         if (IsDeadlocked())
-            StartCoroutine(ShuffleFruit());
+            _eventManager.Shuffle();
         yield return new WaitForSeconds(_refillDelay);
 
         System.GC.Collect();
         _gameManager.GameState = EGameStateType.Move;
         _tileManager.CreateMoreLavaTile = true;
         _streakValue = 1;
-    }
-
-    IEnumerator ShuffleFruit()
-    {
-        //이미지 보이기
-        yield return new WaitForSeconds(0.5f);
-        _gameManager.GameState = EGameStateType.Pause;
-
-        List<Fruit> newFruit = new List<Fruit>();
-        for (int i = 0; i < _width; i++)
-        {
-            for (int j = 0; j < _height; j++)
-            {
-                if (_allFruits[i, j] != null)
-                    newFruit.Add(_allFruits[i, j]);
-            }
-        }
-
-        yield return new WaitForSeconds(0.5f);
-
-        for (int i = 0; i < _width; i++)
-        {
-            for (int j = 0; j < _height; j++)
-            {
-                if (!_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null && _tileManager.LavaTiles[i, j] == null)
-                {
-                    int fruitIndex = Random.Range(0, newFruit.Count);
-
-                    int iterations = 0;
-                    while (MatchAt(i, j, newFruit[fruitIndex].gameObject) && iterations <= 100)
-                    {
-                        fruitIndex = Random.Range(0, _fruits.Count);
-                        iterations++;
-                    }
-
-                    Fruit fruit = newFruit[fruitIndex];
-                    fruit.Column = i;
-                    fruit.Row = j;
-                    _allFruits[i, j] = newFruit[fruitIndex];
-                    newFruit.Remove(newFruit[fruitIndex]);
-                }
-            }
-        }
-        if (IsDeadlocked())
-            ShuffleFruit();
-        else
-        {
-            //이미지 숨기기
-            yield return new WaitForSeconds(0.5f / 2);
-            _gameManager.GameState = EGameStateType.Move;
-        }
     }
 }
 

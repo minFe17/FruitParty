@@ -35,20 +35,20 @@ public class GameManager : MonoBehaviour
 
     void CheckTime()
     {
-        if (_gameState == EGameStateType.GameOver || _gameState == EGameStateType.Pause)
-            return;
-
-        if (_isGameStart)
+        if (_gameState == EGameStateType.Move || _gameState == EGameStateType.Wait)
         {
-            _time += Time.deltaTime;
-            if (_time >= 1f)
+            if (_isGameStart)
             {
-                _currentTime -= 1f;
-                _time = 0f;
-                _uiManager.UI.ShowRemainTime();
+                _time += Time.deltaTime;
+                if (_time >= 1f)
+                {
+                    _currentTime -= 1f;
+                    _time = 0f;
+                    _uiManager.UI.ShowRemainTime();
+                }
+                if (_currentTime <= 0)
+                    GameOver();
             }
-            if (_currentTime <= 0)
-                GameOver();
         }
     }
 
@@ -73,4 +73,5 @@ public enum EGameStateType
     Wait,
     GameOver,
     Pause,
+    Event,
 }
