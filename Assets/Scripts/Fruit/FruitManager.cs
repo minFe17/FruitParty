@@ -80,12 +80,14 @@ public class FruitManager : MonoBehaviour
         if (_tileManager.LockTiles[column, row] != null)
         {
             _tileManager.LockTiles[column, row].DestroyTile();
+            _tileManager.DestroyBoardLayout(_tileManager.LockTiles[column, row]);
             _streakValue--;
             return;
         }
         if (_tileManager.IceTiles[column, row] != null)
         {
             _tileManager.IceTiles[column, row].TakeDamage();
+            _tileManager.DestroyBoardLayout(_tileManager.LockTiles[column, row]);
             _streakValue--;
             return;
         }
@@ -120,7 +122,10 @@ public class FruitManager : MonoBehaviour
     void CheckConcreteTile(int column, int row)
     {
         if (_tileManager.ConcreteTiles[column, row])
+        {
             _tileManager.ConcreteTiles[column, row].DestroyTile();
+            _tileManager.DestroyBoardLayout(_tileManager.ConcreteTiles[column, row]);
+        }
     }
 
     void CheckLavaTile(int column, int row)
@@ -128,6 +133,7 @@ public class FruitManager : MonoBehaviour
         if (_tileManager.LavaTiles[column, row])
         {
             _tileManager.LavaTiles[column, row].DestroyTile();
+            _tileManager.DestroyBoardLayout(_tileManager.LavaTiles[column, row]);
             _tileManager.CreateMoreLavaTile = true;
         }
     }

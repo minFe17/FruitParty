@@ -67,7 +67,10 @@ public class BombManager : MonoBehaviour
     void CheckConcreteTile(int column, int row)
     {
         if (_tileManager.ConcreteTiles[column, row])
+        {
             _tileManager.ConcreteTiles[column, row].DestroyTile();
+            _tileManager.DestroyBoardLayout(_tileManager.ConcreteTiles[column, row]);
+        }
     }
 
     void CheckLavaTile(int column, int row)
@@ -75,6 +78,7 @@ public class BombManager : MonoBehaviour
         if (_tileManager.LavaTiles[column, row])
         {
             _tileManager.LavaTiles[column, row].DestroyTile();
+            _tileManager.DestroyBoardLayout(_tileManager.LavaTiles[column, row]);
             _tileManager.CreateMoreLavaTile = true;
         }
     }

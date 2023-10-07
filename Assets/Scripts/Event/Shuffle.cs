@@ -1,30 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utils;
 
 public class Shuffle : Event
 {
-    FruitManager _fruitManager;
-
     protected override void Start()
     {
         base.Start();
         _eventType = EEventType.Shuffle;
-        _fruitManager = GenericSingleton<FruitManager>.Instance;
     }
 
     public override void EventEffect()
     {
         _gameManager.GameState = EGameStateType.Event;
-        StartCoroutine(ShuffleFruit());
+        StartCoroutine(ShuffleFruitRoutine());
     }
 
-    IEnumerator ShuffleFruit()
+    void ShuffleFruit()
     {
-        //이미지 보이기
-        yield return new WaitForSeconds(0.5f);
-
         List<Fruit> newFruit = new List<Fruit>();
         for (int i = 0; i < _width; i++)
         {
@@ -34,8 +27,6 @@ public class Shuffle : Event
                     newFruit.Add(_fruitManager.AllFruits[i, j]);
             }
         }
-
-        yield return new WaitForSeconds(0.5f);
 
         for (int i = 0; i < _width; i++)
         {
@@ -60,12 +51,19 @@ public class Shuffle : Event
                 }
             }
         }
+    }
+
+    IEnumerator ShuffleFruitRoutine()
+    {
+        //이미지 보이기
+        yield return new WaitForSeconds(0.5f);
+        ShuffleFruit();
         if (_fruitManager.IsDeadlocked())
             ShuffleFruit();
         else
         {
             //이미지 숨기기
-            yield return new WaitForSeconds(0.5f / 2);
+            yield return new WaitForSeconds(0.5f);
             _gameManager.GameState = EGameStateType.Move;
         }
     }

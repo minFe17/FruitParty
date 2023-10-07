@@ -6,7 +6,7 @@ public class TileManager : MonoBehaviour
 {
     // ╫л╠шео
     List<TileType> _boardLayout = new List<TileType>();
-    GameObject _tiles;
+    GameObject _tileParent;
     FruitManager _fruitManager;
 
     [Header("Tile Array")]
@@ -28,6 +28,7 @@ public class TileManager : MonoBehaviour
     int _height;
     bool _createMoreLavaTile = false;
 
+    public List<TileType> BoardLayout { get => _boardLayout; }
     public bool[,] BlankTiles { get => _blankTiles; }
     public IceTile[,] IceTiles { get => _iceTiles; }
     public LockTile[,] LockTiles { get => _lockTiles; }
@@ -41,7 +42,7 @@ public class TileManager : MonoBehaviour
         _height = height;
         SetArray();
         LoadTilePrefab();
-        _tiles = new GameObject("Tiles");
+        _tileParent = new GameObject("Tiles");
         _fruitManager = GenericSingleton<FruitManager>.Instance;
     }
 
@@ -62,67 +63,6 @@ public class TileManager : MonoBehaviour
         _lockTilePrefab = Resources.Load("Prefabs/Tile/LockTile") as GameObject;
         _concreteTilePrefab = Resources.Load("Prefabs/Tile/ConcreteTile") as GameObject;
         _lavaTilePrefab = Resources.Load("Prefabs/Tile/LavaTile") as GameObject;
-    }
-
-    void GenerateTiles()
-    {
-        for (int i = 0; i < _boardLayout.Count; i++)
-        {
-            switch (_boardLayout[i].TileKindType)
-            {
-                case ETileKindType.Blank:
-                    GenerateBlankTiles(_boardLayout[i].X, _boardLayout[i].Y);
-                    break;
-                case ETileKindType.Ice:
-                    GenerateIceTiles(_boardLayout[i].X, _boardLayout[i].Y);
-                    break;
-                case ETileKindType.Lock:
-                    GenerateLockTiles(_boardLayout[i].X, _boardLayout[i].Y);
-                    break;
-                case ETileKindType.Concrete:
-                    GenerateConcreteTiles(_boardLayout[i].X, _boardLayout[i].Y);
-                    break;
-                case ETileKindType.Lava:
-                    GenerateLavaTiles(_boardLayout[i].X, _boardLayout[i].Y);
-                    break;
-            }
-        }
-    }
-
-    void GenerateBlankTiles(int column, int row)
-    {
-        _blankTiles[column, row] = true;
-        if (_allTiles[column, row] != null)
-        {
-            Destroy(_allTiles[column, row]);
-            _allTiles[column, row] = null;
-        }
-    }
-
-    void GenerateIceTiles(int column, int row)
-    {
-        GameObject iceTile = CreateTiles(column, row, _iceTilePrefab);
-        _iceTiles[column, row] = iceTile.GetComponent<IceTile>();
-    }
-
-    void GenerateLockTiles(int column, int row)
-    {
-        GameObject lockTile = CreateTiles(column, row, _lockTilePrefab);
-        _lockTiles[column, row] = lockTile.GetComponent<LockTile>();
-    }
-
-    void GenerateConcreteTiles(int column, int row)
-    {
-        CheckFruit(column, row);
-        GameObject concreteTile = CreateTiles(column, row, _concreteTilePrefab);
-        _concreteTiles[column, row] = concreteTile.GetComponent<ConcreteTile>();
-    }
-
-    void GenerateLavaTiles(int column, int row)
-    {
-        CheckFruit(column, row);
-        GameObject lavaTile = CreateTiles(column, row, _lavaTilePrefab);
-        _lavaTiles[column, row] = lavaTile.GetComponent<LavaTile>();
     }
 
     void CheckFruit(int column, int row)
@@ -157,12 +97,89 @@ public class TileManager : MonoBehaviour
                 {
                     int newColumn = column + direction.x;
                     int newRow = row + direction.y;
-                    GenerateLavaTiles(newColumn, newRow);
+
+                    CheckFruit(column, row);
+                    GameObject lavaTile = CreateTiles(column, row, _lavaTilePrefab);
+                    _lavaTiles[column, row] = lavaTile.GetComponent<LavaTile>();
                     makeLavaTile = true;
                 }
             }
             iterations++;
         }
+    }
+
+    void CalculateHaveFruitTile(out int column, out int row, ETileKindType type)
+    {
+        int tileX = 0;
+        int tileY = 0;
+        column = 0;
+        row = 0;
+        bool canCreateTilePosition = false;
+        do
+        {
+            column = Random.Range(0, _width);
+            row = Random.Range(0, _height);
+            for (int i = 0; i < _boardLayout.Count; i++)
+            {
+                tileX = _boardLayout[i].X;
+                tileY = _boardLayout[i].Y;
+                if (tileX == column && tileY == row)
+                {
+                    ETileKindType tileType = _boardLayout[i].TileKindType;
+                    if (tileType == ETileKindType.Ice && type == ETileKindType.Lock)
+                    {
+                        canCreateTilePosition = true;
+                        break;
+                    }
+                    else if (tileType == ETileKindType.Lock && type == ETileKindType.Ice)
+                    {
+                        canCreateTilePosition = true;
+                        break;
+                    }
+                    else
+                    {
+                        canCreateTilePosition = false;
+                        break;
+                    }
+                }
+                else
+                    canCreateTilePosition = true;
+            }
+        }
+        while (!canCreateTilePosition);
+    }
+
+    void CalculateObstacleTile(out int column, out int row)
+    {
+        int tileX = 0;
+        int tileY = 0;
+        column = 0;
+        row = 0;
+        bool canCreateTilePosition = false;
+        do
+        {
+            column = Random.Range(0, _width);
+            row = Random.Range(0, _height);
+            for (int i = 0; i < _boardLayout.Count; i++)
+            {
+                tileX = _boardLayout[i].X;
+                tileY = _boardLayout[i].Y;
+                if (tileX == column && tileY == row)
+                {
+                    canCreateTilePosition = false;
+                    break;
+                }
+                else
+                    canCreateTilePosition = true;
+            }
+        }
+        while (!canCreateTilePosition);
+    }
+
+    void AddBoardLayout(ETileKindType type, Tile tile, int column, int row)
+    {
+        TileType tileType = new TileType(type, tile, column, row);
+        _boardLayout.Add(tileType);
     }
 
     Vector2Int CheckForDirection(int column, int row)
@@ -179,14 +196,74 @@ public class TileManager : MonoBehaviour
         return Vector2Int.zero;
     }
 
-    public Transform CreateTile(int width, int height)
+    public Transform CreateTile(int column, int row)
     {
-        Vector2 position = new Vector2(width, height);
+        Vector2 position = new Vector2(column, row);
         GameObject tile = Instantiate(_tilePrefab, position, Quaternion.identity);
-        tile.transform.parent = _tiles.transform;
-        tile.name = $"Tile ({width}, {height})";
-        _allTiles[width, height] = tile;
+        tile.transform.parent = _tileParent.transform;
+        tile.name = $"Tile ({column}, {row})";
+        _allTiles[column, row] = tile;
         return tile.transform;
+    }
+
+    public void CreateBlankTiles()
+    {
+        int column;
+        int row;
+        CalculateObstacleTile(out column, out row);
+        _blankTiles[column, row] = true;
+        if (_allTiles[column, row] != null)
+        {
+            Destroy(_allTiles[column, row]);
+            _allTiles[column, row] = null;
+        }
+        AddBoardLayout(ETileKindType.Blank, null, column, row);
+    }
+
+    public void CreateIceTiles()
+    {
+        int column;
+        int row;
+        CalculateHaveFruitTile(out column, out row, ETileKindType.Ice);
+        GameObject tile = CreateTiles(column, row, _iceTilePrefab);
+        IceTile iceTile = tile.GetComponent<IceTile>();
+        _iceTiles[column, row] = iceTile;
+        AddBoardLayout(ETileKindType.Ice, iceTile, column, row);
+    }
+
+    public void CreateLockTiles()
+    {
+        int column;
+        int row;
+        CalculateHaveFruitTile(out column, out row, ETileKindType.Lock);
+        GameObject tile = CreateTiles(column, row, _lockTilePrefab);
+        LockTile lockTile = tile.GetComponent<LockTile>();
+        _lockTiles[column, row] = lockTile;
+        AddBoardLayout(ETileKindType.Lock, lockTile, column, row);
+    }
+
+    public void CreateConcreteTiles()
+    {
+        int column;
+        int row;
+        CalculateObstacleTile(out column, out row);
+        CheckFruit(column, row);
+        GameObject tile = CreateTiles(column, row, _concreteTilePrefab);
+        ConcreteTile concreteTile = tile.GetComponent<ConcreteTile>();
+        _concreteTiles[column, row] = concreteTile;
+        AddBoardLayout(ETileKindType.Concrete, concreteTile, column, row);
+    }
+
+    public void CreateLavaTiles()
+    {
+        int column;
+        int row;
+        CalculateObstacleTile(out column, out row);
+        CheckFruit(column, row);
+        GameObject tile = CreateTiles(column, row, _lavaTilePrefab);
+        LavaTile lavaTile = tile.GetComponent<LavaTile>();
+        _lavaTiles[column, row] = lavaTile;
+        AddBoardLayout(ETileKindType.Lava, lavaTile, column, row);
     }
 
     public void CheckCreateMoreLavaTiles()
@@ -201,5 +278,22 @@ public class TileManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void DestroyBoardLayout(Tile tile)
+    {
+        _boardLayout.Remove(tile.TileType);
+    }
+
+    public void ResetTile()
+    {
+        for (int i = 0; i < _boardLayout.Count; i++)
+        {
+            if (_boardLayout[i].TileKindType == ETileKindType.Blank)
+                CreateTile(_boardLayout[i].X, _boardLayout[i].Y);
+            else
+                _boardLayout[i].Tile.DestroyTile();
+        }
+        _boardLayout.Clear();
     }
 }

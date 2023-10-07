@@ -1,11 +1,14 @@
 using UnityEngine;
 using Utils;
 
-public class Tile : MonoBehaviour
+public abstract class Tile : MonoBehaviour
 {
     protected TileManager _tileManager;
+    protected TileType _tileType;
     protected int _x;
     protected int _y;
+
+    public TileType TileType { get => _tileType; }
 
     public virtual void Init(int x, int y)
     {
@@ -13,4 +16,6 @@ public class Tile : MonoBehaviour
         _x = x;
         _y = y;
     }
+
+    public abstract void DestroyTile();
 }
