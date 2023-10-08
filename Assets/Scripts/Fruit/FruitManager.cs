@@ -493,7 +493,7 @@ public class FruitManager : MonoBehaviour
         _tileManager.CheckCreateMoreLavaTiles();
 
         if (IsDeadlocked())
-            _eventManager.Shuffle();
+            _eventManager.Shuffle.EventEffect();
         yield return new WaitForSeconds(_refillDelay);
 
         System.GC.Collect();

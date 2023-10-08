@@ -11,6 +11,8 @@ public class EventManager : MonoBehaviour
 
     ScoreManager _scoreManager;
 
+    public Shuffle Shuffle { get => _shuffle; }
+
     int _eventScore;
     int _eventScoreAmount = 2000;
     int _resetScore;
@@ -34,7 +36,7 @@ public class EventManager : MonoBehaviour
 
     void AddEvent()
     {
-
+        _events.Add(new EarthQuake());
     }
 
     public void OnEvent()
@@ -57,16 +59,12 @@ public class EventManager : MonoBehaviour
             _eventScore += _eventScoreAmount;
         }
     }
-
-    public void Shuffle()
-    {
-        _shuffle.EventEffect();
-    }
 }
 
 public enum EEventType
 {
     Shuffle,
     Reset,
+    EarthQuake,
     Max,
 }

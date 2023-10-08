@@ -5,7 +5,7 @@ public class IceTile : Tile
 {
     [SerializeField] List<GameObject> _ice;
 
-    public void TakeDamage()
+    public override void TakeDamage()
     {
         _ice[0].SetActive(false);
         _ice.RemoveAt(0);

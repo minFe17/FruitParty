@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Shuffle : Event
 {
+    bool _endShuffle;
+    public bool EndShuffle { get => _endShuffle; }
+
     protected override void Start()
     {
         base.Start();
@@ -16,7 +19,7 @@ public class Shuffle : Event
         StartCoroutine(ShuffleFruitRoutine());
     }
 
-    void ShuffleFruit()
+    public void ShuffleFruit()
     {
         List<Fruit> newFruit = new List<Fruit>();
         for (int i = 0; i < _width; i++)
@@ -51,6 +54,8 @@ public class Shuffle : Event
                 }
             }
         }
+        if (_fruitManager.IsDeadlocked())
+            ShuffleFruit();
     }
 
     IEnumerator ShuffleFruitRoutine()
@@ -58,13 +63,14 @@ public class Shuffle : Event
         //이미지 보이기
         yield return new WaitForSeconds(0.5f);
         ShuffleFruit();
-        if (_fruitManager.IsDeadlocked())
-            ShuffleFruit();
-        else
+        while(!_endShuffle)
         {
-            //이미지 숨기기
-            yield return new WaitForSeconds(0.5f);
-            _gameManager.GameState = EGameStateType.Move;
+            yield return new WaitForSeconds(0.1f);
+            if (_endShuffle)
+                break;
         }
+        //이미지 숨기기
+        yield return new WaitForSeconds(0.5f);
+        _gameManager.GameState = EGameStateType.Move;
     }
 }

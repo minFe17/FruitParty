@@ -10,11 +10,18 @@ public abstract class Tile : MonoBehaviour
 
     public TileType TileType { get => _tileType; }
 
-    public virtual void Init(int x, int y)
+    public virtual void Init(TileType tileType, int x, int y)
     {
         _tileManager = GenericSingleton<TileManager>.Instance;
+        _tileType = tileType;
         _x = x;
         _y = y;
+
+    }
+
+    public virtual void TakeDamage()
+    {
+
     }
 
     public abstract void DestroyTile();

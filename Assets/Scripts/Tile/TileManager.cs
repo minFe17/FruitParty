@@ -12,10 +12,10 @@ public class TileManager : MonoBehaviour
     [Header("Tile Array")]
     GameObject[,] _allTiles;
     bool[,] _blankTiles;
-    IceTile[,] _iceTiles;
-    LockTile[,] _lockTiles;
-    ConcreteTile[,] _concreteTiles;
-    LavaTile[,] _lavaTiles;
+    Tile[,] _iceTiles;
+    Tile[,] _lockTiles;
+    Tile[,] _concreteTiles;
+    Tile[,] _lavaTiles;
 
     [Header("Tile Prefab")]
     GameObject _tilePrefab;
@@ -28,12 +28,11 @@ public class TileManager : MonoBehaviour
     int _height;
     bool _createMoreLavaTile = false;
 
-    public List<TileType> BoardLayout { get => _boardLayout; }
     public bool[,] BlankTiles { get => _blankTiles; }
-    public IceTile[,] IceTiles { get => _iceTiles; }
-    public LockTile[,] LockTiles { get => _lockTiles; }
-    public ConcreteTile[,] ConcreteTiles { get => _concreteTiles; }
-    public LavaTile[,] LavaTiles { get => _lavaTiles; }
+    public Tile[,] IceTiles { get => _iceTiles; }
+    public Tile[,] LockTiles { get => _lockTiles; }
+    public Tile[,] ConcreteTiles { get => _concreteTiles; }
+    public Tile[,] LavaTiles { get => _lavaTiles; }
     public bool CreateMoreLavaTile { get => _createMoreLavaTile; set => _createMoreLavaTile = value; }
 
     public void Init(int width, int height)
@@ -74,11 +73,13 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    GameObject CreateTiles(int column, int row, GameObject prefab)
+    Tile CreateTiles(GameObject prefab, ETileKindType tileType, int column, int row)
     {
         Vector2 position = new Vector2(column, row);
-        GameObject tile = Instantiate(prefab, position, Quaternion.identity);
-        tile.GetComponent<Tile>().Init(column, row);
+        GameObject temp = Instantiate(prefab, position, Quaternion.identity);
+        Tile tile = temp.GetComponent<Tile>();
+        TileType layout = AddBoardLayout(tileType, tile, column, row);
+        tile.Init(layout, column, row);
         return tile;
     }
 
@@ -99,8 +100,8 @@ public class TileManager : MonoBehaviour
                     int newRow = row + direction.y;
 
                     CheckFruit(column, row);
-                    GameObject lavaTile = CreateTiles(column, row, _lavaTilePrefab);
-                    _lavaTiles[column, row] = lavaTile.GetComponent<LavaTile>();
+                    Tile lavaTile = CreateTiles(_lavaTilePrefab, ETileKindType.Lava, column, row);
+                    _lavaTiles[column, row] = lavaTile;
                     makeLavaTile = true;
                 }
             }
@@ -176,10 +177,11 @@ public class TileManager : MonoBehaviour
         while (!canCreateTilePosition);
     }
 
-    void AddBoardLayout(ETileKindType type, Tile tile, int column, int row)
+    TileType AddBoardLayout(ETileKindType type, Tile tile, int column, int row)
     {
         TileType tileType = new TileType(type, tile, column, row);
         _boardLayout.Add(tileType);
+        return tileType;
     }
 
     Vector2Int CheckForDirection(int column, int row)
@@ -196,7 +198,7 @@ public class TileManager : MonoBehaviour
         return Vector2Int.zero;
     }
 
-    public Transform CreateTile(int column, int row)
+    public Transform CreateNormalTile(int column, int row)
     {
         Vector2 position = new Vector2(column, row);
         GameObject tile = Instantiate(_tilePrefab, position, Quaternion.identity);
@@ -211,13 +213,13 @@ public class TileManager : MonoBehaviour
         int column;
         int row;
         CalculateObstacleTile(out column, out row);
+        AddBoardLayout(ETileKindType.Blank, null, column, row);
         _blankTiles[column, row] = true;
         if (_allTiles[column, row] != null)
         {
             Destroy(_allTiles[column, row]);
             _allTiles[column, row] = null;
         }
-        AddBoardLayout(ETileKindType.Blank, null, column, row);
     }
 
     public void CreateIceTiles()
@@ -225,10 +227,8 @@ public class TileManager : MonoBehaviour
         int column;
         int row;
         CalculateHaveFruitTile(out column, out row, ETileKindType.Ice);
-        GameObject tile = CreateTiles(column, row, _iceTilePrefab);
-        IceTile iceTile = tile.GetComponent<IceTile>();
-        _iceTiles[column, row] = iceTile;
-        AddBoardLayout(ETileKindType.Ice, iceTile, column, row);
+        Tile tile = CreateTiles(_iceTilePrefab, ETileKindType.Ice, column, row);
+        _iceTiles[column, row] = tile;
     }
 
     public void CreateLockTiles()
@@ -236,10 +236,8 @@ public class TileManager : MonoBehaviour
         int column;
         int row;
         CalculateHaveFruitTile(out column, out row, ETileKindType.Lock);
-        GameObject tile = CreateTiles(column, row, _lockTilePrefab);
-        LockTile lockTile = tile.GetComponent<LockTile>();
-        _lockTiles[column, row] = lockTile;
-        AddBoardLayout(ETileKindType.Lock, lockTile, column, row);
+        Tile tile = CreateTiles(_lockTilePrefab, ETileKindType.Lock, column, row);
+        _lockTiles[column, row] = tile;
     }
 
     public void CreateConcreteTiles()
@@ -248,10 +246,8 @@ public class TileManager : MonoBehaviour
         int row;
         CalculateObstacleTile(out column, out row);
         CheckFruit(column, row);
-        GameObject tile = CreateTiles(column, row, _concreteTilePrefab);
-        ConcreteTile concreteTile = tile.GetComponent<ConcreteTile>();
-        _concreteTiles[column, row] = concreteTile;
-        AddBoardLayout(ETileKindType.Concrete, concreteTile, column, row);
+        Tile tile = CreateTiles(_concreteTilePrefab, ETileKindType.Concrete, column, row);
+        _concreteTiles[column, row] = tile;
     }
 
     public void CreateLavaTiles()
@@ -260,10 +256,8 @@ public class TileManager : MonoBehaviour
         int row;
         CalculateObstacleTile(out column, out row);
         CheckFruit(column, row);
-        GameObject tile = CreateTiles(column, row, _lavaTilePrefab);
-        LavaTile lavaTile = tile.GetComponent<LavaTile>();
-        _lavaTiles[column, row] = lavaTile;
-        AddBoardLayout(ETileKindType.Lava, lavaTile, column, row);
+        Tile tile = CreateTiles(_lavaTilePrefab, ETileKindType.Lava, column, row);
+        _lavaTiles[column, row] = tile;
     }
 
     public void CheckCreateMoreLavaTiles()
@@ -290,7 +284,7 @@ public class TileManager : MonoBehaviour
         for (int i = 0; i < _boardLayout.Count; i++)
         {
             if (_boardLayout[i].TileKindType == ETileKindType.Blank)
-                CreateTile(_boardLayout[i].X, _boardLayout[i].Y);
+                CreateNormalTile(_boardLayout[i].X, _boardLayout[i].Y);
             else
                 _boardLayout[i].Tile.DestroyTile();
         }
