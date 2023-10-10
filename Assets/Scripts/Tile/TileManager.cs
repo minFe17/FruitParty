@@ -115,7 +115,7 @@ public class TileManager : MonoBehaviour
         int tileY = 0;
         column = 0;
         row = 0;
-        bool canCreateTilePosition = false;
+        bool canCreateTilePosition = true;
         do
         {
             column = Random.Range(0, _width);
@@ -127,12 +127,8 @@ public class TileManager : MonoBehaviour
                 if (tileX == column && tileY == row)
                 {
                     ETileKindType tileType = _boardLayout[i].TileKindType;
-                    if (tileType == ETileKindType.Ice && type == ETileKindType.Lock)
-                    {
-                        canCreateTilePosition = true;
-                        break;
-                    }
-                    else if (tileType == ETileKindType.Lock && type == ETileKindType.Ice)
+                    if ((tileType == ETileKindType.Ice && type == ETileKindType.Lock) ||
+                        (tileType == ETileKindType.Lock && type == ETileKindType.Ice))
                     {
                         canCreateTilePosition = true;
                         break;
@@ -156,7 +152,7 @@ public class TileManager : MonoBehaviour
         int tileY = 0;
         column = 0;
         row = 0;
-        bool canCreateTilePosition = false;
+        bool canCreateTilePosition = true;
         do
         {
             column = Random.Range(0, _width);

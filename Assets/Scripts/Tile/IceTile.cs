@@ -12,8 +12,8 @@ public class IceTile : Tile
 
         if (_ice.Count == 0)
         {
-            DestroyTile();
             _tileManager.DestroyBoardLayout(this);
+            DestroyTile();
         }
     }
 

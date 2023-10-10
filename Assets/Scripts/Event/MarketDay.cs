@@ -35,15 +35,18 @@ public class MarketDay : Event
 
     void BuyFruit()
     {
-        int column = Random.Range(0, _width);
-        int row = Random.Range(0, _height);
+        int maxIteration = _width * _height;
+        for(int i=0; i<maxIteration; i++)
+        {
+            int column = Random.Range(0, _width);
+            int row = Random.Range(0, _height);
 
-        Debug.Log(column);
-        Debug.Log(row);
-        if (_fruitManager.AllFruits[column, row] == null)
-            BuyFruit();
-        else
-            _fruitManager.BuyFruit(column, row);
+            if (_fruitManager.AllFruits[column, row] != null)
+            {
+                _fruitManager.BuyFruit(column, row);
+                break;
+            }
+        }
     }
 
     IEnumerator MarketDayRoutine()

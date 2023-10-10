@@ -45,7 +45,7 @@ public class EventManager : MonoBehaviour
             if (_resetScore == _eventScore)
                 _eventScore += _eventScoreAmount;
         }
-        if(_eventScore <= _scoreManager.Score)
+        else if(_eventScore <= _scoreManager.Score)
         {
             int randomIndex = Random.Range(0, _events.Count);
             Debug.Log(randomIndex);
