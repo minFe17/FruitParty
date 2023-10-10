@@ -150,7 +150,8 @@ public class FruitManager : MonoBehaviour
         else if (makeableBomb == EBombType.FruitBomb)
             makeBomb += _currentFruit.MakeFruitBomb;
 
-        MakeBomb(makeBomb);
+        if (makeBomb != null)
+            MakeBomb(makeBomb);
     }
 
     EBombType MakeableBombType()
@@ -394,6 +395,12 @@ public class FruitManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void BuyFruit(int column, int row)
+    {
+        Destroy(_allFruits[column, row].gameObject);
+        _allFruits[column, row] = null;
     }
 
     public void CheckMatchFruit()

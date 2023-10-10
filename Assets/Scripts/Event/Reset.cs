@@ -7,6 +7,7 @@ public class Reset : Event
     {
         base.Start();
         _eventType = EEventType.Reset;
+        _eventManager.Reset = this;
     }
 
     public override void EventEffect()

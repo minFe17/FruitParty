@@ -138,13 +138,13 @@ public class TileManager : MonoBehaviour
                         break;
                     }
                     else
-                    {
                         canCreateTilePosition = false;
-                        break;
-                    }
                 }
                 else
+                {
                     canCreateTilePosition = true;
+                    break;
+                }
             }
         }
         while (!canCreateTilePosition);
@@ -166,12 +166,12 @@ public class TileManager : MonoBehaviour
                 tileX = _boardLayout[i].X;
                 tileY = _boardLayout[i].Y;
                 if (tileX == column && tileY == row)
-                {
                     canCreateTilePosition = false;
+                else
+                {
+                    canCreateTilePosition = true;
                     break;
                 }
-                else
-                    canCreateTilePosition = true;
             }
         }
         while (!canCreateTilePosition);
@@ -218,7 +218,8 @@ public class TileManager : MonoBehaviour
         if (_allTiles[column, row] != null)
         {
             Destroy(_allTiles[column, row]);
-            _allTiles[column, row] = null;
+            Destroy(_fruitManager.AllFruits[column, row]);
+            CheckFruit(column, row);
         }
     }
 

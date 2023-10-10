@@ -144,18 +144,25 @@ public class Fruit : MonoBehaviour
 
     void RealMoveFruit(Vector2Int direction)
     {
-        _otherFruit = _fruitManager.AllFruits[_column + direction.x, _row + direction.y];
-        _previousColumn = _column;
-        _previousRow = _row;
-        if (_tileManager.LockTiles[_column, _row] == null && _tileManager.LockTiles[_column + direction.x, _row + direction.y] == null)
+        int newX = _column + direction.x;
+        int newY = _row + direction.y;
+        if (newX > 0 && newX < _fruitManager.Width && newY > 0 && newY < _fruitManager.Height)
         {
-            if (_otherFruit != null)
+            _otherFruit = _fruitManager.AllFruits[newX, newY];
+            _previousColumn = _column;
+            _previousRow = _row;
+            if (_tileManager.LockTiles[_column, _row] == null && _tileManager.LockTiles[_column + direction.x, _row + direction.y] == null)
             {
-                _otherFruit.Column += -1 * direction.x;
-                _otherFruit.Row += -1 * direction.y;
-                _column += direction.x;
-                _row += direction.y;
-                StartCoroutine(CheckMoveRoutine());
+                if (_otherFruit != null)
+                {
+                    _otherFruit.Column += -1 * direction.x;
+                    _otherFruit.Row += -1 * direction.y;
+                    _column += direction.x;
+                    _row += direction.y;
+                    StartCoroutine(CheckMoveRoutine());
+                }
+                else
+                    _gameManager.GameState = EGameStateType.Move;
             }
             else
                 _gameManager.GameState = EGameStateType.Move;

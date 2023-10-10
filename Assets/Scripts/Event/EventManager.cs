@@ -6,12 +6,15 @@ public class EventManager : MonoBehaviour
 {
     // ╫л╠шео
     List<Event> _events = new List<Event>();
+    GameObject _eventPrefab;
     Shuffle _shuffle;
     Reset _reset;
 
     ScoreManager _scoreManager;
 
-    public Shuffle Shuffle { get => _shuffle; }
+    public List<Event> Events { get => _events; }
+    public Shuffle Shuffle { get => _shuffle; set => _shuffle = value; }
+    public Reset Reset { set =>_reset = value;}
 
     int _eventScore;
     int _eventScoreAmount = 2000;
@@ -23,20 +26,14 @@ public class EventManager : MonoBehaviour
     {
         _eventScore = 1000;
         _resetScore = 5000;
-        SetEvent();
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
+        CreateEvent();
     }
 
-    void SetEvent()
+    void CreateEvent()
     {
-        AddEvent();
-        _shuffle = new Shuffle();
-        _reset = new Reset();
-    }
-
-    void AddEvent()
-    {
-        _events.Add(new EarthQuake());
+        _eventPrefab = Resources.Load("Prefabs/Event") as GameObject;
+        Instantiate(_eventPrefab, transform.position, Quaternion.identity);
     }
 
     public void OnEvent()
@@ -51,6 +48,7 @@ public class EventManager : MonoBehaviour
         if(_eventScore <= _scoreManager.Score)
         {
             int randomIndex = Random.Range(0, _events.Count);
+            Debug.Log(randomIndex);
             if(randomIndex != _lastEventIndex)
             {
                 _events[randomIndex].EventEffect();
@@ -66,5 +64,8 @@ public enum EEventType
     Shuffle,
     Reset,
     EarthQuake,
+    Heat,
+    MarketDay,
+    Volcano,
     Max,
 }

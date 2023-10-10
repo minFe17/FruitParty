@@ -11,6 +11,7 @@ public class Shuffle : Event
     {
         base.Start();
         _eventType = EEventType.Shuffle;
+        _eventManager.Shuffle = this;
     }
 
     public override void EventEffect()
@@ -21,7 +22,9 @@ public class Shuffle : Event
 
     public void ShuffleFruit()
     {
+        _endShuffle = false;
         List<Fruit> newFruit = new List<Fruit>();
+
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
@@ -56,6 +59,8 @@ public class Shuffle : Event
         }
         if (_fruitManager.IsDeadlocked())
             ShuffleFruit();
+        else
+            _endShuffle = true;
     }
 
     IEnumerator ShuffleFruitRoutine()
