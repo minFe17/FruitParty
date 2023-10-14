@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class MarketDay : Event
 {
-    int _maxBuyFruits = 10;
+    int _minBuyFruits = 5;
+    int _maxBuyFruits = 11;
 
     protected override void Start()
     {
@@ -20,13 +21,13 @@ public class MarketDay : Event
 
     void Market()
     {
-        int creatableTiles = Random.Range(0, _maxCreatableTiles);
-        for (int i = 0; i < creatableTiles; i++)
+        int creatableTiles = Random.Range(_minCreatableTiles, _maxCreatableTiles);
+        for (int i = 0; i <= creatableTiles; i++)
         {
             _tileManager.CreateBlankTiles();
         }
 
-        int buyFruit = Random.Range(0, _maxBuyFruits);
+        int buyFruit = Random.Range(_minBuyFruits, _maxBuyFruits);
         for (int i = 0; i < buyFruit; i++)
         {
             BuyFruit();

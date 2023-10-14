@@ -41,7 +41,6 @@ public class Shuffle : Event
                 if (!_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null && _tileManager.LavaTiles[i, j] == null)
                 {
                     int fruitIndex = Random.Range(0, newFruit.Count);
-
                     int iterations = 0;
                     while (_fruitManager.MatchAt(i, j, newFruit[fruitIndex].gameObject) && iterations <= 100)
                     {

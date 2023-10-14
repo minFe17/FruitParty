@@ -20,7 +20,7 @@ public class EventManager : MonoBehaviour
     int _eventScoreAmount = 2000;
     int _resetScore;
     int _resetScoreAmount = 5000;
-    int _lastEventIndex;
+    int _lastEventIndex = (int)EEventType.Max;
 
     public void Init()
     {

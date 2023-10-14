@@ -10,7 +10,8 @@ public abstract class Event : MonoBehaviour
     protected TileManager _tileManager;
     protected int _width;
     protected int _height;
-    protected int _maxCreatableTiles = 10;
+    protected int _minCreatableTiles = 5;
+    protected int _maxCreatableTiles = 11;
 
     protected virtual void Start()
     {

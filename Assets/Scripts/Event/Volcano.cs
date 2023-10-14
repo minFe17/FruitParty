@@ -22,8 +22,8 @@ public class Volcano : Event
 
     void Eruption()
     {
-        int creatableTiles = Random.Range(0, _maxCreatableTiles);
-        for (int i = 0; i < creatableTiles; i++)
+        int creatableTiles = Random.Range(_minCreatableTiles, _maxCreatableTiles);
+        for (int i = 0; i <= creatableTiles; i++)
         {
             Debug.Log("CreateLavaTile");
 

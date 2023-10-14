@@ -22,11 +22,9 @@ public class EarthQuake : Event
 
     void Quake()
     {
-        int creatableTiles = Random.Range(0, _maxCreatableTiles);
-        for (int i = 0; i < creatableTiles; i++)
+        int creatableTiles = Random.Range(_minCreatableTiles, _maxCreatableTiles);
+        for (int i = 0; i <= creatableTiles; i++)
         {
-            Debug.Log("CreateConcreteTiles");
-
             _tileManager.CreateConcreteTiles();
         }
         _shuffle.ShuffleFruit();
