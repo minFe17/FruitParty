@@ -68,7 +68,7 @@ public class TileManager : MonoBehaviour
     {
         if (_fruitManager.AllFruits[column, row] != null)
         {
-            Destroy(_fruitManager.AllFruits[column, row]);
+            Destroy(_fruitManager.AllFruits[column, row].gameObject);
             _fruitManager.AllFruits[column, row] = null;
         }
     }

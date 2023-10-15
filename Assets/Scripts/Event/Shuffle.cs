@@ -29,11 +29,13 @@ public class Shuffle : Event
         {
             for (int j = 0; j < _height; j++)
             {
-                if (_fruitManager.AllFruits[i, j] != null)
-                    newFruit.Add(_fruitManager.AllFruits[i, j]);
+                if (!_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null && _tileManager.LavaTiles[i, j] == null)
+                {
+                    if (_fruitManager.AllFruits[i, j] != null)
+                        newFruit.Add(_fruitManager.AllFruits[i, j]);
+                }
             }
         }
-
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
@@ -67,7 +69,7 @@ public class Shuffle : Event
         //이미지 보이기
         yield return new WaitForSeconds(0.5f);
         ShuffleFruit();
-        while(!_endShuffle)
+        while (!_endShuffle)
         {
             yield return new WaitForSeconds(0.1f);
             if (_endShuffle)
