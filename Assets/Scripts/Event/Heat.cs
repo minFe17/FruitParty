@@ -29,10 +29,10 @@ public class Heat : Event
     IEnumerator HeatRoutine()
     {
         // ui 이미지 보여주기
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_eventDelay);
         Hot();
         // ui 이미지 숨기기
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_eventDelay);
         _gameManager.GameState = EGameStateType.Move;
     }
 }

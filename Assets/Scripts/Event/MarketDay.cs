@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MarketDay : Event
 {
-    int _minBuyFruits = 5;
+    int _minBuyFruits = 3;
     int _maxBuyFruits = 11;
 
     protected override void Start()
@@ -26,37 +26,55 @@ public class MarketDay : Event
         {
             _tileManager.CreateBlankTiles();
         }
-
-        int buyFruit = Random.Range(_minBuyFruits, _maxBuyFruits);
-        for (int i = 0; i < buyFruit; i++)
-        {
-            BuyFruit();
-        }
     }
 
     void BuyFruit()
     {
-        int maxIteration = _width * _height;
-        for(int i=0; i<maxIteration; i++)
+        int buyFruit = Random.Range(_minBuyFruits, _maxBuyFruits);
+        Debug.Log(buyFruit);
+        int column;
+        int row;
+        for (int i = 0; i < buyFruit; i++)
         {
-            int column = Random.Range(0, _width);
-            int row = Random.Range(0, _height);
+            CalculatePosition(out column, out row);
+            Debug.Log(column + " , " + row);
+            _fruitManager.BuyFruit(column, row);
+        }
+        _fruitManager.CheckMatchFruit();
+    }
 
+    void CalculatePosition(out int column, out int row)
+    {
+        column = Random.Range(0, _width);
+        row = Random.Range(0, _height);
+        bool isBuyPosition = false;
+        while(!isBuyPosition)
+        {
             if (_fruitManager.AllFruits[column, row] != null)
             {
-                _fruitManager.BuyFruit(column, row);
+                isBuyPosition = true;
                 break;
             }
+            else
+            {
+                column = Random.Range(0, _width);
+                row = Random.Range(0, _height);
+            }
         }
+            
     }
 
     IEnumerator MarketDayRoutine()
     {
         // ui 이미지 보여주기
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_eventDelay);
         Market();
+
+        yield return new WaitForSeconds(_eventDelay);
+        BuyFruit();
+
         // ui 이미지 숨기기
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_eventDelay);
         _gameManager.GameState = EGameStateType.Move;
     }
 }

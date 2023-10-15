@@ -67,7 +67,7 @@ public class Shuffle : Event
     IEnumerator ShuffleFruitRoutine()
     {
         //이미지 보이기
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_eventDelay);
         ShuffleFruit();
         while (!_endShuffle)
         {
@@ -76,7 +76,7 @@ public class Shuffle : Event
                 break;
         }
         //이미지 숨기기
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_eventDelay);
         _gameManager.GameState = EGameStateType.Move;
     }
 }

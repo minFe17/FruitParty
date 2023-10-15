@@ -19,10 +19,10 @@ public class Reset : Event
     IEnumerator ResetRoutine()
     {
         // ui 리셋 이미지 보여주기
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_eventDelay);
         _tileManager.ResetTile();
         // ui 리셋 이미지 숨기기
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_eventDelay);
         _gameManager.GameState = EGameStateType.Move;
     }
 }

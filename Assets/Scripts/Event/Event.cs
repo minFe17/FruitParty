@@ -12,6 +12,7 @@ public abstract class Event : MonoBehaviour
     protected int _height;
     protected int _minCreatableTiles = 5;
     protected int _maxCreatableTiles = 11;
+    protected float _eventDelay = 0.5f;
 
     protected virtual void Start()
     {
