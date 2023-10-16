@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6849790508480828389}
   m_Layer: 0
-  m_Name: FirstBreak
+  m_Name: FirstBreakIce
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +44,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2855622493402640212}
   m_Layer: 0
-  m_Name: ThirdBreak
+  m_Name: ThirdBreakIce
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6633859636563537029}
   m_Layer: 0
-  m_Name: SecondBreak
+  m_Name: SecondBreakIce
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -905,7 +905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65f1647181a08084ba77599fb80ef96f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _iceBreakIndex:
+  _ice:
   - {fileID: 1394010035033881945}
   - {fileID: 5012927622741654381}
   - {fileID: 2093580178615446485}

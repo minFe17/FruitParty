@@ -48,7 +48,6 @@ public class EventManager : MonoBehaviour
         else if(_eventScore <= _scoreManager.Score)
         {
             int randomIndex = Random.Range(0, _events.Count);
-            Debug.Log(randomIndex);
             if(randomIndex != _lastEventIndex)
             {
                 _events[randomIndex].EventEffect();
@@ -66,6 +65,7 @@ public enum EEventType
     EarthQuake,
     Heat,
     MarketDay,
+    Typhoon,
     Volcano,
     Max,
 }

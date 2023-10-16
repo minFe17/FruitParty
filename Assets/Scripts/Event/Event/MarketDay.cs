@@ -31,13 +31,11 @@ public class MarketDay : Event
     void BuyFruit()
     {
         int buyFruit = Random.Range(_minBuyFruits, _maxBuyFruits);
-        Debug.Log(buyFruit);
         int column;
         int row;
         for (int i = 0; i < buyFruit; i++)
         {
             CalculatePosition(out column, out row);
-            Debug.Log(column + " , " + row);
             _fruitManager.BuyFruit(column, row);
         }
         _fruitManager.CheckMatchFruit();

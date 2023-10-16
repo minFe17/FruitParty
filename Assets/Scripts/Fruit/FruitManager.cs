@@ -8,8 +8,8 @@ using Random = UnityEngine.Random;
 public class FruitManager : MonoBehaviour
 {
     // ╫л╠шео
-    Fruit[,] _allFruits;
     List<GameObject> _fruits = new List<GameObject>();
+    Fruit[,] _allFruits;
 
     MatchFinder _matchFinder;
     ScoreManager _scoreManager;
@@ -26,6 +26,7 @@ public class FruitManager : MonoBehaviour
     int _streakValue = 1;
     float _refillDelay = 0.5f;
 
+    public List<GameObject> Fruits { get => _fruits; }
     public Fruit[,] AllFruits { get => _allFruits; }
     public Fruit CurrentFruit { get => _currentFruit; set => _currentFruit = value; }
     public int Width { get => _width; }
