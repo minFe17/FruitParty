@@ -24,6 +24,7 @@ public class EventManager : MonoBehaviour
 
     public void Init()
     {
+        _events.Clear();
         _eventScore = 1000;
         _resetScore = 5000;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;

@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using Utils;
 
@@ -13,6 +12,7 @@ public class Volcano : Event
         _eventType = EEventType.Volcano;
         _eventManager.Events.Add(this);
         _shuffle = GenericSingleton<EventManager>.Instance.Shuffle;
+        _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
     }
 
     public override void EventEffect()
@@ -31,10 +31,10 @@ public class Volcano : Event
 
     IEnumerator VolcanoRoutine()
     {
-        // ui 이미지 보여주기
+        _eventUI.OnEventUI();
         yield return new WaitForSeconds(0.5f);
-        Eruption();
 
+        Eruption();
         yield return new WaitForSeconds(0.5f);
         _shuffle.ShuffleFruit();
 
@@ -44,7 +44,8 @@ public class Volcano : Event
             if (_shuffle.EndShuffle)
                 break;
         }
-        // ui 이미지 숨기기
+
+        _eventUI.OffEventUI();
         yield return new WaitForSeconds(0.5f);
         _gameManager.GameState = EGameStateType.Move;
     }

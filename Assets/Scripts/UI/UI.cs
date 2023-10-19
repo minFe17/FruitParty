@@ -11,9 +11,6 @@ public class UI : MonoBehaviour
     [Header("ScoreUI")]
     [SerializeField] Text _scoreText;
 
-    [Header("EventUI")]
-    [SerializeField] EventPanel _eventUI;
-
     [Header("GameStopUI")]
     [SerializeField] GameObject _stopUI;
 
@@ -37,7 +34,6 @@ public class UI : MonoBehaviour
     {
         UIManager uiManager = GenericSingleton<UIManager>.Instance;
         uiManager.UI = this;
-        uiManager.EventUI = _eventUI;
     }
 
     void GameStart()

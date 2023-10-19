@@ -8,6 +8,7 @@ public class Heat : Event
         base.Start();
         _eventType = EEventType.Heat;
         _eventManager.Events.Add(this);
+        _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
     }
 
     public override void EventEffect()
@@ -27,10 +28,11 @@ public class Heat : Event
 
     IEnumerator HeatRoutine()
     {
-        // ui 이미지 보여주기
+        _eventUI.OnEventUI();
         yield return new WaitForSeconds(_eventDelay);
+
         Hot();
-        // ui 이미지 숨기기
+        _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventDelay);
         _gameManager.GameState = EGameStateType.Move;
     }

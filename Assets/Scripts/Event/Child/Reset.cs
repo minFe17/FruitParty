@@ -8,6 +8,7 @@ public class Reset : Event
         base.Start();
         _eventType = EEventType.Reset;
         _eventManager.Reset = this;
+        _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
     }
 
     public override void EventEffect()
@@ -18,10 +19,11 @@ public class Reset : Event
     
     IEnumerator ResetRoutine()
     {
-        // ui 리셋 이미지 보여주기
+        _eventUI.OnEventUI();
         yield return new WaitForSeconds(_eventDelay);
+
         _tileManager.ResetTile();
-        // ui 리셋 이미지 숨기기
+        _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventDelay);
         _gameManager.GameState = EGameStateType.Move;
     }

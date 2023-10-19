@@ -4,7 +4,6 @@ public class UIManager : MonoBehaviour
 {
     // ╫л╠шео
     public UI UI { get; set; }
-    public EventPanel EventUI { get; set; }
 
     public void CreateUI()
     {

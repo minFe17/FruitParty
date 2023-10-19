@@ -5,9 +5,13 @@ public abstract class Event : MonoBehaviour
 {
     protected EEventType _eventType;
     protected EventManager _eventManager;
+    protected EventUIManager _eventUIManager;
     protected FruitManager _fruitManager;
     protected GameManager _gameManager;
     protected TileManager _tileManager;
+    
+    protected EventUIBase _eventUI;
+
     protected int _width;
     protected int _height;
     protected int _minCreatableTiles = 5;
@@ -17,6 +21,7 @@ public abstract class Event : MonoBehaviour
     protected virtual void Start()
     {
         _eventManager = GenericSingleton<EventManager>.Instance;
+        _eventUIManager = GenericSingleton<EventUIManager>.Instance;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;

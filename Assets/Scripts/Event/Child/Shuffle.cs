@@ -12,6 +12,7 @@ public class Shuffle : Event
         base.Start();
         _eventType = EEventType.Shuffle;
         _eventManager.Shuffle = this;
+        _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
     }
 
     public override void EventEffect()
@@ -66,8 +67,9 @@ public class Shuffle : Event
 
     IEnumerator ShuffleFruitRoutine()
     {
-        //이미지 보이기
+        _eventUI.OnEventUI();
         yield return new WaitForSeconds(_eventDelay);
+
         ShuffleFruit();
         while (!_endShuffle)
         {
@@ -75,7 +77,8 @@ public class Shuffle : Event
             if (_endShuffle)
                 break;
         }
-        //이미지 숨기기
+
+        _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventDelay);
         _gameManager.GameState = EGameStateType.Move;
     }

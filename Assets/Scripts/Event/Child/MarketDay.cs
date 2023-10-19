@@ -11,6 +11,7 @@ public class MarketDay : Event
         base.Start();
         _eventType = EEventType.MarketDay;
         _eventManager.Events.Add(this);
+        _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
     }
 
     public override void EventEffect()
@@ -64,14 +65,14 @@ public class MarketDay : Event
 
     IEnumerator MarketDayRoutine()
     {
-        // ui 이미지 보여주기
+        _eventUI.OnEventUI();
         yield return new WaitForSeconds(_eventDelay);
         Market();
 
         yield return new WaitForSeconds(_eventDelay);
         BuyFruit();
 
-        // ui 이미지 숨기기
+        _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventDelay);
         _gameManager.GameState = EGameStateType.Move;
     }
