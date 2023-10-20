@@ -146,7 +146,7 @@ public class Fruit : MonoBehaviour
     {
         int newX = _column + direction.x;
         int newY = _row + direction.y;
-        if (newX > 0 && newX < _fruitManager.Width && newY > 0 && newY < _fruitManager.Height)
+        if (newX >= 0 && newX < _fruitManager.Width && newY >= 0 && newY < _fruitManager.Height)
         {
             _otherFruit = _fruitManager.AllFruits[newX, newY];
             _previousColumn = _column;

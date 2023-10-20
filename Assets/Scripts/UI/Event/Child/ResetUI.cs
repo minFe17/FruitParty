@@ -8,11 +8,13 @@ public class ResetUI : EventUIBase
 
     public override void OnEventUI()
     {
-        
+        _uiAnimator.SetBool("isReset", true);
     }
 
     public override void OffEventUI()
     {
-
+        _uiAnimator.SetBool("isReset", false);
     }
+
+    public override void InitEventUI() { }
 }

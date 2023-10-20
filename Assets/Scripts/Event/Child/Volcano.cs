@@ -32,10 +32,10 @@ public class Volcano : Event
     IEnumerator VolcanoRoutine()
     {
         _eventUI.OnEventUI();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_eventUIDelay);
 
         Eruption();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_eventDelay);
         _shuffle.ShuffleFruit();
 
         while (!_shuffle.EndShuffle)
@@ -45,8 +45,9 @@ public class Volcano : Event
                 break;
         }
 
+        yield return new WaitForSeconds(_eventDelay);
         _eventUI.OffEventUI();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_eventUIDelay);
         _gameManager.GameState = EGameStateType.Move;
     }
 }

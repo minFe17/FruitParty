@@ -4,19 +4,22 @@ using Utils;
 
 public class GameStopUI : MonoBehaviour
 {
-    [SerializeField] Animator _animator;
-
     GameManager _gameManager;
     SoundManager _soundManager;
     AudioClipManager _audioClipManager;
+    ScoreManager _scoreManager;
     CSVManager _csvManager;
+
+    Animator _uiAnimator;
 
     void Start()
     {
         _gameManager = GenericSingleton<GameManager>.Instance;
         _soundManager = GenericSingleton<SoundManager>.Instance;
-        _csvManager = GenericSingleton<CSVManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
+        _scoreManager = GenericSingleton<ScoreManager>.Instance;
+        _csvManager = GenericSingleton<CSVManager>.Instance;
+        _uiAnimator = GenericSingleton<UIManager>.Instance.UI.UIAnimator;
     }
 
     void MoveLobbyScene()
@@ -27,13 +30,14 @@ public class GameStopUI : MonoBehaviour
     public void Resume()
     {
         _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
-        _animator.SetBool("isStop", false);
+        _uiAnimator.SetBool("isStop", false);
         _gameManager.GameState = EGameStateType.Move;
         _csvManager.WriteSoundData();
     }
 
     public void ToLobby()
     {
+        _scoreManager.SetScore();
         _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
         _csvManager.WriteSoundData();
         Invoke("MoveLobbyScene", 0.1f);

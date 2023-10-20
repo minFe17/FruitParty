@@ -8,11 +8,13 @@ public class VolcanoUI : EventUIBase
 
     public override void OnEventUI()
     {
-
+        _uiAnimator.SetBool("isVolcano", true);
     }
 
     public override void OffEventUI()
     {
-
+        _uiAnimator.SetBool("isVolcano", false);
     }
+
+    public override void InitEventUI() { }
 }

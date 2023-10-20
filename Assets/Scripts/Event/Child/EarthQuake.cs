@@ -32,7 +32,7 @@ public class EarthQuake : Event
     IEnumerator EarthQuakeRoutine()
     {
         _eventUI.OnEventUI();
-        yield return new WaitForSeconds(_eventDelay);
+        yield return new WaitForSeconds(_eventUIDelay);
 
         Quake();
         yield return new WaitForSeconds(_eventDelay);
@@ -44,9 +44,10 @@ public class EarthQuake : Event
             if (_shuffle.EndShuffle)
                 break;
         }
-
-        _eventUI.OffEventUI();
+        _fruitManager.CheckMatchFruit();
         yield return new WaitForSeconds(_eventDelay);
+        _eventUI.OffEventUI();
+        yield return new WaitForSeconds(_eventUIDelay);
         _gameManager.GameState = EGameStateType.Move;
     }
 }

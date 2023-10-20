@@ -68,7 +68,7 @@ public class Shuffle : Event
     IEnumerator ShuffleFruitRoutine()
     {
         _eventUI.OnEventUI();
-        yield return new WaitForSeconds(_eventDelay);
+        yield return new WaitForSeconds(_eventUIDelay);
 
         ShuffleFruit();
         while (!_endShuffle)
@@ -78,8 +78,9 @@ public class Shuffle : Event
                 break;
         }
 
-        _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventDelay);
+        _eventUI.OffEventUI();
+        yield return new WaitForSeconds(_eventUIDelay);
         _gameManager.GameState = EGameStateType.Move;
     }
 }

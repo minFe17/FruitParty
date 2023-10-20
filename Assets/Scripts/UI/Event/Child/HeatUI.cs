@@ -8,11 +8,13 @@ public class HeatUI : EventUIBase
 
     public override void OnEventUI()
     {
-
+        _uiAnimator.SetBool("isHeat", true);
     }
 
     public override void OffEventUI()
     {
-
+        _uiAnimator.SetBool("isHeat", false);
     }
+
+    public override void InitEventUI() { }
 }

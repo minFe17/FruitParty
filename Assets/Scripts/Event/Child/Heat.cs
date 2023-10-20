@@ -29,11 +29,13 @@ public class Heat : Event
     IEnumerator HeatRoutine()
     {
         _eventUI.OnEventUI();
-        yield return new WaitForSeconds(_eventDelay);
+        yield return new WaitForSeconds(_eventUIDelay);
 
         Hot();
-        _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventDelay);
+
+        _eventUI.OffEventUI();
+        yield return new WaitForSeconds(_eventUIDelay);
         _gameManager.GameState = EGameStateType.Move;
     }
 }

@@ -84,14 +84,15 @@ public class Typhoon : Event
     IEnumerator TyphoonRoutine()
     {
         _eventUI.OnEventUI();
-        yield return new WaitForSeconds(_eventDelay);
+        yield return new WaitForSeconds(_eventUIDelay);
 
         ColdWind();
         yield return new WaitForSeconds(_eventDelay);
         MoveFruit();
+        yield return new WaitForSeconds(_eventDelay);
 
         _eventUI.OffEventUI();
-        yield return new WaitForSeconds(_eventDelay);
+        yield return new WaitForSeconds(_eventUIDelay);
         _gameManager.GameState = EGameStateType.Move;
     }
 }

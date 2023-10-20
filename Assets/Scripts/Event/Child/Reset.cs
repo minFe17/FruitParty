@@ -20,11 +20,13 @@ public class Reset : Event
     IEnumerator ResetRoutine()
     {
         _eventUI.OnEventUI();
-        yield return new WaitForSeconds(_eventDelay);
+        yield return new WaitForSeconds(_eventUIDelay);
 
         _tileManager.ResetTile();
-        _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventDelay);
+
+        _eventUI.OffEventUI();
+        yield return new WaitForSeconds(_eventUIDelay);
         _gameManager.GameState = EGameStateType.Move;
     }
 }

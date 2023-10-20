@@ -49,4 +49,9 @@ public class ScoreManager : MonoBehaviour
             _csvManager = GenericSingleton<CSVManager>.Instance;
         _csvManager.ReadHighScoreData();
     }
+
+    public void SetScore()
+    {
+        _score = 0;
+    }
 }

@@ -66,14 +66,15 @@ public class MarketDay : Event
     IEnumerator MarketDayRoutine()
     {
         _eventUI.OnEventUI();
-        yield return new WaitForSeconds(_eventDelay);
-        Market();
+        yield return new WaitForSeconds(_eventUIDelay);
 
+        Market();
         yield return new WaitForSeconds(_eventDelay);
         BuyFruit();
+        yield return new WaitForSeconds(_eventDelay);
 
         _eventUI.OffEventUI();
-        yield return new WaitForSeconds(_eventDelay);
+        yield return new WaitForSeconds(_eventUIDelay);
         _gameManager.GameState = EGameStateType.Move;
     }
 }
