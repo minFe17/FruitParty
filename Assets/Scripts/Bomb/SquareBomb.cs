@@ -10,7 +10,11 @@ public class SquareBomb : Bomb
 
     public override void OnEffect()
     {
-        _matchFinder.MatchFruits.Union(_bombManager.GetSquareFruits(_column, _row));
-        _bombManager.HitTileSquareBomb(_column, _row);
+        if (!_isUse)
+        {
+            _matchFinder.MatchFruits.Union(_bombManager.GetSquareFruits(_column, _row));
+            _bombManager.HitTileSquareBomb(_column, _row);
+            _isUse = true;
+        }
     }
 }

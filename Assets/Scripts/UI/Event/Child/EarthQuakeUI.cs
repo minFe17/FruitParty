@@ -22,9 +22,8 @@ public class EarthQuakeUI : EventUIBase
 
     public override void InitEventUI()
     {
+        _uiTranform.localScale.Set(0f, 0f, 1f);
         _eventUIImage.enabled = false;
         _eventUIImage.fillAmount = 1f;
-        _uiTranform.localScale = new Vector3(0.1f, 0.1f);
-        Debug.Log(1);
     }
 }

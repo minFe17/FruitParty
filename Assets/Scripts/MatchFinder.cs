@@ -10,7 +10,6 @@ public class MatchFinder : MonoBehaviour
     List<Fruit> _matchFruits = new List<Fruit>();
     FruitManager _fruitManager;
     BombManager _bombManager;
-    bool _useBomb;
 
     public List<Fruit> MatchFruits { get => _matchFruits; }
 
@@ -34,34 +33,28 @@ public class MatchFinder : MonoBehaviour
 
     void CheckBomb(List<Fruit> fruitsList, List<Fruit> bombs, Fruit[] fruits, ELineBombDirectionType direction)
     {
-        if (!_useBomb)
+        if (bombs.Count == 3)
         {
-            if (bombs.Count == 3)
+            if (bombs[0].ColorType == bombs[1].ColorType && bombs[0].ColorType == bombs[2].ColorType)
             {
-                if (bombs[0].ColorType == bombs[1].ColorType && bombs[0].ColorType == bombs[2].ColorType)
-                {
-                    _bombManager.LineBombDirection = direction;
-                    FruitMatch(fruits);
-                    _useBomb = true;
-                }
+                _bombManager.LineBombDirection = direction;
+                FruitMatch(fruits);
             }
-            else if (bombs.Count == 2)
+        }
+        else if (bombs.Count == 2)
+        {
+            if (bombs[0].ColorType == bombs[1].ColorType && bombs[0].ColorType == fruits[0].ColorType)
             {
-                if (bombs[0].ColorType == bombs[1].ColorType && bombs[0].ColorType == fruits[0].ColorType)
-                {
-                    _bombManager.LineBombDirection = direction;
-                    FruitMatch(fruits);
-                    _useBomb = true;
-                }
+                _bombManager.LineBombDirection = direction;
+                FruitMatch(fruits);
             }
-            else if (bombs.Count == 1)
+        }
+        else if (bombs.Count == 1)
+        {
+            if (bombs[0].ColorType == fruitsList[0].ColorType && fruitsList[0].FruitType == fruitsList[1].FruitType)
             {
-                if (bombs[0].ColorType == fruitsList[0].ColorType && fruitsList[0].FruitType == fruitsList[1].FruitType)
-                {
-                    _bombManager.LineBombDirection = direction;
-                    FruitMatch(fruits);
-                    _useBomb = true;
-                }
+                _bombManager.LineBombDirection = direction;
+                FruitMatch(fruits);
             }
         }
     }

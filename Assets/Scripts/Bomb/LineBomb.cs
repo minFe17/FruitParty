@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class LineBomb : Bomb
 {
-    bool _isUse;
     protected override void Awake()
     {
         base.Awake();

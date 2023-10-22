@@ -1,5 +1,7 @@
 public abstract class Bomb : Fruit
 {
+    protected bool _isUse;
+
     void Start()
     {
         _isBomb = true;

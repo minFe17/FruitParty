@@ -8,6 +8,10 @@ public class FruitBomb : Bomb
 
     public override void OnEffect()
     {
-        _matchFinder.MatchFruitOfType(_otherFruit.ColorType);
+        if(!_isUse)
+        {
+            _matchFinder.MatchFruitOfType(_otherFruit.ColorType);
+            _isUse = true;
+        }
     }
 }

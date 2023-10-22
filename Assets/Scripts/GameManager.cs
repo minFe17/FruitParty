@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     // ╫л╠шео
     UIManager _uiManager;
+    ScoreManager _scoreManager;
     EGameStateType _gameState;
 
     float _time;
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
     public void Init()
     {
         _uiManager = GenericSingleton<UIManager>.Instance;
+        _scoreManager = GenericSingleton<ScoreManager>.Instance;
         _gameState = EGameStateType.Wait;
         _time = 0f;
         _currentTime = 30f;
@@ -55,6 +57,7 @@ public class GameManager : MonoBehaviour
     void GameOver()
     {
         _gameState = EGameStateType.GameOver;
+        _scoreManager.SetScore();
         _uiManager.UI.GameOver();
     }
 
