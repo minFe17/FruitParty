@@ -7,7 +7,6 @@ public class GameStopUI : MonoBehaviour
     GameManager _gameManager;
     SoundManager _soundManager;
     AudioClipManager _audioClipManager;
-    ScoreManager _scoreManager;
     CSVManager _csvManager;
 
     Animator _uiAnimator;
@@ -17,7 +16,6 @@ public class GameStopUI : MonoBehaviour
         _gameManager = GenericSingleton<GameManager>.Instance;
         _soundManager = GenericSingleton<SoundManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
-        _scoreManager = GenericSingleton<ScoreManager>.Instance;
         _csvManager = GenericSingleton<CSVManager>.Instance;
         _uiAnimator = GenericSingleton<UIManager>.Instance.UI.UIAnimator;
     }
@@ -37,7 +35,6 @@ public class GameStopUI : MonoBehaviour
 
     public void ToLobby()
     {
-        _scoreManager.SetScore();
         _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
         _csvManager.WriteSoundData();
         Invoke("MoveLobbyScene", 0.1f);

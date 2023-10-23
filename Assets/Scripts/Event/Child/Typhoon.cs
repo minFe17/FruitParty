@@ -45,6 +45,7 @@ public class Typhoon : Event
                     else if (!_tileManager.BlankTiles[newX, y] && _tileManager.ConcreteTiles[newX, y] == null && _tileManager.LavaTiles[newX, y] == null)
                     {
                         _fruitManager.AllFruits[x, y].Column = newX;
+                        _fruitManager.AllFruits[newX, y] = _fruitManager.AllFruits[x, y]; 
                         _fruitManager.AllFruits[x, y] = null;
                     }
                 }
@@ -87,8 +88,9 @@ public class Typhoon : Event
         yield return new WaitForSeconds(_eventUIDelay);
 
         ColdWind();
-        yield return new WaitForSeconds(_eventDelay);
         MoveFruit();
+        yield return new WaitForSeconds(_eventDelay);
+        _fruitManager.CheckMatchFruit();
         yield return new WaitForSeconds(_eventDelay);
 
         _eventUI.OffEventUI();

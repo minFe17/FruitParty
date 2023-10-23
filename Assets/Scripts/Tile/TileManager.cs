@@ -34,6 +34,7 @@ public class TileManager : MonoBehaviour
     public Tile[,] ConcreteTiles { get => _concreteTiles; }
     public Tile[,] LavaTiles { get => _lavaTiles; }
     public bool CreateMoreLavaTile { get => _createMoreLavaTile; set => _createMoreLavaTile = value; }
+    public bool FirstCreateLavaTile { get; set; }
 
     public void Init(int width, int height)
     {
@@ -81,32 +82,6 @@ public class TileManager : MonoBehaviour
         TileType layout = AddBoardLayout(tileType, tile, column, row);
         tile.Init(layout, column, row);
         return tile;
-    }
-
-    void CreateMoreLavaTiles()
-    {
-        bool makeLavaTile = false;
-        int iterations = 0;
-        while (!makeLavaTile && iterations < 200)
-        {
-            int column = Random.Range(0, _width);
-            int row = Random.Range(0, _height);
-            if (_lavaTiles[column, row] != null)
-            {
-                Vector2Int direction = CheckForDirection(column, row);
-                if (direction != Vector2Int.zero)
-                {
-                    int newColumn = column + direction.x;
-                    int newRow = row + direction.y;
-
-                    CheckFruit(column, row);
-                    Tile lavaTile = CreateTiles(_lavaTilePrefab, ETileKindType.Lava, column, row);
-                    _lavaTiles[column, row] = lavaTile;
-                    makeLavaTile = true;
-                }
-            }
-            iterations++;
-        }
     }
 
     void CalculateHaveFruitTile(out int column, out int row, ETileKindType type)
@@ -182,13 +157,13 @@ public class TileManager : MonoBehaviour
 
     Vector2Int CheckForDirection(int column, int row)
     {
-        if (_fruitManager.AllFruits[column + 1, row] && column < _width - 1)
+        if (column < _width - 1 && _fruitManager.AllFruits[column + 1, row])
             return Vector2Int.right;
-        if (_fruitManager.AllFruits[column - 1, row] && column > 0)
+        if (column > 0 && _fruitManager.AllFruits[column - 1, row])
             return Vector2Int.left;
-        if (_fruitManager.AllFruits[column, row + 1] && row < _height - 1)
+        if (row < _height - 1 && _fruitManager.AllFruits[column, row + 1])
             return Vector2Int.up;
-        if (_fruitManager.AllFruits[column, row - 1] && row > 0)
+        if (row > 0 && _fruitManager.AllFruits[column, row - 1])
             return Vector2Int.down;
 
         return Vector2Int.zero;
@@ -257,18 +232,48 @@ public class TileManager : MonoBehaviour
         _lavaTiles[column, row] = tile;
     }
 
-    public void CheckCreateMoreLavaTiles()
+    public void CreateMoreLavaTiles()
+    {
+        if (_createMoreLavaTile)
+        {
+            bool makeLavaTile = false;
+            int iterations = 0;
+            while (!makeLavaTile && iterations < 200)
+            {
+                int column = Random.Range(0, _width);
+                int row = Random.Range(0, _height);
+                if (_lavaTiles[column, row] != null)
+                {
+                    Vector2Int direction = CheckForDirection(column, row);
+                    if (direction != Vector2Int.zero)
+                    {
+                        int newColumn = column + direction.x;
+                        int newRow = row + direction.y;
+
+                        CheckFruit(newColumn, newRow);
+                        Tile lavaTile = CreateTiles(_lavaTilePrefab, ETileKindType.Lava, newColumn, newRow);
+                        _lavaTiles[newColumn, newRow] = lavaTile;
+                        makeLavaTile = true;
+                    }
+                }
+                iterations++;
+            }
+        }
+    }
+
+    public bool LavaTileInBoard()
     {
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
             {
-                if (_lavaTiles[i, j] != null && _createMoreLavaTile)
+                if (_lavaTiles[i, j] != null)
                 {
-                    CreateMoreLavaTiles();
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     public void DestroyBoardLayout(Tile tile)

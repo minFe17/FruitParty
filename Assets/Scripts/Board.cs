@@ -23,6 +23,7 @@ public class Board : MonoBehaviour
     void Init()
     {
         LoadResource();
+        GenericSingleton<ScoreManager>.Instance.SetScore();
         GenericSingleton<EventUIManager>.Instance.Init();
         GenericSingleton<UIManager>.Instance.CreateUI();
         GenericSingleton<GameManager>.Instance.Init();

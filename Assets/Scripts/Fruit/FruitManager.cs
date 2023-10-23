@@ -134,7 +134,7 @@ public class FruitManager : MonoBehaviour
         {
             _tileManager.DestroyBoardLayout(_tileManager.LavaTiles[column, row]);
             _tileManager.LavaTiles[column, row].DestroyTile();
-            _tileManager.CreateMoreLavaTile = true;
+            _tileManager.CreateMoreLavaTile = false;
         }
     }
 
@@ -336,6 +336,14 @@ public class FruitManager : MonoBehaviour
         _soundManager.PlaySFX(_audioClipManager.FruitMatchSFX[randomAudio]);
     }
 
+    void CheckCreateMoreLavaTile()
+    {
+        if (_tileManager.LavaTileInBoard() && !_tileManager.FirstCreateLavaTile)
+            _tileManager.CreateMoreLavaTile = true;
+        if (_tileManager.FirstCreateLavaTile)
+            _tileManager.FirstCreateLavaTile = false;
+    }
+
     public void CreateFruit(Transform parent, Vector2 position)
     {
         if (_fruits.Count == 0)
@@ -497,7 +505,7 @@ public class FruitManager : MonoBehaviour
         }
         _matchFinder.MatchFruits.Clear();
         _currentFruit = null;
-        _tileManager.CheckCreateMoreLavaTiles();
+        _tileManager.CreateMoreLavaTiles();
 
         if (IsDeadlocked())
             _eventManager.Shuffle.EventEffect();
@@ -505,7 +513,7 @@ public class FruitManager : MonoBehaviour
 
         System.GC.Collect();
         _gameManager.GameState = EGameStateType.Move;
-        _tileManager.CreateMoreLavaTile = true;
+        CheckCreateMoreLavaTile();
         _streakValue = 1;
     }
 }

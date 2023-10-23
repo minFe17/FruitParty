@@ -4,8 +4,8 @@ using Utils;
 
 public class EventManager : MonoBehaviour
 {
-    ╫л╠шео
-   List<Event> _events = new List<Event>();
+    // ╫л╠шео
+    List<Event> _events = new List<Event>();
     GameObject _eventPrefab;
     Shuffle _shuffle;
     Reset _reset;
@@ -20,13 +20,14 @@ public class EventManager : MonoBehaviour
     int _eventScoreAmount = 2000;
     int _resetScore;
     int _resetScoreAmount = 5000;
-    int _lastEventIndex = (int)EEventType.Max;
+    int _lastEventIndex;
 
     public void Init()
     {
         _events.Clear();
         _eventScore = 1000;
         _resetScore = 5000;
+        _lastEventIndex = (int)EEventType.Max;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
         CreateEvent();
     }
@@ -49,11 +50,14 @@ public class EventManager : MonoBehaviour
         else if (_eventScore <= _scoreManager.Score)
         {
             int randomIndex = Random.Range(0, _events.Count);
-            if (randomIndex != _lastEventIndex)
+            int iteration = 0;
+            while (randomIndex == _lastEventIndex && iteration <= 100)
             {
-                _events[randomIndex].EventEffect();
-                _lastEventIndex = randomIndex;
+                randomIndex = Random.Range(0, _events.Count);
+                iteration++;
             }
+            _events[randomIndex].EventEffect();
+            _lastEventIndex = randomIndex;
             _eventScore += _eventScoreAmount;
         }
     }

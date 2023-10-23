@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using Utils;
 
@@ -24,8 +25,10 @@ public class Volcano : Event
     void Eruption()
     {
         int creatableTiles = Random.Range(_minCreatableTiles, _maxCreatableTiles);
+        _tileManager.FirstCreateLavaTile = true;
         for (int i = 0; i <= creatableTiles; i++)
             _tileManager.CreateLavaTiles();
+        _tileManager.CreateMoreLavaTile = false;
         _fruitManager.CheckMatchFruit();
     }
 
@@ -34,6 +37,7 @@ public class Volcano : Event
         _eventUI.OnEventUI();
         yield return new WaitForSeconds(_eventUIDelay);
 
+        yield return new WaitForSeconds(_eventDelay);
         Eruption();
         yield return new WaitForSeconds(_eventDelay);
         _shuffle.ShuffleFruit();

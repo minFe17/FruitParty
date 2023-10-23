@@ -13,6 +13,7 @@ public class EarthQuakeUI : EventUIBase
     public override void OnEventUI()
     {
         _uiAnimator.SetBool("isEarthQuake", true);
+        _uiAnimator.SetBool("isEndEvent", false);
     }
 
     public override void OffEventUI()
@@ -25,5 +26,6 @@ public class EarthQuakeUI : EventUIBase
         _uiTranform.localScale.Set(0f, 0f, 1f);
         _eventUIImage.enabled = false;
         _eventUIImage.fillAmount = 1f;
+        _uiAnimator.SetBool("isEndEvent", true);
     }
 }

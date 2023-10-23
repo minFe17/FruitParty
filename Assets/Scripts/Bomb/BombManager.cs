@@ -79,7 +79,7 @@ public class BombManager : MonoBehaviour
         {
             _tileManager.DestroyBoardLayout(_tileManager.LavaTiles[column, row]);
             _tileManager.LavaTiles[column, row].DestroyTile();
-            _tileManager.CreateMoreLavaTile = true;
+            _tileManager.CreateMoreLavaTile = false;
         }
     }
 

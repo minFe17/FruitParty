@@ -15,7 +15,7 @@ public abstract class Event : MonoBehaviour
     protected int _width;
     protected int _height;
     protected int _minCreatableTiles = 5;
-    protected int _maxCreatableTiles = 11;
+    protected int _maxCreatableTiles = 10;
 
     protected float _eventDelay = 0.5f;
     protected float _eventUIDelay = 1f;
