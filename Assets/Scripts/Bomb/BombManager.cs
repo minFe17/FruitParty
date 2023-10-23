@@ -68,8 +68,7 @@ public class BombManager : MonoBehaviour
     {
         if (_tileManager.ConcreteTiles[column, row])
         {
-            _tileManager.DestroyBoardLayout(_tileManager.ConcreteTiles[column, row]);
-            _tileManager.ConcreteTiles[column, row].DestroyTile();
+            _tileManager.DestroyTile(_tileManager.ConcreteTiles[column, row]);
         }
     }
 
@@ -77,8 +76,7 @@ public class BombManager : MonoBehaviour
     {
         if (_tileManager.LavaTiles[column, row])
         {
-            _tileManager.DestroyBoardLayout(_tileManager.LavaTiles[column, row]);
-            _tileManager.LavaTiles[column, row].DestroyTile();
+            _tileManager.DestroyTile(_tileManager.LavaTiles[column, row]);
             _tileManager.CreateMoreLavaTile = false;
         }
     }

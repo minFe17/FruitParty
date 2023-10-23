@@ -5,6 +5,12 @@ public class IceTile : Tile
 {
     [SerializeField] List<GameObject> _ice;
 
+    void Update()
+    {
+        if (_tileManager.LavaTiles[_x, _y] == null)
+            Destroy(this.gameObject);
+    }
+
     public override void TakeDamage()
     {
         _ice[0].SetActive(false);
@@ -12,8 +18,7 @@ public class IceTile : Tile
 
         if (_ice.Count == 0)
         {
-            _tileManager.DestroyBoardLayout(this);
-            DestroyTile();
+            _tileManager.DestroyTile(this);
         }
     }
 

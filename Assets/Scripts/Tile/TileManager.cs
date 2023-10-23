@@ -276,9 +276,10 @@ public class TileManager : MonoBehaviour
         return false;
     }
 
-    public void DestroyBoardLayout(Tile tile)
+    public void DestroyTile(Tile tile)
     {
         _boardLayout.Remove(tile.TileType);
+        tile.DestroyTile();
     }
 
     public void ResetTile()

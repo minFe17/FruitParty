@@ -60,6 +60,7 @@ public class Fruit : MonoBehaviour
     {
         MoveFruit();
         MatchFruit();
+        DestroyFruit();
     }
 
     void MoveFruit()
@@ -169,6 +170,12 @@ public class Fruit : MonoBehaviour
         }
         else
             _gameManager.GameState = EGameStateType.Move;
+    }
+
+    void DestroyFruit()
+    {
+        if (_fruitManager.AllFruits[_column, _row] != this)
+            Destroy(this.gameObject);
     }
 
     void MakeBomb(GameObject bombGameObject)

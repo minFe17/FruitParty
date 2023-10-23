@@ -80,8 +80,7 @@ public class FruitManager : MonoBehaviour
     {
         if (_tileManager.LockTiles[column, row] != null)
         {
-            _tileManager.DestroyBoardLayout(_tileManager.LockTiles[column, row]);
-            _tileManager.LockTiles[column, row].DestroyTile();
+            _tileManager.DestroyTile(_tileManager.LockTiles[column, row]);
             _streakValue--;
             return;
         }
@@ -123,8 +122,7 @@ public class FruitManager : MonoBehaviour
     {
         if (_tileManager.ConcreteTiles[column, row])
         {
-            _tileManager.DestroyBoardLayout(_tileManager.ConcreteTiles[column, row]);
-            _tileManager.ConcreteTiles[column, row].DestroyTile();
+            _tileManager.DestroyTile(_tileManager.ConcreteTiles[column, row]);
         }
     }
 
@@ -132,8 +130,7 @@ public class FruitManager : MonoBehaviour
     {
         if (_tileManager.LavaTiles[column, row])
         {
-            _tileManager.DestroyBoardLayout(_tileManager.LavaTiles[column, row]);
-            _tileManager.LavaTiles[column, row].DestroyTile();
+            _tileManager.DestroyTile(_tileManager.LavaTiles[column, row]);
             _tileManager.CreateMoreLavaTile = false;
         }
     }
@@ -359,11 +356,12 @@ public class FruitManager : MonoBehaviour
         }
         while (MatchAt(x, y, _fruits[fruitNumber]) && iterations <= 100);
 
-        GameObject fruit = Instantiate(_fruits[fruitNumber], position, Quaternion.identity);
-        fruit.GetComponent<Fruit>().Column = x;
-        fruit.GetComponent<Fruit>().Row = y;
-        fruit.transform.parent = parent;
-        _allFruits[x, y] = fruit.GetComponent<Fruit>();
+        GameObject temp = Instantiate(_fruits[fruitNumber], position, Quaternion.identity);
+        Fruit fruit = temp.GetComponent<Fruit>();
+        fruit.Column = x;
+        fruit.Row = y;
+        temp.transform.parent = parent;
+        _allFruits[x, y] = fruit;
     }
 
     public bool MatchAt(int column, int row, GameObject fruit)
@@ -496,6 +494,7 @@ public class FruitManager : MonoBehaviour
         yield return new WaitForSeconds(_refillDelay);
         RefillFruit();
         yield return new WaitForSeconds(_refillDelay);
+
         while (MatchOnboard())
         {
             yield return new WaitForSeconds(_refillDelay);
@@ -503,6 +502,16 @@ public class FruitManager : MonoBehaviour
             CheckMatchFruit();
             yield break;
         }
+
+        yield return new WaitForSeconds(_refillDelay);
+
+        if(MatchOnboard())
+        {
+            _streakValue++;
+            CheckMatchFruit();
+            yield break;
+        }
+
         _matchFinder.MatchFruits.Clear();
         _currentFruit = null;
         _tileManager.CreateMoreLavaTiles();
