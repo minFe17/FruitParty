@@ -45,9 +45,7 @@ public class HintManager : MonoBehaviour
     {
         Fruit movableFruit = PickOneRandomFruit();
         if (movableFruit != null)
-        {
             _currentHint = Instantiate(_hintEffect, movableFruit.transform.position, Quaternion.identity);
-        }
     }
 
     Fruit PickOneRandomFruit()

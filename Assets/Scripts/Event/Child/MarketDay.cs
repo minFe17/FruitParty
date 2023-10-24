@@ -24,9 +24,7 @@ public class MarketDay : Event
     {
         int creatableTiles = Random.Range(_minCreatableTiles, _maxCreatableTiles);
         for (int i = 0; i <= creatableTiles; i++)
-        {
             _tileManager.CreateBlankTiles();
-        }
     }
 
     void BuyFruit()
@@ -60,7 +58,6 @@ public class MarketDay : Event
                 row = Random.Range(0, _height);
             }
         }
-            
     }
 
     IEnumerator MarketDayRoutine()

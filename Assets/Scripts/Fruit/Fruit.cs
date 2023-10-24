@@ -13,6 +13,11 @@ public class Fruit : MonoBehaviour
     protected BombManager _bombManager;
     protected Fruit _otherFruit;
 
+    protected int _column;
+    protected int _row;
+    protected bool _isMatch;
+    protected bool _isBomb;
+
     FruitManager _fruitManager;
     HintManager _hintManager;
     GameManager _gameManager;
@@ -22,11 +27,6 @@ public class Fruit : MonoBehaviour
     Vector2 _firstTouchPos = Vector2.zero;
     Vector2 _finalTouchPos = Vector2.zero;
     Vector2 _position;
-
-    protected int _column;
-    protected int _row;
-    protected bool _isMatch;
-    protected bool _isBomb;
 
     int _previousColumn;
     int _previousRow;
@@ -47,12 +47,7 @@ public class Fruit : MonoBehaviour
 
     protected virtual void Awake()
     {
-        _matchFinder = GenericSingleton<MatchFinder>.Instance;
-        _bombManager = GenericSingleton<BombManager>.Instance;
-        _fruitManager = GenericSingleton<FruitManager>.Instance;
-        _hintManager = GenericSingleton<HintManager>.Instance;
-        _gameManager = GenericSingleton<GameManager>.Instance;
-        _tileManager = GenericSingleton<TileManager>.Instance;
+        Init();
         _destroyEffect = Resources.Load("Prefabs/Effect/DestroyEffect") as GameObject;
     }
 
@@ -61,6 +56,16 @@ public class Fruit : MonoBehaviour
         MoveFruit();
         MatchFruit();
         DestroyFruit();
+    }
+
+    void Init()
+    {
+        _matchFinder = GenericSingleton<MatchFinder>.Instance;
+        _bombManager = GenericSingleton<BombManager>.Instance;
+        _fruitManager = GenericSingleton<FruitManager>.Instance;
+        _hintManager = GenericSingleton<HintManager>.Instance;
+        _gameManager = GenericSingleton<GameManager>.Instance;
+        _tileManager = GenericSingleton<TileManager>.Instance;
     }
 
     void MoveFruit()
@@ -131,13 +136,13 @@ public class Fruit : MonoBehaviour
 
     void SeleteMoveFruit()
     {
-        if (_swipeAngle > -45 && _swipeAngle <= 45 && _column < _fruitManager.Width)    //Right
+        if (_swipeAngle > -45 && _swipeAngle <= 45 && _column < _fruitManager.Width)
             RealMoveFruit(Vector2Int.right);
-        else if (_swipeAngle > 45 && _swipeAngle <= 135 && _row < _fruitManager.Height) //Up
+        else if (_swipeAngle > 45 && _swipeAngle <= 135 && _row < _fruitManager.Height)
             RealMoveFruit(Vector2Int.up);
-        else if (_swipeAngle > 135 || _swipeAngle <= -135 && _column > 0)               //Left
+        else if (_swipeAngle > 135 || _swipeAngle <= -135 && _column > 0)
             RealMoveFruit(Vector2Int.left);
-        else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)                  //Down
+        else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)
             RealMoveFruit(Vector2Int.down);
         else
             _gameManager.GameState = EGameStateType.Move;

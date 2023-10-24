@@ -1,14 +1,9 @@
-using UnityEngine;
-
 public class TyphoonUI : EventUIBase
 {
-    RectTransform _uiTransform;
-
     protected override void Start()
     {
         base.Start();
         _eventUIManager.EventUI.Add(EEventType.Typhoon, this);
-        _uiTransform = GetComponent<RectTransform>();
     }
 
     public override void OnEventUI()

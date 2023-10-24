@@ -9,9 +9,9 @@ public class BombManager : MonoBehaviour
     List<GameObject> _squareBombs = new List<GameObject>();
 
     GameObject _fruitBomb;
-    ELineBombDirectionType _lineBombDirection;
     FruitManager _fruitManager;
     TileManager _tileManager;
+    ELineBombDirectionType _lineBombDirection;
 
     void Start()
     {

@@ -21,9 +21,7 @@ public class Heat : Event
     {
         int creatableTiles = Random.Range(_minCreatableTiles, _maxCreatableTiles);
         for (int i = 0; i <= creatableTiles; i++)
-        {
             _tileManager.CreateLockTiles();
-        }
     }
 
     IEnumerator HeatRoutine()

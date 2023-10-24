@@ -9,12 +9,7 @@ public class EventManager : MonoBehaviour
     GameObject _eventPrefab;
     Shuffle _shuffle;
     Reset _reset;
-
     ScoreManager _scoreManager;
-
-    public List<Event> Events { get => _events; }
-    public Shuffle Shuffle { get => _shuffle; set => _shuffle = value; }
-    public Reset Reset { set => _reset = value; }
 
     int _eventScore;
     int _eventScoreAmount = 2000;
@@ -22,13 +17,17 @@ public class EventManager : MonoBehaviour
     int _resetScoreAmount = 5000;
     int _lastEventIndex;
 
+    public List<Event> Events { get => _events; }
+    public Shuffle Shuffle { get => _shuffle; set => _shuffle = value; }
+    public Reset Reset { set => _reset = value; }
+
     public void Init()
     {
+        _scoreManager = GenericSingleton<ScoreManager>.Instance;
         _events.Clear();
         _eventScore = 1000;
         _resetScore = 5000;
         _lastEventIndex = (int)EEventType.Max;
-        _scoreManager = GenericSingleton<ScoreManager>.Instance;
         CreateEvent();
     }
 

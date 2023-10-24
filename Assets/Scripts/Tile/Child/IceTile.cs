@@ -7,7 +7,7 @@ public class IceTile : Tile
 
     void Update()
     {
-        if (_tileManager.LavaTiles[_x, _y] == null)
+        if (_tileManager.IceTiles[_x, _y] == null)
             Destroy(this.gameObject);
     }
 

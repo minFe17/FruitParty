@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using Utils;
 
@@ -12,8 +11,8 @@ public class Volcano : Event
         base.Start();
         _eventType = EEventType.Volcano;
         _eventManager.Events.Add(this);
-        _shuffle = GenericSingleton<EventManager>.Instance.Shuffle;
         _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
+        _shuffle = GenericSingleton<EventManager>.Instance.Shuffle;
     }
 
     public override void EventEffect()
@@ -36,8 +35,8 @@ public class Volcano : Event
     {
         _eventUI.OnEventUI();
         yield return new WaitForSeconds(_eventUIDelay);
-
         yield return new WaitForSeconds(_eventDelay);
+
         Eruption();
         yield return new WaitForSeconds(_eventDelay);
         _shuffle.ShuffleFruit();
@@ -48,8 +47,9 @@ public class Volcano : Event
             if (_shuffle.EndShuffle)
                 break;
         }
-
+        _fruitManager.CheckMatchFruit();
         yield return new WaitForSeconds(_eventDelay);
+
         _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventUIDelay);
         _gameManager.GameState = EGameStateType.Move;

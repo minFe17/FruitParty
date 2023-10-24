@@ -11,8 +11,8 @@ public class EarthQuake : Event
         base.Start();
         _eventType = EEventType.EarthQuake;
         _eventManager.Events.Add(this);
-        _shuffle = GenericSingleton<EventManager>.Instance.Shuffle;
         _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
+        _shuffle = GenericSingleton<EventManager>.Instance.Shuffle;
     }
 
     public override void EventEffect()
@@ -37,7 +37,6 @@ public class EarthQuake : Event
         Quake();
         yield return new WaitForSeconds(_eventDelay);
         _shuffle.ShuffleFruit();
-
         while (!_shuffle.EndShuffle)
         {
             yield return new WaitForSeconds(0.1f);
@@ -46,6 +45,7 @@ public class EarthQuake : Event
         }
         _fruitManager.CheckMatchFruit();
         yield return new WaitForSeconds(_eventDelay);
+
         _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventUIDelay);
         _gameManager.GameState = EGameStateType.Move;

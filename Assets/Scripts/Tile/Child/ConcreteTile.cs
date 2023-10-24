@@ -2,7 +2,7 @@ public class ConcreteTile : Tile
 {
     void Update()
     {
-        if (_tileManager.LavaTiles[_x, _y] == null)
+        if (_tileManager.ConcreteTiles[_x, _y] == null)
             Destroy(this.gameObject);
     }
 

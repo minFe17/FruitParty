@@ -16,13 +16,9 @@ public abstract class Tile : MonoBehaviour
         _tileType = tileType;
         _x = x;
         _y = y;
-
     }
 
-    public virtual void TakeDamage()
-    {
-
-    }
+    public virtual void TakeDamage() { }
 
     public abstract void DestroyTile();
 }

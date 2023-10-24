@@ -24,6 +24,8 @@ public class Reset : Event
 
         _tileManager.ResetTile();
         yield return new WaitForSeconds(_eventDelay);
+        _fruitManager.CheckMatchFruit();
+        yield return new WaitForSeconds(_eventDelay);
 
         _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventUIDelay);

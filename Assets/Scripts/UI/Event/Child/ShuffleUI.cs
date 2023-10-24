@@ -24,7 +24,6 @@ public class ShuffleUI : EventUIBase
         _eventUIImage.enabled = false;
         _eventUIImage.fillAmount = 0f;
         _eventUIImage.color = new Color(1f, 1f, 1f, 1f);
-
         _uiAnimator.SetBool("isEndEvent", true);
     }
 }

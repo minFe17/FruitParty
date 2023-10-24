@@ -38,7 +38,11 @@ public class FruitManager : MonoBehaviour
         _width = x;
         _height = y;
         _allFruits = new Fruit[x, y];
+        LoadManagers();
+    }
 
+    void LoadManagers()
+    {
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
@@ -98,7 +102,6 @@ public class FruitManager : MonoBehaviour
         {
             CheckConcreteTile(column - 1, row);
             CheckLavaTile(column - 1, row);
-
         }
         if (column < _width - 1)
         {
@@ -121,9 +124,7 @@ public class FruitManager : MonoBehaviour
     void CheckConcreteTile(int column, int row)
     {
         if (_tileManager.ConcreteTiles[column, row])
-        {
             _tileManager.DestroyTile(_tileManager.ConcreteTiles[column, row]);
-        }
     }
 
     void CheckLavaTile(int column, int row)

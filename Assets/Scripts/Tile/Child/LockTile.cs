@@ -2,7 +2,7 @@ public class LockTile : Tile
 {
     void Update()
     {
-        if (_tileManager.LavaTiles[_x, _y] == null)
+        if (_tileManager.LockTiles[_x, _y] == null)
             Destroy(this.gameObject);
     }
 

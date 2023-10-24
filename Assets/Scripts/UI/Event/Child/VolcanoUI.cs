@@ -22,6 +22,5 @@ public class VolcanoUI : EventUIBase
     {
         _eventUIImage.color = new Color(1f, 1f, 1f, 1f);
         _uiAnimator.SetBool("isEndEvent", true);
-
     }
 }

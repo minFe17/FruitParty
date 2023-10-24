@@ -4,13 +4,13 @@ using Utils;
 public abstract class Event : MonoBehaviour
 {
     protected EEventType _eventType;
+    protected EventUIBase _eventUI;
+
     protected EventManager _eventManager;
     protected EventUIManager _eventUIManager;
     protected FruitManager _fruitManager;
     protected GameManager _gameManager;
     protected TileManager _tileManager;
-    
-    protected EventUIBase _eventUI;
 
     protected int _width;
     protected int _height;

@@ -232,6 +232,21 @@ public class TileManager : MonoBehaviour
         _lavaTiles[column, row] = tile;
     }
 
+    public bool LavaTileInBoard()
+    {
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_lavaTiles[i, j] != null)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void CreateMoreLavaTiles()
     {
         if (_createMoreLavaTile)
@@ -259,21 +274,6 @@ public class TileManager : MonoBehaviour
                 iterations++;
             }
         }
-    }
-
-    public bool LavaTileInBoard()
-    {
-        for (int i = 0; i < _width; i++)
-        {
-            for (int j = 0; j < _height; j++)
-            {
-                if (_lavaTiles[i, j] != null)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     public void DestroyTile(Tile tile)

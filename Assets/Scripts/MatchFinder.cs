@@ -97,9 +97,7 @@ public class MatchFinder : MonoBehaviour
         for (int i = 0; i < fruits.Length; i++)
         {
             if (fruits[i].IsBomb)
-            {
                 bombs.Add(fruits[i]);
-            }
         }
         fruitsList = fruits.Where(child => child != child.IsBomb).ToList();
     }
