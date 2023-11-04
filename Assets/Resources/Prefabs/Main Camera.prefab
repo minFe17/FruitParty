@@ -97,8 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb411a23ae7b663448b3e8435360870b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cameraOffset: -10
   _displayWidth: 16
   _displawyHeight: 10
-  _padding: 2
+  _padding: 3
+  _cameraOffset: -10
   _yOffset: 1
