@@ -103,7 +103,7 @@ public class Shuffle : Event
     IEnumerator ShuffleFruitRoutine()
     {
         _eventUI.OnEventUI();
-        yield return new WaitForSeconds(_eventUIDelay);
+        yield return new WaitForSeconds(_eventUIDelay + 0.5f);
 
         ShuffleFruit();
         while (!_endShuffle)
