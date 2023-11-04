@@ -139,7 +139,8 @@ public class FruitManager : MonoBehaviour
     void CheckMakeBomb()
     {
         Action makeBomb = MakeableBomb();
-        makeBomb();
+        if (makeBomb != null)
+            makeBomb();
     }
 
     Action MakeableBomb()

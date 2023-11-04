@@ -1,10 +1,12 @@
 using UnityEngine;
+using Utils;
 
 public class Lobby : MonoBehaviour
 {
     void Start()
     {
         CreateLobby();
+        StartLobbyBGM();
     }
 
     void CreateLobby()
@@ -31,5 +33,13 @@ public class Lobby : MonoBehaviour
     {
         GameObject temp = Resources.Load("Prefabs/UI/LobbyUI") as GameObject;
         Instantiate(temp);
+    }
+
+    void StartLobbyBGM()
+    {
+        SoundManager soundManager = GenericSingleton<SoundManager>.Instance;
+        AudioClip lobbyBGM = GenericSingleton<AudioClipManager>.Instance.LobbyBGM;
+        soundManager.Init();
+        soundManager.StartBGM(lobbyBGM);
     }
 }
