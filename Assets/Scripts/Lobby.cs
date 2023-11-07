@@ -32,7 +32,8 @@ public class Lobby : MonoBehaviour
     void CreateLobbyUI()
     {
         GameObject temp = Resources.Load("Prefabs/UI/LobbyUI") as GameObject;
-        Instantiate(temp);
+        GameObject lobbyUI = Instantiate(temp);
+        lobbyUI.GetComponent<Canvas>().worldCamera = Camera.main;
     }
 
     void StartLobbyBGM()

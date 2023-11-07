@@ -50,3 +50,6 @@ TagManager:
   - name: Bomb
     uniqueID: 524979851
     locked: 0
+  - name: UI
+    uniqueID: 1708560517
+    locked: 0

@@ -15,17 +15,16 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-        Init();
+        LoadResource();
         CreateCamera();
+        Init(); 
         CreateBoard();
     }
 
     void Init()
     {
-        LoadResource();
         GenericSingleton<ScoreManager>.Instance.SetScore();
         GenericSingleton<EventUIManager>.Instance.Init();
-        GenericSingleton<UIManager>.Instance.CreateUI();
         GenericSingleton<GameManager>.Instance.Init();
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;
@@ -59,12 +58,13 @@ public class Board : MonoBehaviour
     {
         GameObject mainCamera = Instantiate(_cameraPrefab);
         mainCamera.GetComponent<CameraScalar>().SettingCameraPosition(_width, _height);
-        CreateBackground(mainCamera.GetComponent<Camera>());
+        CreateBackground();
     }
 
-    void CreateBackground(Camera mainCamera)
+    void CreateBackground()
     {
         GameObject background = Instantiate(_backgroundPrefab);
-        background.GetComponent<Canvas>().worldCamera = mainCamera;
+        background.GetComponent<Canvas>().worldCamera = Camera.main;
+        GenericSingleton<UIManager>.Instance.CreateUI();
     }
 }
