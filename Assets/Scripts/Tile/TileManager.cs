@@ -284,6 +284,7 @@ public class TileManager : MonoBehaviour
 
     public void ResetTile()
     {
+        Debug.Log(_boardLayout.Count);
         for (int i = 0; i < _boardLayout.Count; i++)
         {
             if (_boardLayout[i].TileKindType == ETileKindType.Blank)

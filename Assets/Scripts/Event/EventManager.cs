@@ -41,10 +41,10 @@ public class EventManager : MonoBehaviour
     {
         if (_resetScore <= _scoreManager.Score)
         {
-            _reset.EventEffect();
-            _resetScore += _resetScoreAmount;
             if (_resetScore == _eventScore)
                 _eventScore += _eventScoreAmount;
+            _reset.EventEffect();
+            _resetScore += _resetScoreAmount;
         }
         else if (_eventScore <= _scoreManager.Score)
         {
