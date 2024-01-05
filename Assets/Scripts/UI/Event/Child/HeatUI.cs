@@ -15,6 +15,4 @@ public class HeatUI : EventUIBase
     {
         _uiAnimator.SetBool("isHeat", false);
     }
-
-    public override void InitEventUI() { }
 }

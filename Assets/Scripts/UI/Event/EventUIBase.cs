@@ -17,5 +17,6 @@ public abstract class EventUIBase : MonoBehaviour
 
     public abstract void OnEventUI();
     public abstract void OffEventUI();
-    public abstract void InitEventUI();
+
+    public virtual void InitEventUI() { }
 }

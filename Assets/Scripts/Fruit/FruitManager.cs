@@ -256,7 +256,7 @@ public class FruitManager : MonoBehaviour
         }
     }
 
-    bool MatchOnboard()
+    bool MatchOnBoard()
     {
         _matchFinder.FindAllMatch();
         for (int i = 0; i < _width; i++)
@@ -519,7 +519,7 @@ public class FruitManager : MonoBehaviour
         RefillFruit();
         yield return new WaitForSeconds(_refillDelay);
 
-        while (MatchOnboard())
+        while (MatchOnBoard())
         {
             yield return new WaitForSeconds(_refillDelay);
             _streakValue++;
@@ -529,7 +529,7 @@ public class FruitManager : MonoBehaviour
 
         yield return new WaitForSeconds(_refillDelay);
 
-        if (MatchOnboard())
+        if (MatchOnBoard())
         {
             _streakValue++;
             CheckMatchFruit();

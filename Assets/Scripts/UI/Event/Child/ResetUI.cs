@@ -15,6 +15,4 @@ public class ResetUI : EventUIBase
     {
         _uiAnimator.SetBool("isReset", false);
     }
-
-    public override void InitEventUI() { }
 }
