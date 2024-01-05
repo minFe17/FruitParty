@@ -154,13 +154,13 @@ public class FruitManager : MonoBehaviour
             int columnMatch;
             int rowMatch;
 
-            CalcuateMatch(out creatableFruits, out columnMatch, out rowMatch, matchFruits, fruit);
+            CalculateMatch(out creatableFruits, out columnMatch, out rowMatch, matchFruits, fruit);
             returnAction += CheckCreatableBomb(creatableFruits, columnMatch, rowMatch);
         }
         return returnAction;
     }
 
-    void CalcuateMatch(out List<Fruit> creatableFruits, out int columnMatch, out int rowMatch, List<Fruit> matchFruits, Fruit fruit)
+    void CalculateMatch(out List<Fruit> creatableFruits, out int columnMatch, out int rowMatch, List<Fruit> matchFruits, Fruit fruit)
     {
         creatableFruits = new List<Fruit>();
         creatableFruits.Add(fruit);
