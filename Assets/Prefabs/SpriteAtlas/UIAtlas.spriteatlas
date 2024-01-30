@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UIAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 21300000, guid: 8c616e7142b03194abf4d08eaff11f86, type: 2}
+    - {fileID: 21300000, guid: 7176cbfc946a3a44891c755c3d2150e3, type: 2}
+    - {fileID: 21300000, guid: e247f8eb420743444a686331cbcdf7a3, type: 2}
+    - {fileID: 21300000, guid: 05703be151eada8409ed3622dd006a64, type: 2}
+    - {fileID: 21300000, guid: fb82a166273123344b85ef6ff900a59c, type: 2}
+    - {fileID: 21300000, guid: ee54c0f9cde2e8e488e92df69637135e, type: 2}
+    - {fileID: 21300000, guid: 06a9d3d18fd5edc4aae06dc1358b5c5c, type: 2}
+    - {fileID: 21300000, guid: ef53419b97957864cbf162251964a1e0, type: 2}
+    - {fileID: 21300000, guid: 887284316a5962f4a93bb97493713bae, type: 2}
+    - {fileID: 21300000, guid: c2a265397eab4cb409090780943acd26, type: 2}
+    - {fileID: 21300000, guid: 4b3fdada59b204a47b08a40b05526707, type: 2}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 887284316a5962f4a93bb97493713bae, type: 2}
+  - {fileID: 21300000, guid: 8c616e7142b03194abf4d08eaff11f86, type: 2}
+  - {fileID: 21300000, guid: 06a9d3d18fd5edc4aae06dc1358b5c5c, type: 2}
+  - {fileID: 21300000, guid: 05703be151eada8409ed3622dd006a64, type: 2}
+  - {fileID: 21300000, guid: fb82a166273123344b85ef6ff900a59c, type: 2}
+  - {fileID: 21300000, guid: c2a265397eab4cb409090780943acd26, type: 2}
+  - {fileID: 21300000, guid: ee54c0f9cde2e8e488e92df69637135e, type: 2}
+  - {fileID: 21300000, guid: 4b3fdada59b204a47b08a40b05526707, type: 2}
+  - {fileID: 21300000, guid: ef53419b97957864cbf162251964a1e0, type: 2}
+  - {fileID: 21300000, guid: e247f8eb420743444a686331cbcdf7a3, type: 2}
+  - {fileID: 21300000, guid: 7176cbfc946a3a44891c755c3d2150e3, type: 2}
+  m_PackedSpriteNamesToIndex:
+  - Time Bar
+  - Button
+  - Stop Button
+  - Play
+  - Retry
+  - ToLobby
+  - Rope
+  - WoodBoard
+  - Time Bar Base
+  - Option Panel
+  - Option Button
+  m_RenderDataMap: {}
+  m_Tag: UIAtlas
+  m_IsVariant: 0

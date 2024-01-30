@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TileAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 21300000, guid: 4a96d40e88e6f5b4c9e7b00152787a2b, type: 2}
+    - {fileID: 21300000, guid: 1ee5f639732258a4583c71a3b8e48e56, type: 2}
+    - {fileID: 21300000, guid: ddd92e608eb7d0e45861e119dd849594, type: 2}
+    - {fileID: 21300000, guid: a3e280e25d81f6a4f96196e3a1d2023e, type: 2}
+    - {fileID: 21300000, guid: 719fd2864ae34a540acb4eaea3710537, type: 2}
+    - {fileID: 21300000, guid: 377625258e92a0a488a4769d1839793a, type: 2}
+    - {fileID: 21300000, guid: fa6c1122a29a435498a930b6bbb37f43, type: 2}
+    - {fileID: 21300000, guid: af5614aa5013bd041b9540e5a1e7bea6, type: 2}
+    - {fileID: 21300000, guid: 8f254615a3bf3144f951a2737cf411d4, type: 2}
+    - {fileID: 21300000, guid: bf59ab4e913d7a14990475a2dba80271, type: 2}
+    - {fileID: 21300000, guid: b100690c82d79f04884f993acc25eb56, type: 2}
+    - {fileID: 21300000, guid: c0101aa08f72c444a8fc82fb3f9001ff, type: 2}
+    - {fileID: 21300000, guid: f3d1a5c7f07c74e4186fa1354ef9fb49, type: 2}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: ddd92e608eb7d0e45861e119dd849594, type: 2}
+  - {fileID: 21300000, guid: a3e280e25d81f6a4f96196e3a1d2023e, type: 2}
+  - {fileID: 21300000, guid: 719fd2864ae34a540acb4eaea3710537, type: 2}
+  - {fileID: 21300000, guid: fa6c1122a29a435498a930b6bbb37f43, type: 2}
+  - {fileID: 21300000, guid: 377625258e92a0a488a4769d1839793a, type: 2}
+  - {fileID: 21300000, guid: 1ee5f639732258a4583c71a3b8e48e56, type: 2}
+  - {fileID: 21300000, guid: af5614aa5013bd041b9540e5a1e7bea6, type: 2}
+  - {fileID: 21300000, guid: 8f254615a3bf3144f951a2737cf411d4, type: 2}
+  - {fileID: 21300000, guid: 4a96d40e88e6f5b4c9e7b00152787a2b, type: 2}
+  - {fileID: 21300000, guid: bf59ab4e913d7a14990475a2dba80271, type: 2}
+  - {fileID: 21300000, guid: b100690c82d79f04884f993acc25eb56, type: 2}
+  - {fileID: 21300000, guid: c0101aa08f72c444a8fc82fb3f9001ff, type: 2}
+  - {fileID: 21300000, guid: f3d1a5c7f07c74e4186fa1354ef9fb49, type: 2}
+  m_PackedSpriteNamesToIndex:
+  - LockTile
+  - Tile
+  - FirstBreakIce 1
+  - FirstBreakIce 3
+  - FirstBreakIce 2
+  - LavaTile
+  - SecondBreakIce 1
+  - SecondBreakIce 2
+  - ConcreteTile
+  - SecondBreakIce 3
+  - ThirdBreakIce 1
+  - ThirdBreakIce 2
+  - ThirdBreakIce 3
+  m_RenderDataMap: {}
+  m_Tag: TileAtlas
+  m_IsVariant: 0

@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 7201192432052599865}
   - component: {fileID: 7201192432052599814}
   m_Layer: 0
-  m_Name: sprite_ice_atlas_1
+  m_Name: FirstBreakIce 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 7201192432412110045}
   - component: {fileID: 7201192432412110042}
   m_Layer: 0
-  m_Name: sprite_ice_atlas_11
+  m_Name: ThirdBreakIce 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 7201192432528621264}
   - component: {fileID: 7201192432528621265}
   m_Layer: 0
-  m_Name: sprite_ice_atlas_6
+  m_Name: SecondBreakIce 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 7201192432773230958}
   - component: {fileID: 7201192432773230959}
   m_Layer: 0
-  m_Name: sprite_ice_atlas_10
+  m_Name: ThirdBreakIce 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -449,7 +449,7 @@ GameObject:
   - component: {fileID: 7201192432801082235}
   - component: {fileID: 7201192432801082232}
   m_Layer: 0
-  m_Name: sprite_ice_atlas_0
+  m_Name: FirstBreakIce 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -533,7 +533,7 @@ GameObject:
   - component: {fileID: 7201192433152625198}
   - component: {fileID: 7201192433152625199}
   m_Layer: 0
-  m_Name: sprite_ice_atlas_12
+  m_Name: ThirdBreakIce 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -617,7 +617,7 @@ GameObject:
   - component: {fileID: 7201192433400904001}
   - component: {fileID: 7201192433400904014}
   m_Layer: 0
-  m_Name: sprite_ice_atlas_5
+  m_Name: SecondBreakIce 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -701,7 +701,7 @@ GameObject:
   - component: {fileID: 7201192433424773979}
   - component: {fileID: 7201192433424773976}
   m_Layer: 0
-  m_Name: sprite_ice_atlas_2
+  m_Name: FirstBreakIce 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -785,7 +785,7 @@ GameObject:
   - component: {fileID: 7201192433692800348}
   - component: {fileID: 7201192433692800349}
   m_Layer: 0
-  m_Name: sprite_ice_atlas_7
+  m_Name: SecondBreakIce 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
