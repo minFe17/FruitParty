@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using Utils;
 
@@ -5,7 +6,9 @@ public class SoundManager : MonoBehaviour
 {
     // ╫л╠шео
     CSVManager _csvManager;
+    AddressableManager _addressableManager;
     SoundController _soundController;
+    GameObject _soundControllerPrefab;
 
     int _index;
     float _bgmSound;
@@ -14,24 +17,21 @@ public class SoundManager : MonoBehaviour
     public float BgmSound { get { return _bgmSound; } set { _bgmSound = value; } }
     public float SFXSound { get { return _sfxSound; } set { _sfxSound = value; } }
 
-    public void Init()
+    public async Task Init()
     {
+        _addressableManager = GenericSingleton<AddressableManager>.Instance;
+        _soundControllerPrefab = await _addressableManager.GetAddressableAsset<GameObject>("SoundController");
         _csvManager = GenericSingleton<CSVManager>.Instance;
         _csvManager.ReadSoundData();
-
-        _index = 0;
-        if (_soundController == null)
-            CreateSoundController();
-
-        ChangeBGMVolumn();
-        ChangeSFXVolumn();
     }
 
-    void CreateSoundController()
+    public void CreateSoundController()
     {
-        GameObject temp = Resources.Load("Prefabs/SoundController") as GameObject;
-        GameObject soundController = Instantiate(temp);
+        _index = 0;
+        GameObject soundController = Instantiate(_soundControllerPrefab);
         _soundController = soundController.GetComponent<SoundController>();
+        ChangeBGMVolumn();
+        ChangeSFXVolumn();
     }
 
     public void StartBGM(AudioClip audio)

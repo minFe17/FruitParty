@@ -1,18 +1,24 @@
 using UnityEngine;
+using Utils;
 
 public class Lobby : MonoBehaviour
 {
     [SerializeField] Camera _mainCamera;
 
-    void Start()
+    async void Start()
     {
+        await GenericSingleton<LoadAsset>.Instance.Init();
         CreateLobbyUI();
+        CreateSoundController();
     }
 
     void CreateLobbyUI()
     {
-        GameObject temp = Resources.Load("Prefabs/UI/LobbyUI") as GameObject;
-        GameObject lobbyUI = Instantiate(temp);
-        lobbyUI.GetComponent<Canvas>().worldCamera = _mainCamera;
+        GenericSingleton<UIManager>.Instance.CreateLobbyUI(_mainCamera);
+    }
+
+    void CreateSoundController()
+    {
+        GenericSingleton<SoundManager>.Instance.CreateSoundController();
     }
 }

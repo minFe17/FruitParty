@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using Utils;
 
 public class AudioClipManager : MonoBehaviour
 {
@@ -12,22 +14,31 @@ public class AudioClipManager : MonoBehaviour
     AudioClip _buttonSFX;
     AudioClip _gameOverSFX;
 
+    AddressableManager _addressableManager;
+
     public AudioClip InGameBGM { get => _inGameBGM; }
     public List<AudioClip> FruitMatchSFX { get => _fruitMatchSFX; }
     public AudioClip ButtonSfX { get => _buttonSFX; }
     public AudioClip GameOverSFX { get => _gameOverSFX; }
 
-    public void Init()
+    public async Task Init()
     {
-        _inGameBGM = Resources.Load("Prefabs/AudioClip/BGM") as AudioClip;
-        AddMatchAudio();
-        _buttonSFX = Resources.Load("Prefabs/AudioClip/Button") as AudioClip;
-        _gameOverSFX = Resources.Load("Prefabs/AudioClip/GameOver") as AudioClip;
+        _addressableManager = GenericSingleton<AddressableManager>.Instance;
+        await LoadAsset();
+        await AddMatchAudio();
     }
 
-    void AddMatchAudio()
+    async Task LoadAsset()
     {
-        _fruitMatchSFX.Add(Resources.Load("Prefabs/AudioClip/FruitMatch/FruitMatch1") as AudioClip);
-        _fruitMatchSFX.Add(Resources.Load("Prefabs/AudioClip/FruitMatch/FruitMatch2") as AudioClip);
+        _inGameBGM = await _addressableManager.GetAddressableAsset<AudioClip>("BGM");
+        _buttonSFX = await _addressableManager.GetAddressableAsset<AudioClip>("Button");
+        _gameOverSFX = await _addressableManager.GetAddressableAsset<AudioClip>("GameOver");
+        await AddMatchAudio();
+    }
+
+    async Task AddMatchAudio()
+    {
+        _fruitMatchSFX.Add(await _addressableManager.GetAddressableAsset<AudioClip>("FruitMatch1"));
+        _fruitMatchSFX.Add(await _addressableManager.GetAddressableAsset<AudioClip>("FruitMatch2"));
     }
 }

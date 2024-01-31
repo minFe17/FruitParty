@@ -13,5 +13,8 @@ public class LoadAsset : MonoBehaviour
     async Task LoadLobbyAsset()
     {
         await GenericSingleton<SpriteManager>.Instance.Init();
+        await GenericSingleton<UIManager>.Instance.LoadAsset();
+        await GenericSingleton<SoundManager>.Instance.Init();
+        await GenericSingleton<AudioClipManager>.Instance.Init();
     }
 }
