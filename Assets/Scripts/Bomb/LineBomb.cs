@@ -1,12 +1,23 @@
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public class LineBomb : Bomb
 {
+    StringBuilder _stringBuilder = new StringBuilder();
+
     protected override void Awake()
     {
         base.Awake();
         _bombType = EBombType.LineBomb;
+    }
+
+    protected override void SetSprite()
+    {
+        string color = _colorType.ToString();
+        _stringBuilder.Append(color);
+        _stringBuilder.Append("LineBomb");
+        _spriteRenderer.sprite = _spriteManager.BombAtlas.GetSprite(_stringBuilder.ToString());
     }
 
     public override void OnEffect()

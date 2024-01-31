@@ -8,6 +8,11 @@ public class ShuffleUI : EventUIBase
         _eventUIManager.EventUI.Add(EEventType.Shuffle, this);
     }
 
+    protected override void SetSprite()
+    {
+        _eventSprite.sprite = _eventAtlas.GetSprite("Shuffle");
+    }
+
     public override void OnEventUI()
     {
         _uiAnimator.SetBool("isShuffle", true);

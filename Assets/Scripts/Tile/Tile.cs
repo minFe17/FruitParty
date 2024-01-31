@@ -1,8 +1,11 @@
 using UnityEngine;
+using UnityEngine.U2D;
 using Utils;
 
 public abstract class Tile : MonoBehaviour
 {
+    protected SpriteRenderer _spriteRenderer;
+    protected SpriteAtlas _tileAtlas;
     protected TileManager _tileManager;
     protected TileType _tileType;
     protected int _x;
@@ -10,9 +13,16 @@ public abstract class Tile : MonoBehaviour
 
     public TileType TileType { get => _tileType; }
 
+    private void Awake()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _tileAtlas = GenericSingleton<SpriteManager>.Instance.TileAtlas;
+        _tileManager = GenericSingleton<TileManager>.Instance;
+        SetSprite();
+    }
+
     public virtual void Init(TileType tileType, int x, int y)
     {
-        _tileManager = GenericSingleton<TileManager>.Instance;
         _tileType = tileType;
         _x = x;
         _y = y;
@@ -20,5 +30,6 @@ public abstract class Tile : MonoBehaviour
 
     public virtual void TakeDamage() { }
 
+    protected abstract void SetSprite();
     public abstract void DestroyTile();
 }

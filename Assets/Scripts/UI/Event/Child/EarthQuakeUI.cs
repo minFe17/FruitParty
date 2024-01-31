@@ -10,6 +10,11 @@ public class EarthQuakeUI : EventUIBase
         _uiTranform = GetComponent<RectTransform>();
     }
 
+    protected override void SetSprite()
+    {
+        _eventSprite.sprite = _eventAtlas.GetSprite("EarthQuake");
+    }
+
     public override void OnEventUI()
     {
         _uiAnimator.SetBool("isEarthQuake", true);

@@ -5,64 +5,34 @@ using Utils;
 public class BombManager : MonoBehaviour
 {
     // ╫л╠шео
-    List<GameObject> _lineBombs = new List<GameObject>();
-    List<GameObject> _squareBombs = new List<GameObject>();
-
+    GameObject _lineBomb;
+    GameObject _squareBomb;
     GameObject _fruitBomb;
+
     FruitManager _fruitManager;
     TileManager _tileManager;
+    MatchFinder _matchFinder;
+    AddressableManager _addressableManager;
     ELineBombDirectionType _lineBombDirection;
-
-    void Start()
-    {
-        _fruitManager = GenericSingleton<FruitManager>.Instance;
-        _tileManager = GenericSingleton<TileManager>.Instance;
-    }
-
-    public List<GameObject> LineBombs
-    {
-        get
-        {
-            if (_lineBombs.Count == 0)
-                AddLineBombs();
-            return _lineBombs;
-        }
-    }
-
-    public List<GameObject> SquareBombs
-    {
-        get
-        {
-            if (_squareBombs.Count == 0)
-                AddSquareBombs();
-            return _squareBombs;
-        }
-    }
-
-    public GameObject FruitBomb
-    {
-        get
-        {
-            if (_fruitBomb == null)
-                _fruitBomb = Resources.Load("Prefabs/Bomb/FruitBomb") as GameObject;
-            return _fruitBomb;
-        }
-    }
 
     public ELineBombDirectionType LineBombDirection { get => _lineBombDirection; set => _lineBombDirection = value; }
 
-
-    void AddLineBombs()
+    public void Init()
     {
-        for (int i = 0; i < (int)EColorType.Max; i++)
-            _lineBombs.Add(Resources.Load($"Prefabs/Bomb/LineBomb/{(EColorType)i}") as GameObject);
+        _fruitManager = GenericSingleton<FruitManager>.Instance;
+        _tileManager = GenericSingleton<TileManager>.Instance;
+        _matchFinder = GenericSingleton<MatchFinder>.Instance;
+        _addressableManager = GenericSingleton<AddressableManager>.Instance;
+        LoadAsset();
     }
 
-    void AddSquareBombs()
+    async void LoadAsset()
     {
-        for (int i = 0; i < (int)EColorType.Max; i++)
-            _squareBombs.Add(Resources.Load($"Prefabs/Bomb/SquareBomb/{(EColorType)i}") as GameObject);
+        _lineBomb = await _addressableManager.GetAddressableAsset<GameObject>("LineBomb");
+        _squareBomb = await _addressableManager.GetAddressableAsset<GameObject>("SquareBomb");
+        _fruitBomb = await _addressableManager.GetAddressableAsset<GameObject>("FruitBomb");
     }
+
 
     void CheckConcreteTile(int column, int row)
     {
@@ -79,6 +49,37 @@ public class BombManager : MonoBehaviour
             _tileManager.DestroyTile(_tileManager.LavaTiles[column, row]);
             _tileManager.CreateMoreLavaTile = false;
         }
+    }
+
+    void MakeBomb(GameObject bombGameObject, Fruit fruit)
+    {
+        Fruit bomb = bombGameObject.GetComponent<Fruit>();
+        _fruitManager.AllFruits[fruit.Column, fruit.Row] = bomb;
+        bomb.Column = fruit.Column;
+        bomb.Row = fruit.Row;
+        if (bomb.BombType != EBombType.FruitBomb)
+            bomb.ColorType = fruit.ColorType;
+        _matchFinder.MatchFruits.Clear();
+        Destroy(this.gameObject);
+    }
+
+    public void CreateBomb(EBombType bombType, Fruit fruit)
+    {
+        GameObject temp = null;
+        switch (bombType)
+        {
+            case EBombType.LineBomb:
+                temp = Instantiate(_lineBomb, fruit.transform.position, Quaternion.identity);
+                break;
+            case EBombType.SquareBomb:
+                temp = Instantiate(_squareBomb, fruit.transform.position, Quaternion.identity);
+                break;
+            case EBombType.FruitBomb:
+                temp = Instantiate(_fruitBomb, fruit.transform.position, Quaternion.identity);
+                break;
+        }
+
+        MakeBomb(temp, fruit);
     }
 
     public List<Fruit> GetColumnFruits(int column)

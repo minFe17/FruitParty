@@ -8,6 +8,11 @@ public class VolcanoUI : EventUIBase
         _eventUIManager.EventUI.Add(EEventType.Volcano, this);
     }
 
+    protected override void SetSprite()
+    {
+        _eventSprite.sprite = _eventAtlas.GetSprite("Volcano");
+    }
+
     public override void OnEventUI()
     {
         _uiAnimator.SetBool("isVolcano", true);

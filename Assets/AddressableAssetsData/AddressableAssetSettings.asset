@@ -44,6 +44,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 931b452f706a0154b9911144c74fdea4, type: 2}
   - {fileID: 11400000, guid: 09baeb67ee5738a48a7770ca29776de3, type: 2}
   - {fileID: 11400000, guid: fd5eb7492ad22f34b95e4dbae0f2c26f, type: 2}
+  - {fileID: 11400000, guid: b1578905c54256f44b16cb34ac2c50b4, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -85,6 +86,8 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - Sprite
+    - SpriteAtlas
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 799b2dd0dfb171143bdd9c59bc22a230, type: 2}

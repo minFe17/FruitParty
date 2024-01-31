@@ -6,6 +6,11 @@ public class MarketDayUI : EventUIBase
         _eventUIManager.EventUI.Add(EEventType.MarketDay, this);
     }
 
+    protected override void SetSprite()
+    {
+        _eventSprite.sprite = _eventAtlas.GetSprite("MarketDay");
+    }
+
     public override void OnEventUI()
     {
         _uiAnimator.SetBool("isMarketDay", true);

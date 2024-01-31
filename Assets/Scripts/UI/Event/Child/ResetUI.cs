@@ -6,6 +6,11 @@ public class ResetUI : EventUIBase
         _eventUIManager.EventUI.Add(EEventType.Reset, this);
     }
 
+    protected override void SetSprite()
+    {
+        _eventSprite.sprite = _eventAtlas.GetSprite("Reser");
+    }
+
     public override void OnEventUI()
     {
         _uiAnimator.SetBool("isReset", true);

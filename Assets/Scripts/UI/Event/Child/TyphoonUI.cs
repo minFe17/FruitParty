@@ -6,6 +6,11 @@ public class TyphoonUI : EventUIBase
         _eventUIManager.EventUI.Add(EEventType.Typhoon, this);
     }
 
+    protected override void SetSprite()
+    {
+        _eventSprite.sprite = _eventAtlas.GetSprite("Typhoon");
+    }
+
     public override void OnEventUI()
     {
         _uiAnimator.SetBool("isTyphoon", true);

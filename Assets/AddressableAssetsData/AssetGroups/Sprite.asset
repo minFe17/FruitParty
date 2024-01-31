@@ -12,11 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
   m_Name: Sprite
   m_EditorClassIdentifier: 
-  m_GroupName: Packed Assets
+  m_GroupName: Sprite
   m_Data:
     m_SerializedData: []
   m_GUID: 10dff468e7364bb41a42ac233f7b2fb0
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: c51468c8d85480e41a5d73ce5e4612bf
+    m_Address: BombAtlas
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SpriteAtlas
+  - m_GUID: ba955622676380c429c183219facc6e1
+    m_Address: EventAtlas
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SpriteAtlas
+  - m_GUID: b65455fae029bec49be3d7d5a25875ee
+    m_Address: FruitAtlas
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SpriteAtlas
+  - m_GUID: 3d0cb5d183bec1645ac632e939d3d325
+    m_Address: TileAtlas
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SpriteAtlas
+  - m_GUID: 5beeb9977b3bdd94cb01325f11c792ce
+    m_Address: UIAtlas
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SpriteAtlas
+  - m_GUID: 7cef551eca739ea479759bd628001a76
+    m_Address: BackgroundSprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 5c2765e3d75a4fd409a2ddeae1925e56, type: 2}
   m_SchemaSet:

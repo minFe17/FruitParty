@@ -13,7 +13,6 @@ public class SpriteManager : MonoBehaviour
     SpriteAtlas _tileAtlas;
     SpriteAtlas _uiAtlas;
     SpriteAtlas _eventAtals;
-
     Sprite _backgroundSprite;
 
     public SpriteAtlas FruitAtlas { get => _fruitAtlas; }
@@ -22,7 +21,7 @@ public class SpriteManager : MonoBehaviour
     public SpriteAtlas UIAtlas { get => _uiAtlas; }
     public SpriteAtlas EventAtlas { get => _eventAtals; }
     public Sprite BackgroundSprite { get => _backgroundSprite; }
- 
+
     public async Task Init()
     {
         _fruitAtlas = await LoadAsset<SpriteAtlas>("FruitAtlas");

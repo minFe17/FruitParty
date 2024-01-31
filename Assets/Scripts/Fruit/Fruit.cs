@@ -4,13 +4,16 @@ using Utils;
 
 public class Fruit : MonoBehaviour
 {
+    [SerializeField] protected SpriteRenderer _spriteRenderer;
     [SerializeField] EFruitType _fruitType;
-    [SerializeField] protected EColorType _color;
+    [SerializeField] protected EColorType _colorType;
     [SerializeField] float _moveSpeed;
 
     protected EBombType _bombType;
+    protected FruitManager _fruitManager;
     protected MatchFinder _matchFinder;
     protected BombManager _bombManager;
+    protected SpriteManager _spriteManager;
     protected Fruit _otherFruit;
 
     protected int _column;
@@ -18,7 +21,6 @@ public class Fruit : MonoBehaviour
     protected bool _isMatch;
     protected bool _isBomb;
 
-    FruitManager _fruitManager;
     HintManager _hintManager;
     GameManager _gameManager;
     TileManager _tileManager;
@@ -37,7 +39,7 @@ public class Fruit : MonoBehaviour
     bool _onEffect;
 
     public EFruitType FruitType { get => _fruitType; }
-    public EColorType ColorType { get => _color; }
+    public EColorType ColorType { get => _colorType; set => _colorType = value; }
     public EBombType BombType { get => _bombType; }
     public Fruit OtherFruit { get => _otherFruit; set => _otherFruit = value; }
     public int Column { get => _column; set => _column = value; }
@@ -47,7 +49,7 @@ public class Fruit : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Init();
+        SetManager();
         _destroyEffect = Resources.Load("Prefabs/Effect/DestroyEffect") as GameObject;
     }
 
@@ -58,11 +60,25 @@ public class Fruit : MonoBehaviour
         DestroyFruit();
     }
 
-    void Init()
+    protected virtual void SetSprite()
     {
+        string fruit = _fruitType.ToString();
+        _spriteRenderer.sprite = _spriteManager.FruitAtlas.GetSprite(fruit);
+    }
+
+    public virtual void Init()
+    {
+        SetSprite();
+        _isMatch = false;
+        _onEffect = false;
+    }
+
+    void SetManager()
+    {
+        _fruitManager = GenericSingleton<FruitManager>.Instance;
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
         _bombManager = GenericSingleton<BombManager>.Instance;
-        _fruitManager = GenericSingleton<FruitManager>.Instance;
+        _spriteManager = GenericSingleton<SpriteManager>.Instance;
         _hintManager = GenericSingleton<HintManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;
@@ -181,34 +197,6 @@ public class Fruit : MonoBehaviour
     {
         if (_fruitManager.AllFruits[_column, _row] != this)
             Destroy(this.gameObject);
-    }
-
-    void MakeBomb(GameObject bombGameObject)
-    {
-        Fruit bomb = bombGameObject.GetComponent<Fruit>();
-        GenericSingleton<FruitManager>.Instance.AllFruits[_column, _row] = bomb;
-        bomb.Column = _column;
-        bomb.Row = _row;
-        _matchFinder.MatchFruits.Clear();
-        Destroy(this.gameObject);
-    }
-
-    public void MakeLineBomb()
-    {
-        GameObject temp = Instantiate(_bombManager.LineBombs[(int)_color], transform.position, Quaternion.identity);
-        MakeBomb(temp);
-    }
-
-    public void MakeSquareBomb()
-    {
-        GameObject temp = Instantiate(_bombManager.SquareBombs[(int)_color], new Vector2(_column, _row), Quaternion.identity);
-        MakeBomb(temp);
-    }
-
-    public void MakeFruitBomb()
-    {
-        GameObject temp = Instantiate(_bombManager.FruitBomb, transform.position, Quaternion.identity);
-        MakeBomb(temp);
     }
 
     void OnMouseDown()

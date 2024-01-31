@@ -15,7 +15,7 @@ public class ScoreManager : MonoBehaviour
     void ShowScore()
     {
         UIManager uiManager = GenericSingleton<UIManager>.Instance;
-        uiManager.UI.ShowScore();
+        uiManager.GameUIPanel.ShowScore();
     }
 
     void CheckEvent()

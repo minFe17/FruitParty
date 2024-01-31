@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Bomb
+  m_EditorClassIdentifier: 
+  m_GroupName: Bomb
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 803e60d62ea0c304286db4aea634745f
+  m_SerializeEntries:
+  - m_GUID: 3ebb8ec85be2c134facbb717a0f87e9d
+    m_Address: FruitBomb
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6b890312b22f3e342ada84cb4dd3748a
+    m_Address: LineBomb
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5330a70bd82a18d4b9649c35bea80177
+    m_Address: SquareBomb
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 5c2765e3d75a4fd409a2ddeae1925e56, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: d89c7c5594c16af4c8f78815c94a05a0, type: 2}
+    - {fileID: 11400000, guid: 6a5d29003bcd8ec4e93f71f2fb0800ff, type: 2}

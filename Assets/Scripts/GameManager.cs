@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
         _time = 0f;
         _currentTime = 30f;
         _isGameStart = false;
-        _uiManager.UI.ShowRemainTime();
+        _uiManager.GameUIPanel.ShowRemainTime();
     }
 
     void CheckTime()
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
                 {
                     _currentTime -= 1f;
                     _time = 0f;
-                    _uiManager.UI.ShowRemainTime();
+                    _uiManager.GameUIPanel.ShowRemainTime();
                 }
                 if (_currentTime <= 0)
                     GameOver();
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
         _currentTime = _currentTime + (_addTimeAmount * streak);
         if (_currentTime >= _maxTime)
             _currentTime = _maxTime;
-        _uiManager.UI.ShowRemainTime();
+        _uiManager.GameUIPanel.ShowRemainTime();
     }
 }
 

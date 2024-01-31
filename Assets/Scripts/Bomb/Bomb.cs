@@ -2,9 +2,11 @@ public abstract class Bomb : Fruit
 {
     protected bool _isUse;
 
-    void Start()
+    public override void Init()
     {
+        base.Init();
         _isBomb = true;
+        _isUse = false;
     }
 
     protected override void Update()

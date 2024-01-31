@@ -6,6 +6,11 @@ public class LavaTile : Tile
             Destroy(this.gameObject);
     }
 
+    protected override void SetSprite()
+    {
+        _spriteRenderer.sprite = _tileAtlas.GetSprite("LavaTile");
+    }
+
     public override void DestroyTile()
     {
         _tileManager.LavaTiles[_x, _y] = null;

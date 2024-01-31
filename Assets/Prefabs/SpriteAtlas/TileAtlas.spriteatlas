@@ -51,13 +51,13 @@ SpriteAtlas:
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: ddd92e608eb7d0e45861e119dd849594, type: 2}
-  - {fileID: 21300000, guid: a3e280e25d81f6a4f96196e3a1d2023e, type: 2}
-  - {fileID: 21300000, guid: 719fd2864ae34a540acb4eaea3710537, type: 2}
   - {fileID: 21300000, guid: fa6c1122a29a435498a930b6bbb37f43, type: 2}
+  - {fileID: 21300000, guid: a3e280e25d81f6a4f96196e3a1d2023e, type: 2}
   - {fileID: 21300000, guid: 377625258e92a0a488a4769d1839793a, type: 2}
+  - {fileID: 21300000, guid: 719fd2864ae34a540acb4eaea3710537, type: 2}
+  - {fileID: 21300000, guid: 8f254615a3bf3144f951a2737cf411d4, type: 2}
   - {fileID: 21300000, guid: 1ee5f639732258a4583c71a3b8e48e56, type: 2}
   - {fileID: 21300000, guid: af5614aa5013bd041b9540e5a1e7bea6, type: 2}
-  - {fileID: 21300000, guid: 8f254615a3bf3144f951a2737cf411d4, type: 2}
   - {fileID: 21300000, guid: 4a96d40e88e6f5b4c9e7b00152787a2b, type: 2}
   - {fileID: 21300000, guid: bf59ab4e913d7a14990475a2dba80271, type: 2}
   - {fileID: 21300000, guid: b100690c82d79f04884f993acc25eb56, type: 2}
@@ -65,18 +65,18 @@ SpriteAtlas:
   - {fileID: 21300000, guid: f3d1a5c7f07c74e4186fa1354ef9fb49, type: 2}
   m_PackedSpriteNamesToIndex:
   - LockTile
+  - FirstBreakIce3
   - Tile
-  - FirstBreakIce 1
-  - FirstBreakIce 3
-  - FirstBreakIce 2
+  - FirstBreakIce2
+  - FirstBreakIce1
+  - SecondBreakIce2
   - LavaTile
-  - SecondBreakIce 1
-  - SecondBreakIce 2
+  - SecondBreakIce1
   - ConcreteTile
-  - SecondBreakIce 3
-  - ThirdBreakIce 1
-  - ThirdBreakIce 2
-  - ThirdBreakIce 3
+  - SecondBreakIce3
+  - ThirdBreakIce1
+  - ThirdBreakIce2
+  - ThirdBreakIce3
   m_RenderDataMap: {}
   m_Tag: TileAtlas
   m_IsVariant: 0

@@ -16,7 +16,35 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: e16fcc9b26f59b948ae4cc17de67c3ca
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: e1a4613b3e3698547ba85c519cb2d1ce
+    m_Address: Carrot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5315c2b81ebeb53499cbae771fa97fa4
+    m_Address: Lemon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9cc220df01d8712418dad78dcdc2d59f
+    m_Address: Orange
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4ceafe78d27f1454abc58a9b99eee483
+    m_Address: StarFruit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b9096d16295f5a64dafb2e1f8c321a14
+    m_Address: Strawberry
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5de41e996eb3e554aa8afb59c9593a44
+    m_Address: Tomato
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 58b38ffea72c38c40bf376d28346ca38
+    m_Address: Watermelon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 5c2765e3d75a4fd409a2ddeae1925e56, type: 2}
   m_SchemaSet:

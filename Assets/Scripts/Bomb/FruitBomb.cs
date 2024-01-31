@@ -1,13 +1,14 @@
-using Utils;
-
 public class FruitBomb : Bomb
 {
-    FruitManager _fruitManager;
     protected override void Awake()
     {
         base.Awake();
         _bombType = EBombType.FruitBomb;
-        _fruitManager = GenericSingleton<FruitManager>.Instance;
+    }
+
+    protected override void SetSprite()
+    {
+        _spriteRenderer.sprite = _spriteManager.BombAtlas.GetSprite("FruitBomb");
     }
 
     public override void OnEffect()
