@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: SoundController
+  m_EditorClassIdentifier: 
+  m_GroupName: SoundController
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 2072bb6deb3300047b2b9ff774418400
+  m_SerializeEntries:
+  - m_GUID: e2c33199e966d0f43a53edf7aedb9fd5
+    m_Address: SoundController
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 5c2765e3d75a4fd409a2ddeae1925e56, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 30cc47e70c1338a40943b15f3f6e54f3, type: 2}
+    - {fileID: 11400000, guid: 4918c90f43b12c240acef92dc641ca47, type: 2}

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: AudioClip
+  m_EditorClassIdentifier: 
+  m_GroupName: AudioClip
+  m_Data:
+    m_SerializedData: []
+  m_GUID: ece6168245937b946b78b0cf6f1805ba
+  m_SerializeEntries:
+  - m_GUID: 530cd387e03eb9446accfc066cc911cc
+    m_Address: BGM
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 17428338bfb116243b2b931df29c83df
+    m_Address: Button
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7765b1ba8c9a76e4188e66b0da635b8c
+    m_Address: GameOver
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 10ccfd507be197e42975f730c807d108
+    m_Address: FruitMatch1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a7078188460bad642b0e8d0d592d449f
+    m_Address: FruitMatch2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 5c2765e3d75a4fd409a2ddeae1925e56, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 26e41cb4b7390d7439d7071b7492f7a0, type: 2}
+    - {fileID: 11400000, guid: a7f5cffb57a59814bbc8dc95f2f5941a, type: 2}

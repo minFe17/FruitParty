@@ -5,7 +5,6 @@ public class AudioClipManager : MonoBehaviour
 {
     // ╫л╠шео
     [Header("BGM")]
-    AudioClip _lobbyBGM;
     AudioClip _inGameBGM;
 
     [Header("SFX")]
@@ -13,7 +12,6 @@ public class AudioClipManager : MonoBehaviour
     AudioClip _buttonSFX;
     AudioClip _gameOverSFX;
 
-    public AudioClip LobbyBGM { get => _lobbyBGM; }
     public AudioClip InGameBGM { get => _inGameBGM; }
     public List<AudioClip> FruitMatchSFX { get => _fruitMatchSFX; }
     public AudioClip ButtonSfX { get => _buttonSFX; }
@@ -21,7 +19,6 @@ public class AudioClipManager : MonoBehaviour
 
     public void Init()
     {
-        _lobbyBGM = Resources.Load("prefabs/AudioClip/LobbyBGM") as AudioClip;
         _inGameBGM = Resources.Load("Prefabs/AudioClip/BGM") as AudioClip;
         AddMatchAudio();
         _buttonSFX = Resources.Load("Prefabs/AudioClip/Button") as AudioClip;

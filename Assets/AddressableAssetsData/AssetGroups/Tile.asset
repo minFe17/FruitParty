@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Tile
+  m_EditorClassIdentifier: 
+  m_GroupName: Tile
+  m_Data:
+    m_SerializedData: []
+  m_GUID: b043dc2e7e3836649ae5d62fb9134109
+  m_SerializeEntries:
+  - m_GUID: dc72fc96755ad774499ae5e687b25596
+    m_Address: ConcreteTile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f4a3ac955eb5ba14d841b93ca04c579f
+    m_Address: IceTile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 587744866b2bafe4ebdcaf3f15df424c
+    m_Address: LavaTile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 23e4f559f55bc1742887c9fd1b33f16d
+    m_Address: LockTile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6fb468bb13539c541bd1ddd4201f1ddc
+    m_Address: Tile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 5c2765e3d75a4fd409a2ddeae1925e56, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: ba77508fed9388f4a8cfccea9716835a, type: 2}
+    - {fileID: 11400000, guid: dc3b606725341ae41a705fcf184f3851, type: 2}
