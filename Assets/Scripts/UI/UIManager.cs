@@ -22,8 +22,7 @@ public class UIManager : MonoBehaviour
 
     public void CreateUI(Camera camera)
     {
-        GameObject temp = Resources.Load("Prefabs/UI/UI") as GameObject;
-        GameObject ui = Instantiate(temp, transform.position, Quaternion.identity);
+        GameObject ui = Instantiate(_uiPrefab, transform.position, Quaternion.identity);
         ui.GetComponent<UI>().Init();
         ui.GetComponent<Canvas>().worldCamera = camera;
         ui.GetComponent<Canvas>().sortingLayerName = "UI";

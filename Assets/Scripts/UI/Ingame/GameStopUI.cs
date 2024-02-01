@@ -8,7 +8,7 @@ public class GameStopUI : MonoBehaviour
 {
     [SerializeField]Animator _uiAnimator;
 
-    [Header("SPrite")]
+    [Header("Sprite")]
     [SerializeField] Image _gameStopPanel;
     [SerializeField] Image _playButton;
     [SerializeField] Image _playImage;

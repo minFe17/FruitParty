@@ -20,7 +20,7 @@ public class UI : MonoBehaviour
 
     public Animator UIAnimator { get => _animator; }
 
-    void Start()
+    void Awake()
     {
         _eventUIManager = GenericSingleton<EventUIManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
@@ -45,7 +45,7 @@ public class UI : MonoBehaviour
 
     void StartBGM()
     {
-        _soundManager.Init();
+        _soundManager.CreateSoundController();
         _soundManager.StartBGM(_audioClipManager.InGameBGM);
     }
 

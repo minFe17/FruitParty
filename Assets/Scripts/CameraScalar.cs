@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class CameraScalar : MonoBehaviour
 {
+    [SerializeField] Camera _camera;
     [Header("Camera Size")]
     [SerializeField] int _displayWidth;
     [SerializeField] int _displawyHeight;
@@ -17,9 +18,9 @@ public class CameraScalar : MonoBehaviour
     {
         _aspectRatio = _displawyHeight / (float)_displayWidth;
         if (width >= height)
-            Camera.main.orthographicSize = (width / 2 + _padding) / _aspectRatio;
+            _camera.orthographicSize = (width / 2 + _padding) / _aspectRatio;
         else
-            Camera.main.orthographicSize = height / 2 + _padding;
+            _camera.orthographicSize = height / 2 + _padding;
     }
 
     public void SettingCameraPosition(int width, int height)

@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b926bdf5e502b3c4cb06e007de3dda00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _camera: {fileID: 804093443806864439}
   _width: 7
   _height: 10
   _offset: 20
@@ -383,6 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb411a23ae7b663448b3e8435360870b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _camera: {fileID: 804093443806864437}
   _displayWidth: 16
   _displawyHeight: 10
   _padding: 3

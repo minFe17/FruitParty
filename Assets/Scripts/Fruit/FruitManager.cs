@@ -19,6 +19,7 @@ public class FruitManager : MonoBehaviour
     EventManager _eventManager;
     SoundManager _soundManager;
     AudioClipManager _audioClipManager;
+    AddressableManager _addressableManager;
     Fruit _currentFruit;
 
     int _width;
@@ -54,10 +55,12 @@ public class FruitManager : MonoBehaviour
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
     }
 
-    void AddFruit()
+    public async void LoadAsset()
     {
+        if (_addressableManager == null)
+            _addressableManager = GenericSingleton<AddressableManager>.Instance;
         for (int i = 0; i < (int)EFruitType.Max; i++)
-            _fruits.Add(Resources.Load($"Prefabs/Fruits/{(EFruitType)i}") as GameObject);
+            _fruits.Add(await _addressableManager.GetAddressableAsset<GameObject>($"{(EFruitType)i}"));
     }
 
     void DestroyMatchFruit(int column, int row)
@@ -218,7 +221,7 @@ public class FruitManager : MonoBehaviour
         {
             if (creatableFruits[i] == _currentFruit)
             {
-                if (columnMatch == 4 || rowMatch == 4)
+                if (columnMatch == 3 || rowMatch == 3)
                 {
                     returnAction += _bombManager.CreateBomb;
                     bombType = EBombType.LineBomb;
@@ -226,34 +229,34 @@ public class FruitManager : MonoBehaviour
                 }
                 else if (columnMatch == 2 && rowMatch == 2)
                 {
-                    returnAction += GenericSingleton<BombManager>.Instance.CreateBomb;
+                    returnAction += _bombManager.CreateBomb;
                     bombType = EBombType.SquareBomb;
                     targetFruit = _currentFruit;
                 }
-                else if (columnMatch == 3 || rowMatch == 3)
+                else if (columnMatch == 4 || rowMatch == 4)
                 {
-                    returnAction += GenericSingleton<BombManager>.Instance.CreateBomb;
+                    returnAction += _bombManager.CreateBomb;
                     bombType = EBombType.FruitBomb;
                     targetFruit = _currentFruit;
                 }
             }
             if (creatableFruits[i] == _currentFruit.OtherFruit)
             {
-                if (columnMatch == 4 || rowMatch == 4)
+                if (columnMatch == 3 || rowMatch == 3)
                 {
-                    returnAction += GenericSingleton<BombManager>.Instance.CreateBomb;
+                    returnAction += _bombManager.CreateBomb;
                     bombType = EBombType.LineBomb;
                     targetFruit = _currentFruit.OtherFruit;
                 }
                 else if (columnMatch == 2 && rowMatch == 2)
                 {
-                    returnAction += GenericSingleton<BombManager>.Instance.CreateBomb;
+                    returnAction += _bombManager.CreateBomb;
                     bombType = EBombType.SquareBomb;
                     targetFruit = _currentFruit.OtherFruit;
                 }
-                else if (columnMatch == 3 || rowMatch == 3)
+                else if (columnMatch == 4 || rowMatch == 4)
                 {
-                    returnAction += GenericSingleton<BombManager>.Instance.CreateBomb;
+                    returnAction += _bombManager.CreateBomb;
                     bombType = EBombType.FruitBomb;
                     targetFruit = _currentFruit.OtherFruit;
                 }
@@ -401,8 +404,6 @@ public class FruitManager : MonoBehaviour
 
     public void CreateFruit(Transform parent, Vector2 position)
     {
-        if (_fruits.Count == 0)
-            AddFruit();
         int fruitNumber = 0;
         int iterations = 0;
         int x = (int)position.x;

@@ -33,7 +33,6 @@ public class AudioClipManager : MonoBehaviour
         _inGameBGM = await _addressableManager.GetAddressableAsset<AudioClip>("BGM");
         _buttonSFX = await _addressableManager.GetAddressableAsset<AudioClip>("Button");
         _gameOverSFX = await _addressableManager.GetAddressableAsset<AudioClip>("GameOver");
-        await AddMatchAudio();
     }
 
     async Task AddMatchAudio()

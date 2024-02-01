@@ -6,9 +6,9 @@ public class LineBomb : Bomb
 {
     StringBuilder _stringBuilder = new StringBuilder();
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         _bombType = EBombType.LineBomb;
     }
 
@@ -18,6 +18,7 @@ public class LineBomb : Bomb
         _stringBuilder.Append(color);
         _stringBuilder.Append("LineBomb");
         _spriteRenderer.sprite = _spriteManager.BombAtlas.GetSprite(_stringBuilder.ToString());
+        Debug.Log(_stringBuilder);
     }
 
     public override void OnEffect()

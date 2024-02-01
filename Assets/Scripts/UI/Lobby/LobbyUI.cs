@@ -19,8 +19,6 @@ public class LobbyUI : MonoBehaviour
         _soundManager = GenericSingleton<SoundManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
-        _soundManager.Init();
-        _audioClipManager.Init();
         ReadHighScore();
     }
 

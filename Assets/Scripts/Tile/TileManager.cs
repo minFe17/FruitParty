@@ -8,6 +8,7 @@ public class TileManager : MonoBehaviour
     List<TileType> _boardLayout = new List<TileType>();
     GameObject _tileParent;
     FruitManager _fruitManager;
+    AddressableManager _addressableManager;
 
     [Header("Tile Array")]
     GameObject[,] _allTiles;
@@ -41,7 +42,6 @@ public class TileManager : MonoBehaviour
         _width = width;
         _height = height;
         SetArray();
-        LoadTilePrefab();
         _tileParent = new GameObject("Tiles");
         _fruitManager = GenericSingleton<FruitManager>.Instance;
     }
@@ -56,13 +56,16 @@ public class TileManager : MonoBehaviour
         _lavaTiles = new LavaTile[_width, _height];
     }
 
-    void LoadTilePrefab()
+    public async void LoadAsset()
     {
-        _tilePrefab = Resources.Load("Prefabs/Tile/Tile") as GameObject;
-        _iceTilePrefab = Resources.Load("Prefabs/Tile/IceTile") as GameObject;
-        _lockTilePrefab = Resources.Load("Prefabs/Tile/LockTile") as GameObject;
-        _concreteTilePrefab = Resources.Load("Prefabs/Tile/ConcreteTile") as GameObject;
-        _lavaTilePrefab = Resources.Load("Prefabs/Tile/LavaTile") as GameObject;
+        if (_addressableManager == null)
+            _addressableManager = GenericSingleton<AddressableManager>.Instance;
+
+        _tilePrefab = await _addressableManager.GetAddressableAsset<GameObject>("Tile");
+        _iceTilePrefab = await _addressableManager.GetAddressableAsset<GameObject>("IceTile");
+        _lockTilePrefab = await _addressableManager.GetAddressableAsset<GameObject>("LockTile");
+        _concreteTilePrefab = await _addressableManager.GetAddressableAsset<GameObject>("ConcreteTile");
+        _lavaTilePrefab = await _addressableManager.GetAddressableAsset<GameObject>("LavaTile");
     }
 
     void CheckFruit(int column, int row)

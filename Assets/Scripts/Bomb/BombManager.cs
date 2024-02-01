@@ -22,12 +22,13 @@ public class BombManager : MonoBehaviour
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
-        _addressableManager = GenericSingleton<AddressableManager>.Instance;
-        LoadAsset();
     }
 
-    async void LoadAsset()
+    public async void LoadAsset()
     {
+        if (_addressableManager == null)
+            _addressableManager = GenericSingleton<AddressableManager>.Instance;
+
         _lineBomb = await _addressableManager.GetAddressableAsset<GameObject>("LineBomb");
         _squareBomb = await _addressableManager.GetAddressableAsset<GameObject>("SquareBomb");
         _fruitBomb = await _addressableManager.GetAddressableAsset<GameObject>("FruitBomb");
@@ -60,7 +61,7 @@ public class BombManager : MonoBehaviour
         if (bomb.BombType != EBombType.FruitBomb)
             bomb.ColorType = fruit.ColorType;
         _matchFinder.MatchFruits.Clear();
-        Destroy(this.gameObject);
+        Destroy(fruit.gameObject);
     }
 
     public void CreateBomb(EBombType bombType, Fruit fruit)
@@ -78,8 +79,8 @@ public class BombManager : MonoBehaviour
                 temp = Instantiate(_fruitBomb, fruit.transform.position, Quaternion.identity);
                 break;
         }
-
-        MakeBomb(temp, fruit);
+        if(temp != null)
+            MakeBomb(temp, fruit);
     }
 
     public List<Fruit> GetColumnFruits(int column)

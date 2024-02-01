@@ -24,7 +24,7 @@ public class Fruit : MonoBehaviour
     HintManager _hintManager;
     GameManager _gameManager;
     TileManager _tileManager;
-    GameObject _destroyEffect;
+    EffectManager _effectManager;
 
     Vector2 _firstTouchPos = Vector2.zero;
     Vector2 _finalTouchPos = Vector2.zero;
@@ -47,10 +47,10 @@ public class Fruit : MonoBehaviour
     public bool IsMatch { get => _isMatch; set => _isMatch = value; }
     public bool IsBomb { get => _isBomb; }
 
-    protected virtual void Awake()
+    protected virtual void Start()
     {
         SetManager();
-        _destroyEffect = Resources.Load("Prefabs/Effect/DestroyEffect") as GameObject;
+        Init();
     }
 
     protected virtual void Update()
@@ -82,6 +82,7 @@ public class Fruit : MonoBehaviour
         _hintManager = GenericSingleton<HintManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;
+        _effectManager = GenericSingleton<EffectManager>.Instance;
     }
 
     void MoveFruit()
@@ -129,7 +130,8 @@ public class Fruit : MonoBehaviour
             sprite.color = new Color(0.5f, 0.5f, 0.5f, 1);
             if (!_onEffect)
             {
-                Instantiate(_destroyEffect, transform.position, Quaternion.identity);
+                GameObject effect = 
+                Instantiate(_effectManager.DestroyEffect, transform.position, Quaternion.identity);
                 _onEffect = true;
             }
         }

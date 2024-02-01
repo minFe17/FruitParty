@@ -98,9 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15cebd6e1c692614b996e4cdfa7603d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 5357263399469752821, guid: 5de41e996eb3e554aa8afb59c9593a44, type: 3}
+  _spriteRenderer: {fileID: 4211338378616183030}
   _fruitType: 1
-  _color: 2
+  _colorType: 2
   _moveSpeed: 0.3
 --- !u!58 &-1149061567263028298
 CircleCollider2D:

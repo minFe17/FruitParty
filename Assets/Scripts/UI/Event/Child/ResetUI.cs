@@ -8,7 +8,7 @@ public class ResetUI : EventUIBase
 
     protected override void SetSprite()
     {
-        _eventSprite.sprite = _eventAtlas.GetSprite("Reser");
+        _eventSprite.sprite = _eventAtlas.GetSprite("Reset");
     }
 
     public override void OnEventUI()

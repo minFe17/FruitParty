@@ -23,7 +23,7 @@ public class GameUIPanel : MonoBehaviour
     SoundManager _soundManager;
     AudioClipManager _audioClipManager;
 
-    void Start()
+    void Awake()
     {
         _uiAtlas = GenericSingleton<SpriteManager>.Instance.UIAtlas;
         _gameManager = GenericSingleton<GameManager>.Instance;

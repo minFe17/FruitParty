@@ -3406,10 +3406,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uiAnimator: {fileID: 5744653646908616787}
   _gameStopPanel: {fileID: 1896805456926351170}
-  _playButton: {fileID: 0}
-  _playImage: {fileID: 0}
-  _lobbyButton: {fileID: 0}
-  _lobbyImage: {fileID: 0}
+  _playButton: {fileID: 8295077095137399637}
+  _playImage: {fileID: 1102564473681998796}
+  _lobbyButton: {fileID: 3911516267547526971}
+  _lobbyImage: {fileID: 3805495528390966226}
 --- !u!1 &7418688905782121025
 GameObject:
   m_ObjectHideFlags: 0
@@ -3531,8 +3531,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7583571192948739145}
-        m_TargetAssemblyTypeName: UI, Assembly-CSharp
+      - m_Target: {fileID: 1642605800704347977}
+        m_TargetAssemblyTypeName: GameUIPanel, Assembly-CSharp
         m_MethodName: Stop
         m_Mode: 1
         m_Arguments:

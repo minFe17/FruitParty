@@ -10,6 +10,7 @@ public class EventManager : MonoBehaviour
     Shuffle _shuffle;
     Reset _reset;
     ScoreManager _scoreManager;
+    AddressableManager _addressableManager;
 
     int _eventScore;
     int _eventScoreAmount = 2000;
@@ -23,7 +24,9 @@ public class EventManager : MonoBehaviour
 
     public void Init()
     {
-        _scoreManager = GenericSingleton<ScoreManager>.Instance;
+        if (_scoreManager == null)
+            _scoreManager = GenericSingleton<ScoreManager>.Instance;
+
         _events.Clear();
         _eventScore = 1000;
         _resetScore = 5000;
@@ -31,9 +34,15 @@ public class EventManager : MonoBehaviour
         CreateEvent();
     }
 
+    public async void LoadAsset()
+    {
+        if (_addressableManager == null)
+            _addressableManager = GenericSingleton<AddressableManager>.Instance;
+        _eventPrefab = await _addressableManager.GetAddressableAsset<GameObject>("Event");
+    }
+
     void CreateEvent()
     {
-        _eventPrefab = Resources.Load("Prefabs/Event") as GameObject;
         Instantiate(_eventPrefab, transform.position, Quaternion.identity);
     }
 

@@ -6,7 +6,7 @@ public class HintManager : MonoBehaviour
 {
     // ╫л╠шео
     FruitManager _fruitManager;
-    GameObject _hintEffect;
+    EffectManager _effectManager;
     GameObject _currentHint;
 
     float _hintDelay;
@@ -20,7 +20,7 @@ public class HintManager : MonoBehaviour
     public void Init()
     {
         _fruitManager = GenericSingleton<FruitManager>.Instance;
-        _hintEffect = Resources.Load("Prefabs/Effect/HintEffect") as GameObject;
+        _effectManager = GenericSingleton<EffectManager>.Instance;
         _hintDelay = 10f;
         _hintCoolTime = _hintDelay;
     }
@@ -45,7 +45,7 @@ public class HintManager : MonoBehaviour
     {
         Fruit movableFruit = PickOneRandomFruit();
         if (movableFruit != null)
-            _currentHint = Instantiate(_hintEffect, movableFruit.transform.position, Quaternion.identity);
+            _currentHint = Instantiate(_effectManager.HintEffect, movableFruit.transform.position, Quaternion.identity);
     }
 
     Fruit PickOneRandomFruit()

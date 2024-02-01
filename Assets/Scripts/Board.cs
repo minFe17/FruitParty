@@ -3,6 +3,8 @@ using Utils;
 
 public class Board : MonoBehaviour
 {
+    [SerializeField] CameraScalar _camera;
+
     [Header("Board Size")]
     [SerializeField] int _width;
     [SerializeField] int _height;
@@ -13,21 +15,23 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-        Init(); 
+        SetCamera();
+        Init();
         CreateBoard();
     }
 
     void Init()
     {
-        GenericSingleton<ScoreManager>.Instance.SetScore();
-        GenericSingleton<EventUIManager>.Instance.Init();
-        GenericSingleton<GameManager>.Instance.Init();
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;
         _fruitManager.Init(_width, _height);
         _fruitManager.Offset = _offset;
         _tileManager.Init(_width, _height);
-        GenericSingleton<EventManager>.Instance.Init();
+    }
+
+    void SetCamera()
+    {
+        _camera.SettingCameraPosition(_width, _height);
     }
 
     void CreateBoard()
