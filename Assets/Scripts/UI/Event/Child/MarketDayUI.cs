@@ -8,7 +8,7 @@ public class MarketDayUI : EventUIBase
 
     protected override void SetSprite()
     {
-        _eventSprite.sprite = _eventAtlas.GetSprite("MarketDay");
+        _eventSprite.sprite = _eventAtlas.GetSprite("ShoppingCart");
     }
 
     public override void OnEventUI()

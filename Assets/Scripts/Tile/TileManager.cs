@@ -5,7 +5,7 @@ using Utils;
 public class TileManager : MonoBehaviour
 {
     // ╫л╠шео
-    List<TileType> _boardLayout = new List<TileType>();
+    public List<TileType> _boardLayout = new List<TileType>();
     GameObject _tileParent;
     FruitManager _fruitManager;
     AddressableManager _addressableManager;
@@ -44,6 +44,7 @@ public class TileManager : MonoBehaviour
         SetArray();
         _tileParent = new GameObject("Tiles");
         _fruitManager = GenericSingleton<FruitManager>.Instance;
+        _boardLayout.Clear();
     }
 
     void SetArray()

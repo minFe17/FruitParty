@@ -18,7 +18,6 @@ public class LineBomb : Bomb
         _stringBuilder.Append(color);
         _stringBuilder.Append("LineBomb");
         _spriteRenderer.sprite = _spriteManager.BombAtlas.GetSprite(_stringBuilder.ToString());
-        Debug.Log(_stringBuilder);
     }
 
     public override void OnEffect()

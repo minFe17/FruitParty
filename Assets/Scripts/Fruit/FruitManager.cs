@@ -164,8 +164,16 @@ public class FruitManager : MonoBehaviour
             int columnMatch;
             int rowMatch;
 
+            Fruit returnFruit = null;
             CalculateMatch(out creatableFruits, out columnMatch, out rowMatch, matchFruits, fruit);
-            returnAction += CheckCreatableBomb(out bombType, out targetFruit, creatableFruits, columnMatch, rowMatch);
+            EBombType checkBombType = CheckCreatableBomb(out returnFruit, creatableFruits, columnMatch, rowMatch);
+            
+            if (checkBombType != EBombType.Max)
+            {
+                bombType = checkBombType;
+                targetFruit = returnFruit;
+                returnAction += _bombManager.CreateBomb;
+            }
         }
         return returnAction;
     }
@@ -211,58 +219,50 @@ public class FruitManager : MonoBehaviour
         }
     }
 
-    Action<EBombType, Fruit> CheckCreatableBomb(out EBombType bombType, out Fruit targetFruit, List<Fruit> creatableFruits, int columnMatch, int rowMatch)
+    EBombType CheckCreatableBomb(out Fruit targetFruit, List<Fruit> creatableFruits, int columnMatch, int rowMatch)
     {
-        Action<EBombType, Fruit> returnAction = null;
-        bombType = EBombType.Max;
         targetFruit = null;
 
         for (int i = 0; i < creatableFruits.Count; i++)
         {
             if (creatableFruits[i] == _currentFruit)
             {
-                if (columnMatch == 3 || rowMatch == 3)
+                if (columnMatch == 4 || rowMatch == 4)
                 {
-                    returnAction += _bombManager.CreateBomb;
-                    bombType = EBombType.LineBomb;
                     targetFruit = _currentFruit;
+                    return EBombType.FruitBomb;
                 }
                 else if (columnMatch == 2 && rowMatch == 2)
                 {
-                    returnAction += _bombManager.CreateBomb;
-                    bombType = EBombType.SquareBomb;
                     targetFruit = _currentFruit;
+                    return EBombType.SquareBomb;
                 }
-                else if (columnMatch == 4 || rowMatch == 4)
+                else if (columnMatch == 3 || rowMatch == 3)
                 {
-                    returnAction += _bombManager.CreateBomb;
-                    bombType = EBombType.FruitBomb;
                     targetFruit = _currentFruit;
+                    return EBombType.LineBomb;
                 }
             }
             if (creatableFruits[i] == _currentFruit.OtherFruit)
             {
-                if (columnMatch == 3 || rowMatch == 3)
+                if (columnMatch == 4 || rowMatch == 4)
                 {
-                    returnAction += _bombManager.CreateBomb;
-                    bombType = EBombType.LineBomb;
                     targetFruit = _currentFruit.OtherFruit;
+                    return EBombType.FruitBomb;
                 }
                 else if (columnMatch == 2 && rowMatch == 2)
                 {
-                    returnAction += _bombManager.CreateBomb;
-                    bombType = EBombType.SquareBomb;
                     targetFruit = _currentFruit.OtherFruit;
+                    return EBombType.SquareBomb; ;
                 }
-                else if (columnMatch == 4 || rowMatch == 4)
+                else if (columnMatch == 3 || rowMatch == 3)
                 {
-                    returnAction += _bombManager.CreateBomb;
-                    bombType = EBombType.FruitBomb;
                     targetFruit = _currentFruit.OtherFruit;
+                    return EBombType.LineBomb;
                 }
             }
         }
-        return returnAction;
+        return EBombType.Max;
     }
 
     void RefillFruit()
