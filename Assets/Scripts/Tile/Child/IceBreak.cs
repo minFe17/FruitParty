@@ -12,11 +12,12 @@ public class IceBreak : MonoBehaviour
 
     public void SetSprite(SpriteAtlas tileAtlas)
     {
-        for (int i = 0; i < _iceSprites.Count; i++)
+        for (int i = 1; i <= _iceSprites.Count; i++)
         {
+            _stringBuilder.Clear();
             _stringBuilder.Append(_breakIceType.ToString());
             _stringBuilder.Append(i);
-            _iceSprites[i].sprite = tileAtlas.GetSprite(_stringBuilder.ToString());
+            _iceSprites[i - 1].sprite = tileAtlas.GetSprite(_stringBuilder.ToString());
         }
     }
 }
