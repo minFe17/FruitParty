@@ -2,8 +2,8 @@ public class LockTile : Tile
 {
     void Update()
     {
-        if (_tileManager.LockTiles[_x, _y] == null)
-            Destroy(this.gameObject);
+        if (_tileManager.ConcreteTiles[_x, _y] == null)
+            DestroyTile();
     }
 
     protected override void SetSprite()

@@ -3,7 +3,7 @@ public class LavaTile : Tile
     void Update()
     {
         if (_tileManager.LavaTiles[_x, _y] == null)
-            Destroy(this.gameObject);
+            DestroyTile();
     }
 
     protected override void SetSprite()

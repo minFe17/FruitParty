@@ -45,6 +45,7 @@ public class TileManager : MonoBehaviour
         _tileParent = new GameObject("Tiles");
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _boardLayout.Clear();
+        Debug.Log(_boardLayout.Count);
     }
 
     void SetArray()
@@ -110,15 +111,16 @@ public class TileManager : MonoBehaviour
                         (tileType == ETileKindType.Lock && type == ETileKindType.Ice))
                     {
                         canCreateTilePosition = true;
-                        break;
                     }
                     else
+                    {
                         canCreateTilePosition = false;
+                        break;
+                    }
                 }
                 else
                 {
                     canCreateTilePosition = true;
-                    break;
                 }
             }
         }
@@ -141,11 +143,13 @@ public class TileManager : MonoBehaviour
                 tileX = _boardLayout[i].X;
                 tileY = _boardLayout[i].Y;
                 if (tileX == column && tileY == row)
+                {
                     canCreateTilePosition = false;
+                    break;
+                }
                 else
                 {
                     canCreateTilePosition = true;
-                    break;
                 }
             }
         }
@@ -156,6 +160,7 @@ public class TileManager : MonoBehaviour
     {
         TileType tileType = new TileType(type, tile, column, row);
         _boardLayout.Add(tileType);
+        Debug.Log($"add {_boardLayout.Count} {column}, {row}");
         return tileType;
     }
 
@@ -284,6 +289,7 @@ public class TileManager : MonoBehaviour
     {
         _boardLayout.Remove(tile.TileType);
         tile.DestroyTile();
+        Debug.Log($"remove {_boardLayout.Count}");
     }
 
     public void ResetTile()

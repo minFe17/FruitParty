@@ -166,13 +166,16 @@ public class FruitManager : MonoBehaviour
 
             Fruit returnFruit = null;
             CalculateMatch(out creatableFruits, out columnMatch, out rowMatch, matchFruits, fruit);
-            EBombType checkBombType = CheckCreatableBomb(out returnFruit, creatableFruits, columnMatch, rowMatch);
-            
-            if (checkBombType != EBombType.Max)
+            if(creatableFruits.Count != 0)
             {
-                bombType = checkBombType;
-                targetFruit = returnFruit;
-                returnAction += _bombManager.CreateBomb;
+                EBombType checkBombType = CheckCreatableBomb(out returnFruit, creatableFruits, columnMatch, rowMatch);
+
+                if (checkBombType != EBombType.Max)
+                {
+                    bombType = checkBombType;
+                    targetFruit = returnFruit;
+                    returnAction += _bombManager.CreateBomb;
+                }
             }
         }
         return returnAction;

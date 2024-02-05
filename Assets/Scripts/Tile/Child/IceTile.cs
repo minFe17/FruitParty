@@ -11,7 +11,7 @@ public class IceTile : Tile
     void Update()
     {
         if (_tileManager.IceTiles[_x, _y] == null)
-            Destroy(this.gameObject);
+            DestroyTile();
     }
 
     protected override void SetSprite()
