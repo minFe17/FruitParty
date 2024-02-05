@@ -21,7 +21,6 @@ public abstract class Bomb : Fruit
 
 public enum EBombType
 {
-    None,
     LineBomb,
     SquareBomb,
     FruitBomb,
