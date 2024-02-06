@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 public class Shuffle : Event
 {
@@ -50,7 +51,7 @@ public class Shuffle : Event
                     {
                         int fruitIndex = Random.Range(0, newFruit.Count);
                         int iterations = 0;
-                        while (_fruitManager.MatchAt(i, j, newFruit[fruitIndex].gameObject) && iterations <= 100)
+                        while (_fruitManager.MatchAt(i, j, newFruit[fruitIndex].FruitType) && iterations <= 100)
                         {
                             fruitIndex = Random.Range(0, newFruit.Count);
                             iterations++;
@@ -71,22 +72,8 @@ public class Shuffle : Event
 
     void CreateFruit(int column, int row)
     {
-        List<GameObject> fruits = _fruitManager.Fruits;
-        Vector2 position = new Vector2(column, row);
-        int fruitNumber = 0;
-        int iteration = 0;
-        do
-        {
-            fruitNumber = Random.Range(0, fruits.Count);
-            iteration++;
-        }
-        while (_fruitManager.MatchAt(column, row, fruits[fruitNumber]) && iteration <= 100);
-
-        GameObject temp = Instantiate(fruits[fruitNumber], position, Quaternion.identity);
-        Fruit fruit = temp.GetComponent<Fruit>();
-        fruit.Column = column;
-        fruit.Row = row;
-        _fruitManager.AllFruits[column, row] = fruit;
+        Vector2Int position = new Vector2Int(column, row);
+        _fruitManager.CreateFruit(position);
     }
 
     public void ShuffleFruit()

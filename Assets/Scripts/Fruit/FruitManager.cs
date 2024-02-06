@@ -8,9 +8,9 @@ using Random = UnityEngine.Random;
 public class FruitManager : MonoBehaviour
 {
     // ╫л╠шео
-    List<GameObject> _fruits = new List<GameObject>();
     Fruit[,] _allFruits;
 
+    FactoryManager<EFruitType, Fruit> _fruitFactoryManager;
     MatchFinder _matchFinder;
     ScoreManager _scoreManager;
     GameManager _gameManager;
@@ -19,24 +19,24 @@ public class FruitManager : MonoBehaviour
     EventManager _eventManager;
     SoundManager _soundManager;
     AudioClipManager _audioClipManager;
-    AddressableManager _addressableManager;
     Fruit _currentFruit;
 
+    Transform _parent;
     int _width;
     int _height;
     int _baseFruitScore = 20;
     int _streakValue = 1;
     float _refillDelay = 0.5f;
 
-    public List<GameObject> Fruits { get => _fruits; }
     public Fruit[,] AllFruits { get => _allFruits; }
     public Fruit CurrentFruit { get => _currentFruit; set => _currentFruit = value; }
     public int Width { get => _width; }
     public int Height { get => _height; }
     public int Offset { get; set; }
 
-    public void Init(int x, int y)
+    public void Init(Transform parent, int x, int y)
     {
+        _parent = parent;
         _width = x;
         _height = y;
         _allFruits = new Fruit[x, y];
@@ -45,6 +45,7 @@ public class FruitManager : MonoBehaviour
 
     void LoadManagers()
     {
+        _fruitFactoryManager = GenericSingleton<FactoryManager<EFruitType, Fruit>>.Instance;
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
@@ -53,14 +54,6 @@ public class FruitManager : MonoBehaviour
         _eventManager = GenericSingleton<EventManager>.Instance;
         _soundManager = GenericSingleton<SoundManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
-    }
-
-    public async void LoadAsset()
-    {
-        if (_addressableManager == null)
-            _addressableManager = GenericSingleton<AddressableManager>.Instance;
-        for (int i = 0; i < (int)EFruitType.Max; i++)
-            _fruits.Add(await _addressableManager.GetAddressableAsset<GameObject>($"{(EFruitType)i}"));
     }
 
     void DestroyMatchFruit(int column, int row)
@@ -166,7 +159,7 @@ public class FruitManager : MonoBehaviour
 
             Fruit returnFruit = null;
             CalculateMatch(out creatableFruits, out columnMatch, out rowMatch, matchFruits, fruit);
-            if(creatableFruits.Count != 0)
+            if (creatableFruits.Count != 0)
             {
                 EBombType checkBombType = CheckCreatableBomb(out returnFruit, creatableFruits, columnMatch, rowMatch);
 
@@ -276,21 +269,14 @@ public class FruitManager : MonoBehaviour
             {
                 if (_allFruits[i, j] == null && !_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null && _tileManager.LavaTiles[i, j] == null)
                 {
-                    Vector2 position = new Vector2(i, j + Offset);
-                    int fruitNumber = Random.Range(0, _fruits.Count);
+                    int fruitNumber = Random.Range(0, _fruitFactoryManager.Count);
                     int iterations = 0;
-
-                    while (MatchAt(i, j, _fruits[fruitNumber]) && iterations < 100)
+                    while (MatchAt(i, j, (EFruitType)fruitNumber) && iterations < 100)
                     {
                         iterations++;
-                        fruitNumber = Random.Range(0, _fruits.Count);
+                        fruitNumber = Random.Range(0, _fruitFactoryManager.Count);
                     }
-
-                    iterations = 0;
-                    GameObject fruit = Instantiate(_fruits[fruitNumber], position, Quaternion.identity);
-                    _allFruits[i, j] = fruit.GetComponent<Fruit>();
-                    fruit.GetComponent<Fruit>().Column = i;
-                    fruit.GetComponent<Fruit>().Row = j;
+                    MakeFruit((EFruitType)fruitNumber, i, j);
                 }
             }
         }
@@ -405,41 +391,43 @@ public class FruitManager : MonoBehaviour
             _tileManager.FirstCreateLavaTile = false;
     }
 
-    public void CreateFruit(Transform parent, Vector2 position)
+    public void CreateFruit(Vector2Int position)
     {
-        int fruitNumber = 0;
+        int fruitNumber;
         int iterations = 0;
-        int x = (int)position.x;
-        int y = (int)position.y - Offset;
+        int x = position.x;
+        int y = position.y - Offset;
         do
         {
-            fruitNumber = Random.Range(0, _fruits.Count);
+            fruitNumber = Random.Range(0, _fruitFactoryManager.Count);
             iterations++;
         }
-        while (MatchAt(x, y, _fruits[fruitNumber]) && iterations <= 100);
-
-        GameObject temp = Instantiate(_fruits[fruitNumber], position, Quaternion.identity);
-        Fruit fruit = temp.GetComponent<Fruit>();
-        fruit.Column = x;
-        fruit.Row = y;
-        temp.transform.parent = parent;
-        _allFruits[x, y] = fruit;
+        while (MatchAt(x, y, (EFruitType)fruitNumber) && iterations <= 100);
+        MakeFruit((EFruitType)fruitNumber, x, y);
     }
 
-    public bool MatchAt(int column, int row, GameObject fruit)
+    public void MakeFruit(EFruitType type, int column, int row)
     {
-        Fruit fruitType = fruit.GetComponent<Fruit>();
+        Fruit fruit = _fruitFactoryManager.MakeObject(type);
+        _allFruits[column, row] = fruit;
+        fruit.Column = column;
+        fruit.Row = row;
+        fruit.transform.position = new Vector2(column, row + Offset);
+        fruit.transform.parent = _parent;
+    }
 
+    public bool MatchAt(int column, int row, EFruitType type)
+    {
         if (column > 1 && row > 1)
         {
             if (_allFruits[column - 1, row] != null && _allFruits[column - 2, row] != null)
             {
-                if (_allFruits[column - 1, row].FruitType == fruitType.FruitType && _allFruits[column - 2, row].FruitType == fruitType.FruitType)
+                if (_allFruits[column - 1, row].FruitType == type && _allFruits[column - 2, row].FruitType == type)
                     return true;
             }
             if (_allFruits[column, row - 1] != null && _allFruits[column, row - 2] != null)
             {
-                if (_allFruits[column, row - 1].FruitType == fruitType.FruitType && _allFruits[column, row - 2].FruitType == fruitType.FruitType)
+                if (_allFruits[column, row - 1].FruitType == type && _allFruits[column, row - 2].FruitType == type)
                     return true;
             }
         }
@@ -449,7 +437,7 @@ public class FruitManager : MonoBehaviour
             {
                 if (_allFruits[column - 1, row] != null && _allFruits[column - 2, row] != null)
                 {
-                    if (_allFruits[column - 1, row].FruitType == fruitType.FruitType && _allFruits[column - 2, row].FruitType == fruitType.FruitType)
+                    if (_allFruits[column - 1, row].FruitType == type && _allFruits[column - 2, row].FruitType == type)
                         return true;
                 }
             }
@@ -457,7 +445,7 @@ public class FruitManager : MonoBehaviour
             {
                 if (_allFruits[column, row - 1] != null && _allFruits[column, row - 2] != null)
                 {
-                    if (_allFruits[column, row - 1].FruitType == fruitType.FruitType && _allFruits[column, row - 2].FruitType == fruitType.FruitType)
+                    if (_allFruits[column, row - 1].FruitType == type && _allFruits[column, row - 2].FruitType == type)
                         return true;
                 }
             }

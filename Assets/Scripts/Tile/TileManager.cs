@@ -178,14 +178,13 @@ public class TileManager : MonoBehaviour
         return Vector2Int.zero;
     }
 
-    public Transform CreateNormalTile(int column, int row)
+    public void CreateNormalTile(int column, int row)
     {
         Vector2 position = new Vector2(column, row);
         GameObject tile = Instantiate(_tilePrefab, position, Quaternion.identity);
         tile.transform.parent = _tileParent.transform;
         tile.name = $"Tile ({column}, {row})";
         _allTiles[column, row] = tile;
-        return tile.transform;
     }
 
     public void CreateBlankTiles()

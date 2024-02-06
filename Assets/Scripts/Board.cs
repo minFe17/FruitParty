@@ -24,7 +24,7 @@ public class Board : MonoBehaviour
     {
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;
-        _fruitManager.Init(_width, _height);
+        _fruitManager.Init(transform.parent, _width, _height);
         _fruitManager.Offset = _offset;
         _tileManager.Init(_width, _height);
     }
@@ -41,8 +41,8 @@ public class Board : MonoBehaviour
             for (int j = 0; j < _height; j++)
             {
                 Vector2Int position = new Vector2Int(i, j + _offset);
-                Transform tilePos = _tileManager.CreateNormalTile(i, j);
-                _fruitManager.CreateFruit(tilePos, position);
+                _tileManager.CreateNormalTile(i, j);
+                _fruitManager.CreateFruit(position);
             }
         }
         GenericSingleton<HintManager>.Instance.Init();

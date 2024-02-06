@@ -62,21 +62,8 @@ public class Typhoon : Event
             {
                 if (_fruitManager.AllFruits[x, y] == null && !_tileManager.BlankTiles[x, y] && _tileManager.ConcreteTiles[x, y] == null && _tileManager.LavaTiles[x, y] == null)
                 {
-                    Vector2 position = new Vector2(x, y);
-                    int fruitNumber = Random.Range(0, _fruitManager.Fruits.Count);
-                    int iterations = 0;
-
-                    while (_fruitManager.MatchAt(x, y, _fruitManager.Fruits[fruitNumber]) && iterations < 100)
-                    {
-                        iterations++;
-                        fruitNumber = Random.Range(0, _fruitManager.Fruits.Count);
-                    }
-                    iterations = 0;
-
-                    GameObject fruit = Instantiate(_fruitManager.Fruits[fruitNumber], position, Quaternion.identity);
-                    _fruitManager.AllFruits[x, y] = fruit.GetComponent<Fruit>();
-                    fruit.GetComponent<Fruit>().Column = x;
-                    fruit.GetComponent<Fruit>().Row = y;
+                    Vector2Int position = new Vector2Int(x, y);
+                    _fruitManager.CreateFruit(position);
                 }
             }
         }

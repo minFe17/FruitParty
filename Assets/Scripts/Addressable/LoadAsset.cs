@@ -12,6 +12,7 @@ public class LoadAsset : MonoBehaviour
         if (!_isLoad)
         {
             await LoadLobbyAsset();
+            LoadFactoryAsset();
             LoadIngameAsset();
             _isLoad = true;
         }
@@ -28,9 +29,13 @@ public class LoadAsset : MonoBehaviour
     void LoadIngameAsset()
     {
         GenericSingleton<EventManager>.Instance.LoadAsset();
-        GenericSingleton<FruitManager>.Instance.LoadAsset();
         GenericSingleton<BombManager>.Instance.LoadAsset();
         GenericSingleton<EffectManager>.Instance.LoadAsset();
         GenericSingleton<TileManager>.Instance.LoadAsset();
+    }
+
+    void LoadFactoryAsset()
+    {
+        GenericSingleton<FactoryManager<EFruitType, Fruit>>.Instance.Init();
     }
 }

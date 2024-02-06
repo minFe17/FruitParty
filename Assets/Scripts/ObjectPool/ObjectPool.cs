@@ -35,12 +35,12 @@ public class ObjectPool<TEnum> : MonoBehaviour where TEnum : Enum
         return returnObject;
     }
 
-    public void Pull(TEnum type, GameObject target)
+    public void Pull(TEnum type, GameObject obj)
     {
         _queue = null;
         _objectPool.TryGetValue(type, out _queue);
-        target.SetActive(false);
-        _queue.Enqueue(gameObject);
-        target.transform.parent = this.transform;
+        obj.SetActive(false);
+        _queue.Enqueue(obj);
+        obj.transform.parent = this.transform;
     }
 }
