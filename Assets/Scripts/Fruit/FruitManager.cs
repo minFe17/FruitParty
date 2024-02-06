@@ -408,10 +408,10 @@ public class FruitManager : MonoBehaviour
 
     public void MakeFruit(EFruitType type, int column, int row)
     {
-        Fruit fruit = _fruitFactoryManager.MakeObject(type);
+        Vector2Int position = new Vector2Int(column, row);
+        Fruit fruit = _fruitFactoryManager.MakeObject(type, position);
+
         _allFruits[column, row] = fruit;
-        fruit.Column = column;
-        fruit.Row = row;
         fruit.transform.position = new Vector2(column, row + Offset);
         fruit.transform.parent = _parent;
     }

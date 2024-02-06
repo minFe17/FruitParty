@@ -130,8 +130,7 @@ public class Fruit : MonoBehaviour
             sprite.color = new Color(0.5f, 0.5f, 0.5f, 1);
             if (!_onEffect)
             {
-                GameObject effect = 
-                Instantiate(_effectManager.DestroyEffect, transform.position, Quaternion.identity);
+                GameObject effect = Instantiate(_effectManager.DestroyEffect, transform.position, Quaternion.identity);
                 _onEffect = true;
             }
         }

@@ -12,6 +12,7 @@ public class FactoryManager<TEnum, T> : MonoBehaviour where TEnum : Enum
     AddressableManager _addressableManager;
 
     public int Count { get => _factorys.Count; }
+    public EColorType ColorType { get; set; }
 
     public async void Init()
     {
@@ -34,10 +35,17 @@ public class FactoryManager<TEnum, T> : MonoBehaviour where TEnum : Enum
         _factorys.Add(key, value);
     }
 
-    public T MakeObject(TEnum key)
+    public T MakeObject(TEnum key, Vector2Int position)
     {
         IFactory<T> factory;
         _factorys.TryGetValue(key, out factory);
-        return factory.MakeObject();
+        return factory.MakeObject(position);
+    }
+
+    public T MakeObject(TEnum key, Vector2Int position, EColorType colorType)
+    {
+        IFactory<T> factory;
+        _factorys.TryGetValue(key, out factory);
+        return factory.MakeObject(position);
     }
 }

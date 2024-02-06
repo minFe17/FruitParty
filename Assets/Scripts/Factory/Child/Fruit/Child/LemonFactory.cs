@@ -8,9 +8,12 @@ public class LemonFactory : FruitFactoryBase, IFactory<Fruit>
         _factoryManager.AddFactorys(_fruitType, this);
     }
 
-    public Fruit MakeObject()
+    public Fruit MakeObject(Vector2Int position)
     {
         GameObject temp = _fruitObjectPool.Push(_fruitType, _prefab);
-        return temp.GetComponent<Fruit>();
+        Fruit fruit = temp.GetComponent<Fruit>();
+        fruit.Column = position.x;
+        fruit.Row = position.y;
+        return fruit;
     }
 }

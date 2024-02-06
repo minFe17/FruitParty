@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IFactory<T>
 {
-    T MakeObject();
+    T MakeObject(Vector2Int position);
 }

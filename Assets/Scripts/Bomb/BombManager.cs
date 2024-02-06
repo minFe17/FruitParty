@@ -9,6 +9,7 @@ public class BombManager : MonoBehaviour
     GameObject _squareBomb;
     GameObject _fruitBomb;
 
+    FactoryManager<EBombType, Bomb> _bombFactoryManager;
     FruitManager _fruitManager;
     TileManager _tileManager;
     MatchFinder _matchFinder;
@@ -19,6 +20,7 @@ public class BombManager : MonoBehaviour
 
     public void Init()
     {
+        _bombFactoryManager = GenericSingleton<FactoryManager<EBombType, Bomb>>.Instance;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
@@ -52,35 +54,16 @@ public class BombManager : MonoBehaviour
         }
     }
 
-    void MakeBomb(GameObject bombGameObject, Fruit fruit)
-    {
-        Fruit bomb = bombGameObject.GetComponent<Fruit>();
-        _fruitManager.AllFruits[fruit.Column, fruit.Row] = bomb;
-        bomb.Column = fruit.Column;
-        bomb.Row = fruit.Row;
-        if (bomb.BombType != EBombType.FruitBomb)
-            bomb.ColorType = fruit.ColorType;
-        _matchFinder.MatchFruits.Clear();
-        Destroy(fruit.gameObject);
-    }
-
     public void CreateBomb(EBombType bombType, Fruit fruit)
     {
-        GameObject temp = null;
-        switch (bombType)
-        {
-            case EBombType.LineBomb:
-                temp = Instantiate(_lineBomb, fruit.transform.position, Quaternion.identity);
-                break;
-            case EBombType.SquareBomb:
-                temp = Instantiate(_squareBomb, fruit.transform.position, Quaternion.identity);
-                break;
-            case EBombType.FruitBomb:
-                temp = Instantiate(_fruitBomb, fruit.transform.position, Quaternion.identity);
-                break;
-        }
-        if(temp != null)
-            MakeBomb(temp, fruit);
+        Vector2Int position = new Vector2Int(fruit.Column, fruit.Row);
+        _bombFactoryManager.ColorType = fruit.ColorType;
+        Bomb bomb = _bombFactoryManager.MakeObject(bombType, position, fruit.ColorType);
+        bomb.transform.position = fruit.transform.position;
+
+        _fruitManager.AllFruits[fruit.Column, fruit.Row] = bomb;
+        _matchFinder.MatchFruits.Clear();
+        Destroy(fruit.gameObject);
     }
 
     public List<Fruit> GetColumnFruits(int column)
