@@ -7,5 +7,6 @@ public class NormalTile : Tile
 
     public override void DestroyTile()
     {
+        _tileObjectPool.Pull(ETileKindType.Normal, gameObject);
     }
 }

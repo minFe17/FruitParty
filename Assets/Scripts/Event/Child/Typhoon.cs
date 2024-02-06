@@ -38,7 +38,7 @@ public class Typhoon : Event
                     int newX = x + moveAmount;
                     if (newX >= _width)
                     {
-                        Destroy(_fruitManager.AllFruits[x, y].gameObject);
+                        _fruitManager.DestroyFruit(_fruitManager.AllFruits[x, y]);
                         _fruitManager.AllFruits[x, y] = null;
                         continue;
                     }

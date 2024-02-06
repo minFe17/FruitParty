@@ -12,6 +12,7 @@ public class DestroyEffectFactory : EffectFactoryBase, IFactory<GameObject>
     {
         GameObject temp = _effectObjectPool.Push(_effectType, _prefab);
         temp.transform.position = (Vector2)position;
+        temp.GetComponent<DestroyEffect>().Init();
         return temp;
     }
 }

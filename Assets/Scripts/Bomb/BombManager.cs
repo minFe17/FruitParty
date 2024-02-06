@@ -47,7 +47,7 @@ public class BombManager : MonoBehaviour
 
         _fruitManager.AllFruits[fruit.Column, fruit.Row] = bomb;
         _matchFinder.MatchFruits.Clear();
-        Destroy(fruit.gameObject);
+        _fruitManager.DestroyFruit(fruit);
     }
 
     public List<Fruit> GetColumnFruits(int column)

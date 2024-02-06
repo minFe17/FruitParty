@@ -39,7 +39,6 @@ public class TileManager : MonoBehaviour
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _tileFactoryManager = GenericSingleton<FactoryManager<ETileKindType, Tile>>.Instance;
         _boardLayout.Clear();
-        Debug.Log(_boardLayout.Count);
     }
 
     void SetArray()
@@ -56,7 +55,7 @@ public class TileManager : MonoBehaviour
     {
         if (_fruitManager.AllFruits[column, row] != null)
         {
-            Destroy(_fruitManager.AllFruits[column, row].gameObject);
+            _fruitManager.DestroyFruit(_fruitManager.AllFruits[column, row]);
             _fruitManager.AllFruits[column, row] = null;
         }
     }
@@ -141,7 +140,6 @@ public class TileManager : MonoBehaviour
     {
         TileType tileType = new TileType(type, tile, column, row);
         _boardLayout.Add(tileType);
-        Debug.Log($"add {_boardLayout.Count} {column}, {row}");
         return tileType;
     }
 
@@ -176,8 +174,8 @@ public class TileManager : MonoBehaviour
         _blankTiles[column, row] = true;
         if (_allTiles[column, row] != null)
         {
-            Destroy(_allTiles[column, row]);
-            Destroy(_fruitManager.AllFruits[column, row]);
+            _allTiles[column, row].GetComponent<Tile>().DestroyTile();
+            _fruitManager.DestroyFruit(_fruitManager.AllFruits[column, row]);
             CheckFruit(column, row);
         }
     }
@@ -268,7 +266,6 @@ public class TileManager : MonoBehaviour
     {
         _boardLayout.Remove(tile.TileType);
         tile.DestroyTile();
-        Debug.Log($"remove {_boardLayout.Count}");
     }
 
     public void ResetTile()

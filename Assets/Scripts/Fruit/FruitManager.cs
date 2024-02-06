@@ -11,6 +11,7 @@ public class FruitManager : MonoBehaviour
     Fruit[,] _allFruits;
 
     FactoryManager<EFruitType, Fruit> _fruitFactoryManager;
+    ObjectPool<EFruitType> _fruitObjectPool;
     MatchFinder _matchFinder;
     ScoreManager _scoreManager;
     GameManager _gameManager;
@@ -46,6 +47,7 @@ public class FruitManager : MonoBehaviour
     void LoadManagers()
     {
         _fruitFactoryManager = GenericSingleton<FactoryManager<EFruitType, Fruit>>.Instance;
+        _fruitObjectPool = GenericSingleton<ObjectPool<EFruitType>>.Instance;
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
@@ -67,7 +69,7 @@ public class FruitManager : MonoBehaviour
             _gameManager.AddTime(_streakValue);
 
             _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
-            Destroy(_allFruits[column, row].gameObject);
+            DestroyFruit(_allFruits[column, row]);
             _allFruits[column, row] = null;
         }
     }
@@ -455,7 +457,7 @@ public class FruitManager : MonoBehaviour
 
     public void BuyFruit(int column, int row)
     {
-        Destroy(_allFruits[column, row].gameObject);
+        DestroyFruit(_allFruits[column, row]);
         _allFruits[column, row] = null;
     }
 
@@ -513,6 +515,11 @@ public class FruitManager : MonoBehaviour
             SwitchFruit(column, row, direction);
             return false;
         }
+    }
+
+    public void DestroyFruit(Fruit fruit)
+    {
+        _fruitObjectPool.Pull(fruit.FruitType, fruit.gameObject);
     }
 
     IEnumerator DecreaseRowRoutine()

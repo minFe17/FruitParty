@@ -198,7 +198,7 @@ public class Fruit : MonoBehaviour
     void DestroyFruit()
     {
         if (_fruitManager.AllFruits[_column, _row] != this)
-            Destroy(this.gameObject);
+            _fruitManager.DestroyFruit(this);
     }
 
     void OnMouseDown()

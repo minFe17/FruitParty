@@ -6,6 +6,7 @@ public class HintManager : MonoBehaviour
 {
     // ╫л╠шео
     FactoryManager<EEffectType, GameObject> _effectFactoryManager;
+    ObjectPool<EEffectType> _effectObjecctPool;
     FruitManager _fruitManager;
     GameObject _currentHint;
 
@@ -20,6 +21,7 @@ public class HintManager : MonoBehaviour
     public void Init()
     {
         _effectFactoryManager = GenericSingleton<FactoryManager<EEffectType, GameObject>>.Instance;
+        _effectObjecctPool = GenericSingleton<ObjectPool<EEffectType>>.Instance;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _hintDelay = 10f;
         _hintCoolTime = _hintDelay;
@@ -93,7 +95,7 @@ public class HintManager : MonoBehaviour
     {
         if (_currentHint != null)
         {
-            Destroy(_currentHint);
+            _effectObjecctPool.Pull(EEffectType.Hint, _currentHint);
             _currentHint = null;
             _hintCoolTime = _hintDelay;
         }
