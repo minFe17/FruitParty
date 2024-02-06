@@ -17,9 +17,4 @@ public abstract class FruitFactoryBase : FactoryBase
         Init();
         _prefab = await _addressableManager.GetAddressableAsset<GameObject>(_fruitType.ToString());
     }
-
-    protected virtual void Make()
-    {
-
-    }
 }

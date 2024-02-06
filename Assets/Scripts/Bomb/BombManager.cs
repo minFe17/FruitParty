@@ -5,15 +5,10 @@ using Utils;
 public class BombManager : MonoBehaviour
 {
     // ╫л╠шео
-    GameObject _lineBomb;
-    GameObject _squareBomb;
-    GameObject _fruitBomb;
-
     FactoryManager<EBombType, Bomb> _bombFactoryManager;
     FruitManager _fruitManager;
     TileManager _tileManager;
     MatchFinder _matchFinder;
-    AddressableManager _addressableManager;
     ELineBombDirectionType _lineBombDirection;
 
     public ELineBombDirectionType LineBombDirection { get => _lineBombDirection; set => _lineBombDirection = value; }
@@ -25,17 +20,6 @@ public class BombManager : MonoBehaviour
         _tileManager = GenericSingleton<TileManager>.Instance;
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
     }
-
-    public async void LoadAsset()
-    {
-        if (_addressableManager == null)
-            _addressableManager = GenericSingleton<AddressableManager>.Instance;
-
-        _lineBomb = await _addressableManager.GetAddressableAsset<GameObject>("LineBomb");
-        _squareBomb = await _addressableManager.GetAddressableAsset<GameObject>("SquareBomb");
-        _fruitBomb = await _addressableManager.GetAddressableAsset<GameObject>("FruitBomb");
-    }
-
 
     void CheckConcreteTile(int column, int row)
     {

@@ -21,10 +21,10 @@ public class Fruit : MonoBehaviour
     protected bool _isMatch;
     protected bool _isBomb;
 
+    FactoryManager<EEffectType, GameObject> _effectFactoryManager;
     HintManager _hintManager;
     GameManager _gameManager;
     TileManager _tileManager;
-    EffectManager _effectManager;
 
     Vector2 _firstTouchPos = Vector2.zero;
     Vector2 _finalTouchPos = Vector2.zero;
@@ -75,6 +75,7 @@ public class Fruit : MonoBehaviour
 
     void SetManager()
     {
+        _effectFactoryManager = GenericSingleton<FactoryManager<EEffectType, GameObject>>.Instance;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
         _bombManager = GenericSingleton<BombManager>.Instance;
@@ -82,7 +83,6 @@ public class Fruit : MonoBehaviour
         _hintManager = GenericSingleton<HintManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;
-        _effectManager = GenericSingleton<EffectManager>.Instance;
     }
 
     void MoveFruit()
@@ -130,7 +130,8 @@ public class Fruit : MonoBehaviour
             sprite.color = new Color(0.5f, 0.5f, 0.5f, 1);
             if (!_onEffect)
             {
-                GameObject effect = Instantiate(_effectManager.DestroyEffect, transform.position, Quaternion.identity);
+                Vector2Int position = new Vector2Int(Column, Row);
+                _effectFactoryManager.MakeObject(EEffectType.Destroy, position);
                 _onEffect = true;
             }
         }

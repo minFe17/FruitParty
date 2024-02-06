@@ -29,9 +29,6 @@ public class LoadAsset : MonoBehaviour
     void LoadIngameAsset()
     {
         GenericSingleton<EventManager>.Instance.LoadAsset();
-        GenericSingleton<BombManager>.Instance.LoadAsset();
-        GenericSingleton<EffectManager>.Instance.LoadAsset();
-        GenericSingleton<TileManager>.Instance.LoadAsset();
     }
 
     void LoadFactoryAsset()

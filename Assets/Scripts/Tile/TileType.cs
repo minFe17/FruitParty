@@ -18,14 +18,3 @@ public class TileType
         _y = y;
     }
 }
-
-public enum ETileKindType
-{
-    Normal,
-    Blank,
-    Ice,
-    Lock,
-    Concrete,
-    Lava,
-    Max,
-}
