@@ -1,8 +1,8 @@
 public class FruitBomb : Bomb
 {
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         _bombType = EBombType.FruitBomb;
     }
 

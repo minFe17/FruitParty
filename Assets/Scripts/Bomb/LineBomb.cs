@@ -6,14 +6,17 @@ public class LineBomb : Bomb
 {
     StringBuilder _stringBuilder = new StringBuilder();
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         _bombType = EBombType.LineBomb;
+        if (_colorType == EColorType.Max)
+            ChangeColor();
     }
 
     protected override void SetSprite()
     {
+        _stringBuilder.Clear();
         string color = _colorType.ToString();
         _stringBuilder.Append(color);
         _stringBuilder.Append("LineBomb");

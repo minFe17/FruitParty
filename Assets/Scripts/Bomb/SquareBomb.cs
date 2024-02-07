@@ -5,9 +5,9 @@ public class SquareBomb : Bomb
 {
     StringBuilder _stringBuilder = new StringBuilder();
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         _bombType = EBombType.SquareBomb;
     }
 

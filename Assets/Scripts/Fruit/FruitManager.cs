@@ -10,8 +10,8 @@ public class FruitManager : MonoBehaviour
     // ╫л╠шео
     Fruit[,] _allFruits;
 
-    FactoryManager<EFruitType, Fruit> _fruitFactoryManager;
-    ObjectPool<EFruitType> _fruitObjectPool;
+    FactoryManager _factoryManager;
+    ObjectPoolManager _objectPoolManager;
     MatchFinder _matchFinder;
     ScoreManager _scoreManager;
     GameManager _gameManager;
@@ -33,7 +33,6 @@ public class FruitManager : MonoBehaviour
     public Fruit CurrentFruit { get => _currentFruit; set => _currentFruit = value; }
     public int Width { get => _width; }
     public int Height { get => _height; }
-    public int Offset { get; set; }
 
     public void Init(Transform parent, int x, int y)
     {
@@ -46,8 +45,8 @@ public class FruitManager : MonoBehaviour
 
     void LoadManagers()
     {
-        _fruitFactoryManager = GenericSingleton<FactoryManager<EFruitType, Fruit>>.Instance;
-        _fruitObjectPool = GenericSingleton<ObjectPool<EFruitType>>.Instance;
+        _factoryManager = GenericSingleton<FactoryManager>.Instance;
+        _objectPoolManager = GenericSingleton<ObjectPoolManager>.Instance;
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
@@ -70,7 +69,6 @@ public class FruitManager : MonoBehaviour
 
             _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
             DestroyFruit(_allFruits[column, row]);
-            _allFruits[column, row] = null;
         }
     }
 
@@ -271,12 +269,12 @@ public class FruitManager : MonoBehaviour
             {
                 if (_allFruits[i, j] == null && !_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null && _tileManager.LavaTiles[i, j] == null)
                 {
-                    int fruitNumber = Random.Range(0, _fruitFactoryManager.Count);
+                    int fruitNumber = Random.Range(0, _factoryManager.FruitCount);
                     int iterations = 0;
                     while (MatchAt(i, j, (EFruitType)fruitNumber) && iterations < 100)
                     {
                         iterations++;
-                        fruitNumber = Random.Range(0, _fruitFactoryManager.Count);
+                        fruitNumber = Random.Range(0, _factoryManager.FruitCount);
                     }
                     MakeFruit((EFruitType)fruitNumber, i, j);
                 }
@@ -398,10 +396,10 @@ public class FruitManager : MonoBehaviour
         int fruitNumber;
         int iterations = 0;
         int x = position.x;
-        int y = position.y - Offset;
+        int y = position.y;
         do
         {
-            fruitNumber = Random.Range(0, _fruitFactoryManager.Count);
+            fruitNumber = Random.Range(0, (int)EFruitType.Max);
             iterations++;
         }
         while (MatchAt(x, y, (EFruitType)fruitNumber) && iterations <= 100);
@@ -411,10 +409,10 @@ public class FruitManager : MonoBehaviour
     public void MakeFruit(EFruitType type, int column, int row)
     {
         Vector2Int position = new Vector2Int(column, row);
-        Fruit fruit = _fruitFactoryManager.MakeObject(type, position);
+        Fruit fruit = (Fruit)_factoryManager.MakeObject<EFruitType, Fruit>(type, position);
 
         _allFruits[column, row] = fruit;
-        fruit.transform.position = new Vector2(column, row + Offset);
+        fruit.transform.position = new Vector2(column, row);
         fruit.transform.parent = _parent;
     }
 
@@ -519,7 +517,8 @@ public class FruitManager : MonoBehaviour
 
     public void DestroyFruit(Fruit fruit)
     {
-        _fruitObjectPool.Pull(fruit.FruitType, fruit.gameObject);
+        _objectPoolManager.Pull(fruit.FruitType, fruit.gameObject);
+        _allFruits[fruit.Column, fruit.Row] = null;
     }
 
     IEnumerator DecreaseRowRoutine()

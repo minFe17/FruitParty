@@ -11,6 +11,7 @@ public class Fruit : MonoBehaviour
 
     protected EBombType _bombType;
     protected FruitManager _fruitManager;
+    protected FactoryManager _factoryManager;
     protected MatchFinder _matchFinder;
     protected BombManager _bombManager;
     protected SpriteManager _spriteManager;
@@ -21,7 +22,6 @@ public class Fruit : MonoBehaviour
     protected bool _isMatch;
     protected bool _isBomb;
 
-    FactoryManager<EEffectType, GameObject> _effectFactoryManager;
     HintManager _hintManager;
     GameManager _gameManager;
     TileManager _tileManager;
@@ -47,9 +47,13 @@ public class Fruit : MonoBehaviour
     public bool IsMatch { get => _isMatch; set => _isMatch = value; }
     public bool IsBomb { get => _isBomb; }
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         SetManager();
+    }
+
+    void OnEnable()
+    {
         Init();
     }
 
@@ -68,14 +72,15 @@ public class Fruit : MonoBehaviour
 
     public virtual void Init()
     {
-        SetSprite();
         _isMatch = false;
         _onEffect = false;
+        SetSprite();
+        _spriteRenderer.color = new Color(1f, 1f, 1f, 1);
     }
 
     void SetManager()
     {
-        _effectFactoryManager = GenericSingleton<FactoryManager<EEffectType, GameObject>>.Instance;
+        _factoryManager = GenericSingleton<FactoryManager>.Instance;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
         _bombManager = GenericSingleton<BombManager>.Instance;
@@ -126,12 +131,11 @@ public class Fruit : MonoBehaviour
     {
         if (_isMatch)
         {
-            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-            sprite.color = new Color(0.5f, 0.5f, 0.5f, 1);
+            _spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f, 1);
             if (!_onEffect)
             {
                 Vector2Int position = new Vector2Int(Column, Row);
-                _effectFactoryManager.MakeObject(EEffectType.Destroy, position);
+                _factoryManager.MakeObject<EEffectType, GameObject>(EEffectType.Destroy, position);
                 _onEffect = true;
             }
         }

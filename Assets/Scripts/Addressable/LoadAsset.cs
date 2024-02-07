@@ -33,6 +33,6 @@ public class LoadAsset : MonoBehaviour
 
     void LoadFactoryAsset()
     {
-        GenericSingleton<FactoryManager<EFruitType, Fruit>>.Instance.Init();
+        GenericSingleton<FactoryManager>.Instance.Init();
     }
 }

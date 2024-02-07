@@ -8,7 +8,6 @@ public class Board : MonoBehaviour
     [Header("Board Size")]
     [SerializeField] int _width;
     [SerializeField] int _height;
-    [SerializeField] int _offset;
 
     FruitManager _fruitManager;
     TileManager _tileManager;
@@ -25,7 +24,6 @@ public class Board : MonoBehaviour
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;
         _fruitManager.Init(transform.parent, _width, _height);
-        _fruitManager.Offset = _offset;
         _tileManager.Init(_width, _height);
     }
 
@@ -40,7 +38,7 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                Vector2Int position = new Vector2Int(i, j + _offset);
+                Vector2Int position = new Vector2Int(i, j);
                 _tileManager.CreateNormalTile(i, j);
                 _fruitManager.CreateFruit(position);
             }

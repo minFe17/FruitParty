@@ -5,7 +5,7 @@ using Utils;
 public class BombManager : MonoBehaviour
 {
     // ╫л╠шео
-    FactoryManager<EBombType, Bomb> _bombFactoryManager;
+    FactoryManager _factoryManager;
     FruitManager _fruitManager;
     TileManager _tileManager;
     MatchFinder _matchFinder;
@@ -15,7 +15,7 @@ public class BombManager : MonoBehaviour
 
     public void Init()
     {
-        _bombFactoryManager = GenericSingleton<FactoryManager<EBombType, Bomb>>.Instance;
+        _factoryManager = GenericSingleton<FactoryManager>.Instance;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
@@ -41,13 +41,14 @@ public class BombManager : MonoBehaviour
     public void CreateBomb(EBombType bombType, Fruit fruit)
     {
         Vector2Int position = new Vector2Int(fruit.Column, fruit.Row);
-        _bombFactoryManager.ColorType = fruit.ColorType;
-        Bomb bomb = _bombFactoryManager.MakeObject(bombType, position, fruit.ColorType);
+        _factoryManager.ColorType = fruit.ColorType;
+        Debug.Log(fruit.ColorType);
+        Bomb bomb = (Bomb)_factoryManager.MakeObject<EBombType, Bomb>(bombType, position);
         bomb.transform.position = fruit.transform.position;
 
+        _fruitManager.DestroyFruit(fruit);
         _fruitManager.AllFruits[fruit.Column, fruit.Row] = bomb;
         _matchFinder.MatchFruits.Clear();
-        _fruitManager.DestroyFruit(fruit);
     }
 
     public List<Fruit> GetColumnFruits(int column)

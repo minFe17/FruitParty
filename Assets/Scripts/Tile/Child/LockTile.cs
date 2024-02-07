@@ -14,6 +14,6 @@ public class LockTile : Tile
     public override void DestroyTile()
     {
         _tileManager.LockTiles[_x, _y] = null;
-        _tileObjectPool.Pull(ETileKindType.Lock, gameObject);
+        _objectPoolManager.Pull(ETileKindType.Lock, gameObject);
     }
 }

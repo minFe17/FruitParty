@@ -16,6 +16,11 @@ public abstract class Bomb : Fruit
             OnEffect();
     }
 
+    public void ChangeColor()
+    {
+        _colorType = _factoryManager.ColorType;
+    }
+
     public abstract void OnEffect();
 }
 

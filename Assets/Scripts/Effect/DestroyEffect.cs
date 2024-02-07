@@ -3,11 +3,11 @@ using Utils;
 
 public class DestroyEffect : MonoBehaviour
 {
-    ObjectPool<EEffectType> _effectObjectPool;
+    ObjectPoolManager _objectPoolManager;
 
     void Awake()
     {
-        _effectObjectPool = GenericSingleton<ObjectPool<EEffectType>>.Instance;
+        _objectPoolManager = GenericSingleton<ObjectPoolManager>.Instance;
     }
 
     public void Init()
@@ -17,6 +17,6 @@ public class DestroyEffect : MonoBehaviour
 
     void OnParticleSystemStopped()
     {
-        _effectObjectPool.Pull(EEffectType.Destroy, gameObject);
+        _objectPoolManager.Pull(EEffectType.Destroy, gameObject);
     }
 }

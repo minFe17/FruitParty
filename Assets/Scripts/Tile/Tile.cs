@@ -5,7 +5,7 @@ using Utils;
 public abstract class Tile : MonoBehaviour
 {
     [SerializeField] protected SpriteRenderer _spriteRenderer;
-    protected ObjectPool<ETileKindType> _tileObjectPool;
+    protected ObjectPoolManager _objectPoolManager;
     protected SpriteAtlas _tileAtlas;
     protected TileManager _tileManager;
     protected TileType _tileType;
@@ -16,7 +16,7 @@ public abstract class Tile : MonoBehaviour
 
     private void Awake()
     {
-        _tileObjectPool = GenericSingleton<ObjectPool<ETileKindType>>.Instance;
+        _objectPoolManager = GenericSingleton<ObjectPoolManager>.Instance;
         _tileAtlas = GenericSingleton<SpriteManager>.Instance.TileAtlas;
         _tileManager = GenericSingleton<TileManager>.Instance;
         SetSprite();

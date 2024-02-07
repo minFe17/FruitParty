@@ -14,6 +14,6 @@ public class ConcreteTile : Tile
     public override void DestroyTile()
     {
         _tileManager.ConcreteTiles[_x, _y] = null;
-        _tileObjectPool.Pull(ETileKindType.Concrete, gameObject);
+        _objectPoolManager.Pull(ETileKindType.Concrete, gameObject);
     }
 }

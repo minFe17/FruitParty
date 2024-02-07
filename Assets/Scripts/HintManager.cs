@@ -5,8 +5,8 @@ using Utils;
 public class HintManager : MonoBehaviour
 {
     // ╫л╠шео
-    FactoryManager<EEffectType, GameObject> _effectFactoryManager;
-    ObjectPool<EEffectType> _effectObjecctPool;
+    FactoryManager _factoryManager;
+    ObjectPoolManager _objectPoolManager;
     FruitManager _fruitManager;
     GameObject _currentHint;
 
@@ -20,8 +20,8 @@ public class HintManager : MonoBehaviour
 
     public void Init()
     {
-        _effectFactoryManager = GenericSingleton<FactoryManager<EEffectType, GameObject>>.Instance;
-        _effectObjecctPool = GenericSingleton<ObjectPool<EEffectType>>.Instance;
+        _factoryManager = GenericSingleton<FactoryManager>.Instance;
+        _objectPoolManager = GenericSingleton<ObjectPoolManager>.Instance;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
         _hintDelay = 10f;
         _hintCoolTime = _hintDelay;
@@ -49,7 +49,7 @@ public class HintManager : MonoBehaviour
         if (movableFruit != null)
         {
             Vector2Int position = new Vector2Int(movableFruit.Column, movableFruit.Row);
-            _effectFactoryManager.MakeObject(EEffectType.Hint, position);
+            _factoryManager.MakeObject<EEffectType, GameObject>(EEffectType.Hint, position);
         }
     }
 
@@ -95,7 +95,7 @@ public class HintManager : MonoBehaviour
     {
         if (_currentHint != null)
         {
-            _effectObjecctPool.Pull(EEffectType.Hint, _currentHint);
+            _objectPoolManager.Pull(EEffectType.Hint, _currentHint);
             _currentHint = null;
             _hintCoolTime = _hintDelay;
         }

@@ -14,6 +14,6 @@ public class LavaTile : Tile
     public override void DestroyTile()
     {
         _tileManager.LavaTiles[_x, _y] = null;
-        _tileObjectPool.Pull(ETileKindType.Lava, gameObject);
+        _objectPoolManager.Pull(ETileKindType.Lava, gameObject);
     }
 }

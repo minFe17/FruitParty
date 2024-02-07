@@ -3,16 +3,14 @@ using Utils;
 
 public abstract class TileFactoryBase : FactoryBase
 {
-    protected FactoryManager<ETileKindType, Tile> _factoryManager;
-    protected ObjectPool<ETileKindType> _tileObjectPool;
     protected ETileKindType _tileType;
 
     protected abstract void Init();
 
-    async void Awake()
+    async void Start()
     {
-        _factoryManager = GenericSingleton<FactoryManager<ETileKindType, Tile>>.Instance;
-        _tileObjectPool = GenericSingleton<ObjectPool<ETileKindType>>.Instance;
+        _factoryManager = GenericSingleton<FactoryManager>.Instance;
+        _objectPoolManager = GenericSingleton<ObjectPoolManager>.Instance;
         _addressableManager = GenericSingleton<AddressableManager>.Instance;
         Init();
         _prefab = await _addressableManager.GetAddressableAsset<GameObject>($"{_tileType}Tile");

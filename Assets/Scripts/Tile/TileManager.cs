@@ -8,7 +8,7 @@ public class TileManager : MonoBehaviour
     public List<TileType> _boardLayout = new List<TileType>();
     GameObject _tileParent;
     FruitManager _fruitManager;
-    FactoryManager<ETileKindType, Tile> _tileFactoryManager;
+    FactoryManager _factoryManager;
 
     [Header("Tile Array")]
     GameObject[,] _allTiles;
@@ -37,7 +37,7 @@ public class TileManager : MonoBehaviour
         SetArray();
         _tileParent = new GameObject("Tiles");
         _fruitManager = GenericSingleton<FruitManager>.Instance;
-        _tileFactoryManager = GenericSingleton<FactoryManager<ETileKindType, Tile>>.Instance;
+        _factoryManager = GenericSingleton<FactoryManager>.Instance;
         _boardLayout.Clear();
     }
 
@@ -56,14 +56,13 @@ public class TileManager : MonoBehaviour
         if (_fruitManager.AllFruits[column, row] != null)
         {
             _fruitManager.DestroyFruit(_fruitManager.AllFruits[column, row]);
-            _fruitManager.AllFruits[column, row] = null;
         }
     }
 
     Tile CreateTiles(ETileKindType tileType, int column, int row)
     {
         Vector2Int position = new Vector2Int(column, row);
-        Tile tile = _tileFactoryManager.MakeObject(tileType, position);
+        Tile tile = (Tile)_factoryManager.MakeObject<ETileKindType, Tile>(tileType, position);
         TileType layout = AddBoardLayout(tileType, tile, column, row);
         tile.Init(layout, column, row);
         return tile;
@@ -160,7 +159,7 @@ public class TileManager : MonoBehaviour
     public void CreateNormalTile(int column, int row)
     {
         Vector2Int position = new Vector2Int(column, row);
-        Tile tile = _tileFactoryManager.MakeObject(ETileKindType.Normal, position);
+        Tile tile = (Tile)_factoryManager.MakeObject<ETileKindType, Tile>(ETileKindType.Normal, position);
         tile.transform.parent = _tileParent.transform;
         _allTiles[column, row] = tile.gameObject;
     }

@@ -39,7 +39,6 @@ public class Typhoon : Event
                     if (newX >= _width)
                     {
                         _fruitManager.DestroyFruit(_fruitManager.AllFruits[x, y]);
-                        _fruitManager.AllFruits[x, y] = null;
                         continue;
                     }
                     else if (!_tileManager.BlankTiles[newX, y] && _tileManager.ConcreteTiles[newX, y] == null && _tileManager.LavaTiles[newX, y] == null)
