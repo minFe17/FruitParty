@@ -1,4 +1,4 @@
-public class TileType
+public struct TileType
 {
     ETileKindType _tileKindType;
     Tile _tile;

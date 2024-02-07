@@ -42,7 +42,6 @@ public class BombManager : MonoBehaviour
     {
         Vector2Int position = new Vector2Int(fruit.Column, fruit.Row);
         _factoryManager.ColorType = fruit.ColorType;
-        Debug.Log(fruit.ColorType);
         Bomb bomb = (Bomb)_factoryManager.MakeObject<EBombType, Bomb>(bombType, position);
         bomb.transform.position = fruit.transform.position;
 
@@ -51,9 +50,9 @@ public class BombManager : MonoBehaviour
         _matchFinder.MatchFruits.Clear();
     }
 
-    public List<Fruit> GetColumnFruits(int column)
+    public void GetColumnFruits(int column, out List<Fruit> fruits)
     {
-        List<Fruit> fruits = new List<Fruit>();
+        fruits = new List<Fruit>();
         for (int i = 0; i < _fruitManager.Height; i++)
         {
             if (_fruitManager.AllFruits[column, i] != null)
@@ -66,12 +65,11 @@ public class BombManager : MonoBehaviour
                 fruit.IsMatch = true;
             }
         }
-        return fruits;
     }
 
-    public List<Fruit> GetRowFruits(int row)
+    public void GetRowFruits(int row, out List<Fruit> fruits)
     {
-        List<Fruit> fruits = new List<Fruit>();
+        fruits = new List<Fruit>();
         for (int i = 0; i < _fruitManager.Width; i++)
         {
             if (_fruitManager.AllFruits[i, row] != null)
@@ -84,12 +82,11 @@ public class BombManager : MonoBehaviour
                 fruit.IsMatch = true;
             }
         }
-        return fruits;
     }
 
-    public List<Fruit> GetSquareFruits(int column, int row)
+    public void GetSquareFruits(int column, int row, out List<Fruit> fruits)
     {
-        List<Fruit> fruits = new List<Fruit>();
+        fruits = new List<Fruit>();
         for (int i = column - 1; i <= column + 1; i++)
         {
             for (int j = row - 1; j <= row + 1; j++)
@@ -105,7 +102,6 @@ public class BombManager : MonoBehaviour
                 }
             }
         }
-        return fruits;
     }
 
     public void HitTileColumnLineBomb(int column)

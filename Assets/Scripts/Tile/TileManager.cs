@@ -54,17 +54,16 @@ public class TileManager : MonoBehaviour
     void CheckFruit(int column, int row)
     {
         if (_fruitManager.AllFruits[column, row] != null)
-        {
             _fruitManager.DestroyFruit(_fruitManager.AllFruits[column, row]);
-        }
     }
 
-    Tile CreateTiles(ETileKindType tileType, int column, int row)
+    Tile CreateTiles(ETileKindType type, int column, int row)
     {
+        TileType tileType;
         Vector2Int position = new Vector2Int(column, row);
-        Tile tile = (Tile)_factoryManager.MakeObject<ETileKindType, Tile>(tileType, position);
-        TileType layout = AddBoardLayout(tileType, tile, column, row);
-        tile.Init(layout, column, row);
+        Tile tile = (Tile)_factoryManager.MakeObject<ETileKindType, Tile>(type, position);
+        AddBoardLayout(out tileType, type, tile, column, row);
+        tile.Init(tileType, column, row);
         return tile;
     }
 
@@ -135,11 +134,10 @@ public class TileManager : MonoBehaviour
         while (!canCreateTilePosition);
     }
 
-    TileType AddBoardLayout(ETileKindType type, Tile tile, int column, int row)
+    void AddBoardLayout(out TileType tileType, ETileKindType type, Tile tile, int column, int row)
     {
-        TileType tileType = new TileType(type, tile, column, row);
+        tileType = new TileType(type, tile, column, row);
         _boardLayout.Add(tileType);
-        return tileType;
     }
 
     Vector2Int CheckForDirection(int column, int row)
@@ -166,10 +164,11 @@ public class TileManager : MonoBehaviour
 
     public void CreateBlankTiles()
     {
+        TileType tileType;
         int column;
         int row;
         CalculateObstacleTile(out column, out row);
-        AddBoardLayout(ETileKindType.Blank, null, column, row);
+        AddBoardLayout(out tileType, ETileKindType.Blank, null, column, row);
         _blankTiles[column, row] = true;
         if (_allTiles[column, row] != null)
         {

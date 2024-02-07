@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -13,6 +14,7 @@ public class SquareBomb : Bomb
 
     protected override void SetSprite()
     {
+        _stringBuilder.Clear();
         string color = _colorType.ToString();
         _stringBuilder.Append(color);
         _stringBuilder.Append("SquareBomb");
@@ -23,7 +25,9 @@ public class SquareBomb : Bomb
     {
         if (!_isUse)
         {
-            _matchFinder.MatchFruits.Union(_bombManager.GetSquareFruits(_column, _row));
+            List<Fruit> fruits;
+            _bombManager.GetSquareFruits(_column, _row, out fruits);
+            _matchFinder.MatchFruits.Union(fruits);
             _bombManager.HitTileSquareBomb(_column, _row);
             _isUse = true;
         }

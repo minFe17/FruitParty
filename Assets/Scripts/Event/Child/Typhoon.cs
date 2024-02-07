@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Typhoon : Event
+public class Typhoon : Event, IEvent
 {
     int _minMoveAmount = 1;
 
@@ -13,7 +13,7 @@ public class Typhoon : Event
         _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
     }
 
-    public override void EventEffect()
+    void IEvent.EventEffect()
     {
         _gameManager.GameState = EGameStateType.Event;
         StartCoroutine(TyphoonRoutine());

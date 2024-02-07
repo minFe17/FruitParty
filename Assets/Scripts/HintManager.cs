@@ -55,8 +55,8 @@ public class HintManager : MonoBehaviour
 
     Fruit PickOneRandomFruit()
     {
-        List<Fruit> movableFruits = new List<Fruit>();
-        movableFruits = FindMovableFruit();
+        List<Fruit> movableFruits;
+        FindMovableFruit(out movableFruits);
         if (movableFruits.Count > 0)
         {
             int fruitIndex = Random.Range(0, movableFruits.Count);
@@ -65,9 +65,9 @@ public class HintManager : MonoBehaviour
         return null;
     }
 
-    List<Fruit> FindMovableFruit()
+    void FindMovableFruit(out List<Fruit> movableFruits)
     {
-        List<Fruit> movableFruits = new List<Fruit>();
+        movableFruits = new List<Fruit>();
 
         for (int i = 0; i < _fruitManager.Width; i++)
         {
@@ -88,7 +88,6 @@ public class HintManager : MonoBehaviour
                 }
             }
         }
-        return movableFruits;
     }
 
     public void DestroyHint()

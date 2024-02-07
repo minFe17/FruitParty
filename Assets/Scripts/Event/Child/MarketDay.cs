@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class MarketDay : Event
+public class MarketDay : Event, IEvent
 {
     int _minBuyFruits = 3;
     int _maxBuyFruits = 11;
@@ -14,7 +14,7 @@ public class MarketDay : Event
         _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
     }
 
-    public override void EventEffect()
+    void IEvent.EventEffect()
     {
         _gameManager.GameState = EGameStateType.Event;
         StartCoroutine(MarketDayRoutine());

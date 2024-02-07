@@ -576,31 +576,8 @@ public class FruitManager : MonoBehaviour
             _eventManager.Shuffle.EventEffect();
         yield return new WaitForSeconds(_refillDelay);
 
-        System.GC.Collect();
         _gameManager.GameState = EGameStateType.Move;
         CheckCreateMoreLavaTile();
         _streakValue = 1;
     }
-}
-
-public enum EFruitType
-{
-    Carrot,
-    Lemon,
-    Orange,
-    StarFruit,
-    Strawberry,
-    Tomato,
-    Watermelon,
-    Max,
-}
-
-public enum EColorType
-{
-    Red,
-    Orange,
-    Yellow,
-    Green,
-    Blue,
-    Max,
 }

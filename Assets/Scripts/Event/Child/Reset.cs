@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Reset : Event
+public class Reset : Event, IEvent
 {
     protected override void Start()
     {
@@ -11,7 +11,7 @@ public class Reset : Event
         _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
     }
 
-    public override void EventEffect()
+    void IEvent.EventEffect()
     {
         _gameManager.GameState = EGameStateType.Event;
         StartCoroutine(ResetRoutine());

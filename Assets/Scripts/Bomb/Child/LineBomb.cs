@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -26,6 +27,7 @@ public class LineBomb : Bomb
     public override void OnEffect()
     {
         ELineBombDirectionType lineDirection = _bombManager.LineBombDirection;
+        List<Fruit> fruits;
         if (!_isUse)
         {
             if (lineDirection == ELineBombDirectionType.None || lineDirection == ELineBombDirectionType.Max)
@@ -33,12 +35,14 @@ public class LineBomb : Bomb
 
             if (lineDirection == ELineBombDirectionType.Column)
             {
-                _matchFinder.MatchFruits.Union(_bombManager.GetColumnFruits(_column));
+                _bombManager.GetColumnFruits(_column, out fruits);
+                _matchFinder.MatchFruits.Union(fruits);
                 _bombManager.HitTileColumnLineBomb(_column);
             }
             else if (lineDirection == ELineBombDirectionType.Row)
             {
-                _matchFinder.MatchFruits.Union(_bombManager.GetRowFruits(_row));
+                _bombManager.GetRowFruits(_row, out fruits);
+                _matchFinder.MatchFruits.Union(fruits);
                 _bombManager.HitTileRowLineBomb(_row);
             }
 

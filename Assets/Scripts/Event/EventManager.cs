@@ -5,10 +5,10 @@ using Utils;
 public class EventManager : MonoBehaviour
 {
     // ╫л╠шео
-    List<Event> _events = new List<Event>();
+    List<IEvent> _events = new List<IEvent>();
     GameObject _eventPrefab;
-    Shuffle _shuffle;
-    Reset _reset;
+    IEvent _shuffle;
+    IEvent _reset;
     ScoreManager _scoreManager;
     AddressableManager _addressableManager;
 
@@ -18,9 +18,9 @@ public class EventManager : MonoBehaviour
     int _resetScoreAmount = 5000;
     int _lastEventIndex;
 
-    public List<Event> Events { get => _events; }
-    public Shuffle Shuffle { get => _shuffle; set => _shuffle = value; }
-    public Reset Reset { set => _reset = value; }
+    public List<IEvent> Events { get => _events; }
+    public IEvent Shuffle { get => _shuffle; set => _shuffle = value; }
+    public IEvent Reset { set => _reset = value; }
 
     public void Init()
     {
@@ -46,39 +46,33 @@ public class EventManager : MonoBehaviour
         Instantiate(_eventPrefab, transform.position, Quaternion.identity);
     }
 
+    void ResetEvent()
+    {
+        if (_resetScore == _eventScore)
+            _eventScore += _eventScoreAmount;
+        _reset.EventEffect();
+        _resetScore += _resetScoreAmount;
+    }
+
+    void RandomEvent()
+    {
+        int randomIndex = Random.Range(0, _events.Count);
+        int iteration = 0;
+        while (randomIndex == _lastEventIndex && iteration <= 100)
+        {
+            randomIndex = Random.Range(0, _events.Count);
+            iteration++;
+        }
+        _events[randomIndex].EventEffect();
+        _lastEventIndex = randomIndex;
+        _eventScore += _eventScoreAmount;
+    }
+
     public void OnEvent()
     {
         if (_resetScore <= _scoreManager.Score)
-        {
-            if (_resetScore == _eventScore)
-                _eventScore += _eventScoreAmount;
-            _reset.EventEffect();
-            _resetScore += _resetScoreAmount;
-        }
+            ResetEvent();
         else if (_eventScore <= _scoreManager.Score)
-        {
-            int randomIndex = Random.Range(0, _events.Count);
-            int iteration = 0;
-            while (randomIndex == _lastEventIndex && iteration <= 100)
-            {
-                randomIndex = Random.Range(0, _events.Count);
-                iteration++;
-            }
-            _events[randomIndex].EventEffect();
-            _lastEventIndex = randomIndex;
-            _eventScore += _eventScoreAmount;
-        }
+            RandomEvent();
     }
-}
-
-public enum EEventType
-{
-    Shuffle,
-    Reset,
-    EarthQuake,
-    Heat,
-    MarketDay,
-    Typhoon,
-    Volcano,
-    Max,
 }

@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utils;
 
-public class Shuffle : Event
+public class Shuffle : Event, IEvent
 {
     bool _endShuffle;
     public bool EndShuffle { get => _endShuffle; }
@@ -16,15 +15,15 @@ public class Shuffle : Event
         _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
     }
 
-    public override void EventEffect()
+    void IEvent.EventEffect()
     {
         _gameManager.GameState = EGameStateType.Event;
         StartCoroutine(ShuffleFruitRoutine());
     }
 
-    List<Fruit> NewPositionTarget()
+    void NewPositionTarget(out List<Fruit> returnFruits)
     {
-        List<Fruit> returnFruits = new List<Fruit>();
+        returnFruits = new List<Fruit>();
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
@@ -36,7 +35,6 @@ public class Shuffle : Event
                 }
             }
         }
-        return returnFruits;
     }
 
     void FruitNewPosition(List<Fruit> newFruit)
@@ -79,7 +77,8 @@ public class Shuffle : Event
     public void ShuffleFruit()
     {
         _endShuffle = false;
-        List<Fruit> newFruit = NewPositionTarget();
+        List<Fruit> newFruit;
+        NewPositionTarget(out newFruit);
         FruitNewPosition(newFruit);
         if (_fruitManager.IsDeadlocked())
             ShuffleFruit();

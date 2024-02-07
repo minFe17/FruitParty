@@ -21,11 +21,3 @@ public class IceBreak : MonoBehaviour
         }
     }
 }
-
-public enum EBreakIceType
-{
-    FirstBreakIce,
-    SecondBreakIce,
-    ThirdBreakIce,
-    Max,
-}

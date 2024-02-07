@@ -23,19 +23,3 @@ public abstract class Bomb : Fruit
 
     public abstract void OnEffect();
 }
-
-public enum EBombType
-{
-    LineBomb,
-    SquareBomb,
-    FruitBomb,
-    Max,
-}
-
-public enum ELineBombDirectionType
-{
-    None,
-    Column,
-    Row,
-    Max,
-}

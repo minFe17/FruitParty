@@ -66,12 +66,3 @@ public class GameManager : MonoBehaviour
         _uiManager.GameUIPanel.ShowRemainTime();
     }
 }
-
-public enum EGameStateType
-{
-    Move,
-    Wait,
-    GameOver,
-    Pause,
-    Event,
-}

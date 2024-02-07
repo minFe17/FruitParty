@@ -1,7 +1,7 @@
 using UnityEngine;
 using Utils;
 
-public abstract class Event : MonoBehaviour
+public class Event : MonoBehaviour
 {
     protected EEventType _eventType;
     protected EventUIBase _eventUI;
@@ -31,6 +31,4 @@ public abstract class Event : MonoBehaviour
         _width = _fruitManager.Width;
         _height = _fruitManager.Height;
     }
-
-    public abstract void EventEffect();
 }

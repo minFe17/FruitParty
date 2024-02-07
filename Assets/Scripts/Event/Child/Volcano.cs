@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Utils;
 
-public class Volcano : Event
+public class Volcano : Event, IEvent
 {
     Shuffle _shuffle;
 
@@ -12,10 +12,10 @@ public class Volcano : Event
         _eventType = EEventType.Volcano;
         _eventManager.Events.Add(this);
         _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
-        _shuffle = GenericSingleton<EventManager>.Instance.Shuffle;
+        _shuffle = (Shuffle)GenericSingleton<EventManager>.Instance.Shuffle;
     }
 
-    public override void EventEffect()
+    void IEvent.EventEffect()
     {
         _gameManager.GameState = EGameStateType.Event;
         StartCoroutine(VolcanoRoutine());

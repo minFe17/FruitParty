@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Heat : Event
+public class Heat : Event, IEvent
 {
     protected override void Start()
     {
@@ -11,7 +11,7 @@ public class Heat : Event
         _eventUIManager.EventUI.TryGetValue(_eventType, out _eventUI);
     }
 
-    public override void EventEffect()
+    void IEvent.EventEffect()
     {
         _gameManager.GameState = EGameStateType.Event;
         StartCoroutine(HeatRoutine());

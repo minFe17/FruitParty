@@ -3,6 +3,7 @@ using UnityEngine;
 public class CameraScalar : MonoBehaviour
 {
     [SerializeField] Camera _camera;
+
     [Header("Camera Size")]
     [SerializeField] int _displayWidth;
     [SerializeField] int _displawyHeight;
