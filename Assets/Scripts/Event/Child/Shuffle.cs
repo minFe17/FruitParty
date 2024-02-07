@@ -17,8 +17,11 @@ public class Shuffle : Event, IEvent
 
     void IEvent.EventEffect()
     {
-        _gameManager.GameState = EGameStateType.Event;
-        StartCoroutine(ShuffleFruitRoutine());
+        if (IsDeadlocked())
+        {
+            _gameManager.GameState = EGameStateType.Event;
+            StartCoroutine(ShuffleFruitRoutine());
+        }
     }
 
     void NewPositionTarget(out List<Fruit> returnFruits)
@@ -68,6 +71,31 @@ public class Shuffle : Event, IEvent
         }
     }
 
+    bool IsDeadlocked()
+    {
+        Fruit[,] allFruit = _fruitManager.AllFruits;
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (allFruit[i, j] != null)
+                {
+                    if (i < _width - 1)
+                    {
+                        if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.right))
+                            return false;
+                    }
+                    if (j < _height - 1)
+                    {
+                        if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.up))
+                            return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     void CreateFruit(int column, int row)
     {
         Vector2Int position = new Vector2Int(column, row);
@@ -80,7 +108,7 @@ public class Shuffle : Event, IEvent
         List<Fruit> newFruit;
         NewPositionTarget(out newFruit);
         FruitNewPosition(newFruit);
-        if (_fruitManager.IsDeadlocked())
+        if (IsDeadlocked())
             ShuffleFruit();
         else
             _endShuffle = true;

@@ -49,7 +49,6 @@ public class MarketDay : Event, IEvent
         {
             if (_fruitManager.AllFruits[column, row] != null)
             {
-                isBuyPosition = true;
                 break;
             }
             else

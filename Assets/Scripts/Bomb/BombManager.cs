@@ -38,7 +38,106 @@ public class BombManager : MonoBehaviour
         }
     }
 
-    public void CreateBomb(EBombType bombType, Fruit fruit)
+    void CheckCreatableBomb(Fruit fruit)
+    {
+        List<Fruit> creatableFruits;
+        int columnMatch;
+        int rowMatch;
+        CalculateMatch(out creatableFruits, out columnMatch, out rowMatch, fruit);
+
+        if (creatableFruits.Count != 0)
+        {
+            Fruit currentFruit = _fruitManager.CurrentFruit;
+
+            for (int i = 0; i < creatableFruits.Count; i++)
+            {
+                if (creatableFruits[i] == currentFruit)
+                {
+                    if (columnMatch == 4 || rowMatch == 4)
+                    {
+                        CreateBomb(EBombType.FruitBomb, currentFruit);
+                    }
+                    else if (columnMatch == 2 && rowMatch == 2)
+                    {
+                        CreateBomb(EBombType.SquareBomb, currentFruit);
+                    }
+                    else if (columnMatch == 3 || rowMatch == 3)
+                    {
+                        CreateBomb(EBombType.LineBomb, currentFruit);
+                    }
+                }
+                if (creatableFruits[i] == currentFruit.OtherFruit)
+                {
+                    if (columnMatch == 4 || rowMatch == 4)
+                    {
+                        CreateBomb(EBombType.FruitBomb, currentFruit.OtherFruit);
+                    }
+                    else if (columnMatch == 2 && rowMatch == 2)
+                    {
+                        CreateBomb(EBombType.SquareBomb, currentFruit.OtherFruit);
+                    }
+                    else if (columnMatch == 3 || rowMatch == 3)
+                    {
+                        CreateBomb(EBombType.LineBomb, currentFruit.OtherFruit);
+                    }
+                }
+            }
+        }
+    }
+
+    void CalculateMatch(out List<Fruit> creatableFruits, out int columnMatch, out int rowMatch, Fruit fruit)
+    {
+        List<Fruit> matchFruits = _matchFinder.MatchFruits;
+        creatableFruits = new List<Fruit>();
+        creatableFruits.Add(fruit);
+        columnMatch = 0;
+        rowMatch = 0;
+
+        int column = fruit.Column;
+        int row = fruit.Row;
+
+        for (int i = 0; i < matchFruits.Count; i++)
+        {
+            Fruit nextFruit = matchFruits[i];
+            if (nextFruit == fruit)
+                continue;
+            if (nextFruit.Column == column && nextFruit.FruitType == fruit.FruitType)
+            {
+                columnMatch++;
+                creatableFruits.Add(nextFruit);
+            }
+            if (nextFruit.Row == row && nextFruit.FruitType == fruit.FruitType)
+            {
+                rowMatch++;
+                creatableFruits.Add(nextFruit);
+            }
+            if (fruit.IsBomb || nextFruit.IsBomb)
+            {
+                if (nextFruit.Column == column && nextFruit.ColorType == fruit.ColorType)
+                {
+                    columnMatch++;
+                    creatableFruits.Add(nextFruit);
+                }
+                if (nextFruit.Row == row && nextFruit.ColorType == fruit.ColorType)
+                {
+                    rowMatch++;
+                    creatableFruits.Add(nextFruit);
+                }
+            }
+        }
+    }
+
+    public void CheckMakeBomb()
+    {
+        List<Fruit> matchFruits = _matchFinder.MatchFruits;
+
+        for (int i = 0; i < matchFruits.Count; i++)
+        {
+            CheckCreatableBomb(matchFruits[i]);
+        }
+    }
+
+    void CreateBomb(EBombType bombType, Fruit fruit)
     {
         Vector2Int position = new Vector2Int(fruit.Column, fruit.Row);
         _factoryManager.ColorType = fruit.ColorType;

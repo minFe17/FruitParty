@@ -154,6 +154,70 @@ public class TileManager : MonoBehaviour
         return Vector2Int.zero;
     }
 
+    void CheckHaveFruitTile(int column, int row)
+    {
+        if (_lockTiles[column, row] != null)
+        {
+            DestroyTile(_lockTiles[column, row]);
+            _fruitManager.StreakValue--;
+            return;
+        }
+        if (_iceTiles[column, row] != null)
+        {
+            _iceTiles[column, row].TakeDamage();
+            _fruitManager.StreakValue--;
+            return;
+        }
+    }
+
+    void CheckHitTile(int column, int row)
+    {
+        if (column > 0)
+        {
+            CheckConcreteTile(column - 1, row);
+            CheckLavaTile(column - 1, row);
+        }
+        if (column < _width - 1)
+        {
+            CheckConcreteTile(column + 1, row);
+            CheckLavaTile(column + 1, row);
+        }
+
+        if (row > 0)
+        {
+            CheckConcreteTile(column, row - 1);
+            CheckLavaTile(column, row - 1);
+        }
+        if (row < _height - 1)
+        {
+            CheckConcreteTile(column, row + 1);
+            CheckLavaTile(column, row + 1);
+        }
+    }
+
+    void CheckConcreteTile(int column, int row)
+    {
+        if (_concreteTiles[column, row])
+            DestroyTile(_concreteTiles[column, row]);
+    }
+
+    void CheckLavaTile(int column, int row)
+    {
+        if (_lavaTiles[column, row])
+        {
+            DestroyTile(_lavaTiles[column, row]);
+            _createMoreLavaTile = false;
+        }
+    }
+
+    
+
+    public void CheckTile(int column, int row)
+    {
+        CheckHaveFruitTile(column, row);
+        CheckHitTile(column, row);
+    }
+
     public void CreateNormalTile(int column, int row)
     {
         Vector2Int position = new Vector2Int(column, row);
@@ -229,6 +293,14 @@ public class TileManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void CheckCreateMoreLavaTile()
+    {
+        if (LavaTileInBoard() && !FirstCreateLavaTile)
+            _createMoreLavaTile = true;
+        if (FirstCreateLavaTile)
+            FirstCreateLavaTile = false;
     }
 
     public void CreateMoreLavaTiles()

@@ -33,6 +33,7 @@ public class FruitManager : MonoBehaviour
     public Fruit CurrentFruit { get => _currentFruit; set => _currentFruit = value; }
     public int Width { get => _width; }
     public int Height { get => _height; }
+    public int StreakValue { get => _streakValue; set => _streakValue = value; }
 
     public void Init(Transform parent, int x, int y)
     {
@@ -62,7 +63,7 @@ public class FruitManager : MonoBehaviour
         if (_allFruits[column, row].IsMatch)
         {
             PlayMatchAudio();
-            CheckTile(column, row);
+            _tileManager.CheckTile(column, row);
 
             _scoreManager.AddScore(_baseFruitScore * _streakValue);
             _gameManager.AddTime(_streakValue);
@@ -70,195 +71,6 @@ public class FruitManager : MonoBehaviour
             _matchFinder.MatchFruits.Remove(_allFruits[column, row]);
             DestroyFruit(_allFruits[column, row]);
         }
-    }
-
-    void CheckTile(int column, int row)
-    {
-        CheckHaveFruitTile(column, row);
-        CheckHitTile(column, row);
-    }
-
-    void CheckHaveFruitTile(int column, int row)
-    {
-        if (_tileManager.LockTiles[column, row] != null)
-        {
-            _tileManager.DestroyTile(_tileManager.LockTiles[column, row]);
-            _streakValue--;
-            return;
-        }
-        if (_tileManager.IceTiles[column, row] != null)
-        {
-            _tileManager.IceTiles[column, row].TakeDamage();
-            _streakValue--;
-            return;
-        }
-    }
-
-    void CheckHitTile(int column, int row)
-    {
-        if (column > 0)
-        {
-            CheckConcreteTile(column - 1, row);
-            CheckLavaTile(column - 1, row);
-        }
-        if (column < _width - 1)
-        {
-            CheckConcreteTile(column + 1, row);
-            CheckLavaTile(column + 1, row);
-        }
-
-        if (row > 0)
-        {
-            CheckConcreteTile(column, row - 1);
-            CheckLavaTile(column, row - 1);
-        }
-        if (row < _height - 1)
-        {
-            CheckConcreteTile(column, row + 1);
-            CheckLavaTile(column, row + 1);
-        }
-    }
-
-    void CheckConcreteTile(int column, int row)
-    {
-        if (_tileManager.ConcreteTiles[column, row])
-            _tileManager.DestroyTile(_tileManager.ConcreteTiles[column, row]);
-    }
-
-    void CheckLavaTile(int column, int row)
-    {
-        if (_tileManager.LavaTiles[column, row])
-        {
-            _tileManager.DestroyTile(_tileManager.LavaTiles[column, row]);
-            _tileManager.CreateMoreLavaTile = false;
-        }
-    }
-
-    void CheckMakeBomb()
-    {
-        EBombType bombType;
-        Fruit fruit;
-        Action<EBombType, Fruit> makeBomb = MakeableBomb(out bombType, out fruit);
-        if (makeBomb != null)
-            makeBomb(bombType, fruit);
-    }
-
-    Action<EBombType, Fruit> MakeableBomb(out EBombType bombType, out Fruit targetFruit)
-    {
-        Action<EBombType, Fruit> returnAction = null;
-        List<Fruit> matchFruits = _matchFinder.MatchFruits;
-        bombType = EBombType.Max;
-        targetFruit = null;
-
-        for (int i = 0; i < matchFruits.Count; i++)
-        {
-            List<Fruit> creatableFruits;
-            Fruit fruit = matchFruits[i];
-            int columnMatch;
-            int rowMatch;
-
-            Fruit returnFruit = null;
-            CalculateMatch(out creatableFruits, out columnMatch, out rowMatch, matchFruits, fruit);
-            if (creatableFruits.Count != 0)
-            {
-                EBombType checkBombType = CheckCreatableBomb(out returnFruit, creatableFruits, columnMatch, rowMatch);
-
-                if (checkBombType != EBombType.Max)
-                {
-                    bombType = checkBombType;
-                    targetFruit = returnFruit;
-                    returnAction += _bombManager.CreateBomb;
-                }
-            }
-        }
-        return returnAction;
-    }
-
-    void CalculateMatch(out List<Fruit> creatableFruits, out int columnMatch, out int rowMatch, List<Fruit> matchFruits, Fruit fruit)
-    {
-        creatableFruits = new List<Fruit>();
-        creatableFruits.Add(fruit);
-        columnMatch = 0;
-        rowMatch = 0;
-
-        int column = fruit.Column;
-        int row = fruit.Row;
-
-        for (int i = 0; i < matchFruits.Count; i++)
-        {
-            Fruit nextFruit = matchFruits[i];
-            if (nextFruit == fruit)
-                continue;
-            if (nextFruit.Column == column && nextFruit.FruitType == fruit.FruitType)
-            {
-                columnMatch++;
-                creatableFruits.Add(nextFruit);
-            }
-            if (nextFruit.Row == row && nextFruit.FruitType == fruit.FruitType)
-            {
-                rowMatch++;
-                creatableFruits.Add(nextFruit);
-            }
-            if (fruit.IsBomb || nextFruit.IsBomb)
-            {
-                if (nextFruit.Column == column && nextFruit.ColorType == fruit.ColorType)
-                {
-                    columnMatch++;
-                    creatableFruits.Add(nextFruit);
-                }
-                if (nextFruit.Row == row && nextFruit.ColorType == fruit.ColorType)
-                {
-                    rowMatch++;
-                    creatableFruits.Add(nextFruit);
-                }
-            }
-        }
-    }
-
-    EBombType CheckCreatableBomb(out Fruit targetFruit, List<Fruit> creatableFruits, int columnMatch, int rowMatch)
-    {
-        targetFruit = null;
-
-        for (int i = 0; i < creatableFruits.Count; i++)
-        {
-            if (creatableFruits[i] == _currentFruit)
-            {
-                if (columnMatch == 4 || rowMatch == 4)
-                {
-                    targetFruit = _currentFruit;
-                    return EBombType.FruitBomb;
-                }
-                else if (columnMatch == 2 && rowMatch == 2)
-                {
-                    targetFruit = _currentFruit;
-                    return EBombType.SquareBomb;
-                }
-                else if (columnMatch == 3 || rowMatch == 3)
-                {
-                    targetFruit = _currentFruit;
-                    return EBombType.LineBomb;
-                }
-            }
-            if (creatableFruits[i] == _currentFruit.OtherFruit)
-            {
-                if (columnMatch == 4 || rowMatch == 4)
-                {
-                    targetFruit = _currentFruit.OtherFruit;
-                    return EBombType.FruitBomb;
-                }
-                else if (columnMatch == 2 && rowMatch == 2)
-                {
-                    targetFruit = _currentFruit.OtherFruit;
-                    return EBombType.SquareBomb; ;
-                }
-                else if (columnMatch == 3 || rowMatch == 3)
-                {
-                    targetFruit = _currentFruit.OtherFruit;
-                    return EBombType.LineBomb;
-                }
-            }
-        }
-        return EBombType.Max;
     }
 
     void RefillFruit()
@@ -383,14 +195,6 @@ public class FruitManager : MonoBehaviour
         _soundManager.PlaySFX(_audioClipManager.FruitMatchSFX[randomAudio]);
     }
 
-    void CheckCreateMoreLavaTile()
-    {
-        if (_tileManager.LavaTileInBoard() && !_tileManager.FirstCreateLavaTile)
-            _tileManager.CreateMoreLavaTile = true;
-        if (_tileManager.FirstCreateLavaTile)
-            _tileManager.FirstCreateLavaTile = false;
-    }
-
     public void CreateFruit(Vector2Int position)
     {
         int fruitNumber;
@@ -456,13 +260,12 @@ public class FruitManager : MonoBehaviour
     public void BuyFruit(int column, int row)
     {
         DestroyFruit(_allFruits[column, row]);
-        _allFruits[column, row] = null;
     }
 
     public void CheckMatchFruit()
     {
         if (_matchFinder.MatchFruits.Count >= 4)
-            CheckMakeBomb();
+            _bombManager.CheckMakeBomb();
         _matchFinder.MatchFruits.Clear();
 
         for (int i = 0; i < _width; i++)
@@ -474,30 +277,6 @@ public class FruitManager : MonoBehaviour
             }
         }
         StartCoroutine(DecreaseRowRoutine());
-    }
-
-    public bool IsDeadlocked()
-    {
-        for (int i = 0; i < _width; i++)
-        {
-            for (int j = 0; j < _height; j++)
-            {
-                if (_allFruits[i, j] != null)
-                {
-                    if (i < _width - 1)
-                    {
-                        if (SwitchAndCheck(i, j, Vector2Int.right))
-                            return false;
-                    }
-                    if (j < _height - 1)
-                    {
-                        if (SwitchAndCheck(i, j, Vector2Int.up))
-                            return false;
-                    }
-                }
-            }
-        }
-        return true;
     }
 
     public bool SwitchAndCheck(int column, int row, Vector2Int direction)
@@ -572,12 +351,11 @@ public class FruitManager : MonoBehaviour
         _currentFruit = null;
         _tileManager.CreateMoreLavaTiles();
 
-        if (IsDeadlocked())
             _eventManager.Shuffle.EventEffect();
         yield return new WaitForSeconds(_refillDelay);
 
         _gameManager.GameState = EGameStateType.Move;
-        CheckCreateMoreLavaTile();
+        _tileManager.CheckCreateMoreLavaTile();
         _streakValue = 1;
     }
 }
