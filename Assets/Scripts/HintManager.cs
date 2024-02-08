@@ -5,6 +5,8 @@ using Utils;
 public class HintManager : MonoBehaviour
 {
     // ╫л╠шео
+    List<Fruit> _movableFruits = new List<Fruit>();
+
     FactoryManager _factoryManager;
     ObjectPoolManager _objectPoolManager;
     FruitManager _fruitManager;
@@ -55,20 +57,18 @@ public class HintManager : MonoBehaviour
 
     Fruit PickOneRandomFruit()
     {
-        List<Fruit> movableFruits;
-        FindMovableFruit(out movableFruits);
-        if (movableFruits.Count > 0)
+        FindMovableFruit();
+        if (_movableFruits.Count > 0)
         {
-            int fruitIndex = Random.Range(0, movableFruits.Count);
-            return movableFruits[fruitIndex];
+            int fruitIndex = Random.Range(0, _movableFruits.Count);
+            return _movableFruits[fruitIndex];
         }
+        _movableFruits.Clear();
         return null;
     }
 
-    void FindMovableFruit(out List<Fruit> movableFruits)
+    void FindMovableFruit()
     {
-        movableFruits = new List<Fruit>();
-
         for (int i = 0; i < _fruitManager.Width; i++)
         {
             for (int j = 0; j < _fruitManager.Height; j++)
@@ -78,12 +78,12 @@ public class HintManager : MonoBehaviour
                     if (i < _fruitManager.Width - 1)
                     {
                         if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.right))
-                            movableFruits.Add(_fruitManager.AllFruits[i, j]);
+                            _movableFruits.Add(_fruitManager.AllFruits[i, j]);
                     }
                     if (j < _fruitManager.Height - 1)
                     {
                         if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.up))
-                            movableFruits.Add(_fruitManager.AllFruits[i, j]);
+                            _movableFruits.Add(_fruitManager.AllFruits[i, j]);
                     }
                 }
             }

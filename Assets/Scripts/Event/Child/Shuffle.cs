@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Shuffle : Event, IEvent
 {
+    List<Fruit> _newFruit = new List<Fruit>();
+
     bool _endShuffle;
     public bool EndShuffle { get => _endShuffle; }
 
@@ -24,9 +26,8 @@ public class Shuffle : Event, IEvent
         }
     }
 
-    void NewPositionTarget(out List<Fruit> returnFruits)
+    void NewPositionTarget()
     {
-        returnFruits = new List<Fruit>();
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
@@ -34,66 +35,43 @@ public class Shuffle : Event, IEvent
                 if (!_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null && _tileManager.LavaTiles[i, j] == null)
                 {
                     if (_fruitManager.AllFruits[i, j] != null)
-                        returnFruits.Add(_fruitManager.AllFruits[i, j]);
+                        _newFruit.Add(_fruitManager.AllFruits[i, j]);
                 }
             }
         }
     }
 
-    void FruitNewPosition(List<Fruit> newFruit)
+    void FruitNewPosition()
     {
+        NewPositionTarget();
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
             {
                 if (!_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null && _tileManager.LavaTiles[i, j] == null)
                 {
-                    if (newFruit.Count != 0)
+                    if (_newFruit.Count != 0)
                     {
-                        int fruitIndex = Random.Range(0, newFruit.Count);
+                        int fruitIndex = Random.Range(0, _newFruit.Count);
                         int iterations = 0;
-                        while (_fruitManager.MatchAt(i, j, newFruit[fruitIndex].FruitType) && iterations <= 100)
+                        while (_fruitManager.MatchAt(i, j, _newFruit[fruitIndex].FruitType) && iterations <= 100)
                         {
-                            fruitIndex = Random.Range(0, newFruit.Count);
+                            fruitIndex = Random.Range(0, _newFruit.Count);
                             iterations++;
                         }
 
-                        Fruit fruit = newFruit[fruitIndex];
+                        Fruit fruit = _newFruit[fruitIndex];
                         fruit.Column = i;
                         fruit.Row = j;
-                        _fruitManager.AllFruits[i, j] = newFruit[fruitIndex];
-                        newFruit.Remove(newFruit[fruitIndex]);
+                        _fruitManager.AllFruits[i, j] = _newFruit[fruitIndex];
+                        _newFruit.Remove(fruit);
                     }
-                    if (newFruit.Count == 0)
+                    if (_newFruit.Count == 0)
                         CreateFruit(i, j);
                 }
             }
         }
-    }
-
-    bool IsDeadlocked()
-    {
-        Fruit[,] allFruit = _fruitManager.AllFruits;
-        for (int i = 0; i < _width; i++)
-        {
-            for (int j = 0; j < _height; j++)
-            {
-                if (allFruit[i, j] != null)
-                {
-                    if (i < _width - 1)
-                    {
-                        if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.right))
-                            return false;
-                    }
-                    if (j < _height - 1)
-                    {
-                        if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.up))
-                            return false;
-                    }
-                }
-            }
-        }
-        return true;
+        _newFruit.Clear();
     }
 
     void CreateFruit(int column, int row)
@@ -102,12 +80,39 @@ public class Shuffle : Event, IEvent
         _fruitManager.CreateFruit(position);
     }
 
+    bool IsDeadlocked()
+    {
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_fruitManager.AllFruits[i, j] != null)
+                {
+                    if (i < _width - 1)
+                    {
+                        if (!_fruitManager.SwitchAndCheck(i, j, Vector2Int.right))
+                        {
+                            return false;
+                        }
+                    }
+                    if (j < _height - 1)
+                    {
+                        if (!_fruitManager.SwitchAndCheck(i, j, Vector2Int.up))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     public void ShuffleFruit()
     {
         _endShuffle = false;
-        List<Fruit> newFruit;
-        NewPositionTarget(out newFruit);
-        FruitNewPosition(newFruit);
+
+        FruitNewPosition();
         if (IsDeadlocked())
             ShuffleFruit();
         else

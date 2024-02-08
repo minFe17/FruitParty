@@ -21,7 +21,7 @@ public class AddressableManager : MonoBehaviour
     Task LoadAssetAsync<T>(string address, TaskCompletionSource<T> completionSource)
     {
         Action<T> callback = spriteAtlas => { completionSource.SetResult(spriteAtlas); };
-        LoadAsset<T>(address, callback);
+        LoadAsset(address, callback);
 
         return completionSource.Task;
     }

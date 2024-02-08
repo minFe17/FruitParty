@@ -10,6 +10,8 @@ public class SquareBomb : Bomb
     {
         base.Awake();
         _bombType = EBombType.SquareBomb;
+        if (_colorType == EColorType.Max)
+            ChangeColor();
     }
 
     protected override void SetSprite()
@@ -26,7 +28,7 @@ public class SquareBomb : Bomb
         if (!_isUse)
         {
             List<Fruit> fruits;
-            _bombManager.GetSquareFruits(_column, _row, out fruits);
+            _bombManager.GetSquareFruits(out fruits, _column, _row);
             _matchFinder.MatchFruits.Union(fruits);
             _bombManager.HitTileSquareBomb(_column, _row);
             _isUse = true;

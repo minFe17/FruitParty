@@ -35,13 +35,13 @@ public class LineBomb : Bomb
 
             if (lineDirection == ELineBombDirectionType.Column)
             {
-                _bombManager.GetColumnFruits(_column, out fruits);
+                _bombManager.GetColumnFruits(out fruits, _column);
                 _matchFinder.MatchFruits.Union(fruits);
                 _bombManager.HitTileColumnLineBomb(_column);
             }
             else if (lineDirection == ELineBombDirectionType.Row)
             {
-                _bombManager.GetRowFruits(_row, out fruits);
+                _bombManager.GetRowFruits(out fruits, _row);
                 _matchFinder.MatchFruits.Union(fruits);
                 _bombManager.HitTileRowLineBomb(_row);
             }

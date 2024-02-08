@@ -8,28 +8,32 @@ using Utils;
 public class CSVManager : MonoBehaviour
 {
     // ╫л╠шео
+    List<string[]> _writeDatas = new List<string[]>();
+    string[] _writeHeader;
+    string[] _writeValue;
+    string[] _readValue;
+
+    StringBuilder _stringBuilder = new StringBuilder();
     SoundManager _soundManager;
     ScoreManager _scoreManager;
 
     string _soundDataFilePath;
     string _highScoreDataFilePath;
+    string _soundDataFileName = "SoundDataFile.csv";
+    string _highScoreDataFile = "HighScoreDataFile.csv";
 
-    void Start()
+    void Awake()
     {
-        CreateSoundDataFilePath();
-        CreateHighScoreDataFilePath();
+        CreateDataFilePath(out _soundDataFilePath, _soundDataFileName);
+        CreateDataFilePath(out _highScoreDataFilePath, _highScoreDataFile);
     }
 
-    void CreateSoundDataFilePath()
+    void CreateDataFilePath(out string filePath, string fileName)
     {
-        string soundDataFileName = "SoundDataFile.csv";
-        _soundDataFilePath = Application.persistentDataPath + soundDataFileName;
-    }
-
-    void CreateHighScoreDataFilePath()
-    {
-        string highScoreDataFile = "HighScoreDataFile.csv";
-        _highScoreDataFilePath = Application.persistentDataPath + highScoreDataFile;
+        _stringBuilder.Clear();
+        _stringBuilder.Append(Application.persistentDataPath);
+        _stringBuilder.Append(fileName);
+        filePath = _stringBuilder.ToString();
     }
 
     bool CheckDataFile(string filePath)
@@ -39,10 +43,11 @@ public class CSVManager : MonoBehaviour
         return false;
     }
 
-    string[] BaseReadData(string filePath)
+    void BaseReadData(string filePath)
     {
+        _readValue = null;
         if (!CheckDataFile(filePath))
-            return null;
+            return;
         else
         {
             string source;
@@ -52,17 +57,15 @@ public class CSVManager : MonoBehaviour
                 source = streamReader.ReadToEnd();
                 lines = Regex.Split(source, @"\r\n|\n\r|\n|\r");
                 string[] header = Regex.Split(lines[0], ",");
-                string[] value = Regex.Split(lines[1], ",");
-
-                return value;
+                _readValue = Regex.Split(lines[1], ",");
             }
         }
     }
 
-    void BaseWriteData(List<string[]> datas, string filePath)
+    void BaseWriteData(string filePath)
     {
         string delimiter = ",";
-        string[][] outputs = datas.ToArray();
+        string[][] outputs = _writeDatas.ToArray();
 
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < outputs.Length; i++)
@@ -71,63 +74,65 @@ public class CSVManager : MonoBehaviour
         }
         using (StreamWriter outStream = File.CreateText(filePath))
             outStream.Write(stringBuilder);
+
+        _writeDatas.Clear();
     }
 
     public void ReadSoundData()
     {
         if (_soundManager == null)
             _soundManager = GenericSingleton<SoundManager>.Instance;
-        if (_soundDataFilePath == null)
-            CreateSoundDataFilePath();
 
-        string[] value = BaseReadData(_soundDataFilePath);
-        if (value != null)
+        BaseReadData(_soundDataFilePath);
+
+        if (_readValue != null)
         {
-            _soundManager.BgmSound = float.Parse(value[0]);
-            _soundManager.SFXSound = float.Parse(value[1]);
+            _soundManager.BgmSound = float.Parse(_readValue[0]);
+            _soundManager.SFXSound = float.Parse(_readValue[1]);
         }
         else
         {
             _soundManager.BgmSound = 0.5f;
             _soundManager.SFXSound = 0.5f;
         }
+
+        _readValue = null;
     }
 
     public void ReadHighScoreData()
     {
         if (_scoreManager == null)
             _scoreManager = GenericSingleton<ScoreManager>.Instance;
-        if (_soundDataFilePath == null)
-            CreateHighScoreDataFilePath();
 
-        string[] value = BaseReadData(_highScoreDataFilePath);
-        if (value != null)
-            _scoreManager.HighScore = int.Parse(value[0]);
+        BaseReadData(_highScoreDataFilePath);
+
+        if (_readValue != null)
+            _scoreManager.HighScore = int.Parse(_readValue[0]);
         else
             _scoreManager.HighScore = 0;
+
+        _readValue = null;
     }
 
     public void WriteSoundData()
     {
-        List<string[]> datas = new List<string[]>();
+        _writeDatas.Clear();
+        _writeHeader = new string[] { "BGMVolume", "SFXVolume" };
+        _writeDatas.Add(_writeHeader);
+        _writeValue = new string[] { _soundManager.BgmSound.ToString(), _soundManager.SFXSound.ToString() };
+        _writeDatas.Add(_writeValue);
 
-        string[] header = new string[] { "BGMVolume", "SFXVolume" };
-        datas.Add(header);
-        string[] value = new string[] { _soundManager.BgmSound.ToString(), _soundManager.SFXSound.ToString() };
-        datas.Add(value);
-
-        BaseWriteData(datas, _soundDataFilePath);
+        BaseWriteData(_soundDataFilePath);
     }
 
     public void WriteHighScoreData()
     {
-        List<string[]> datas = new List<string[]>();
+        _writeDatas.Clear();
+        _writeHeader = new string[] { "HighScore" };
+        _writeDatas.Add(_writeHeader);
+        _writeValue = new string[] { _scoreManager.HighScore.ToString() };
+        _writeDatas.Add(_writeValue);
 
-        string[] header = new string[] { "HighScore" };
-        datas.Add(header);
-        string[] value = new string[] { _scoreManager.HighScore.ToString() };
-        datas.Add(value);
-
-        BaseWriteData(datas, _highScoreDataFilePath);
+        BaseWriteData(_highScoreDataFilePath);
     }
 }

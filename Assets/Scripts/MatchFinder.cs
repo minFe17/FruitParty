@@ -8,6 +8,9 @@ public class MatchFinder : MonoBehaviour
 {
     // ╫л╠шео
     List<Fruit> _matchFruits = new List<Fruit>();
+    List<Fruit> _fruitsList = new List<Fruit>();
+    List<Fruit> _bombs = new List<Fruit>();
+
     FruitManager _fruitManager;
     BombManager _bombManager;
 
@@ -21,37 +24,37 @@ public class MatchFinder : MonoBehaviour
 
     void FindFruitMatch(Fruit[] fruits, ELineBombDirectionType direction)
     {
-        List<Fruit> fruitsList;
-        List<Fruit> bombs;
-        BombCount(out fruitsList, out bombs, fruits);
+        _fruitsList.Clear();
+        _bombs.Clear();
+        BombCount(fruits);
 
-        if (bombs.Count != 0)
-            CheckBomb(fruitsList, bombs, fruits, direction);
+        if (_bombs.Count != 0)
+            CheckBomb(fruits, direction);
         else if (fruits[0].FruitType == fruits[1].FruitType && fruits[0].FruitType == fruits[2].FruitType)
             FruitMatch(fruits);
     }
 
-    void CheckBomb(List<Fruit> fruitsList, List<Fruit> bombs, Fruit[] fruits, ELineBombDirectionType direction)
+    void CheckBomb(Fruit[] fruits, ELineBombDirectionType direction)
     {
-        if (bombs.Count == 3)
+        if (_bombs.Count == 3)
         {
-            if (bombs[0].ColorType == bombs[1].ColorType && bombs[0].ColorType == bombs[2].ColorType)
+            if (_bombs[0].ColorType == _bombs[1].ColorType && _bombs[0].ColorType == _bombs[2].ColorType)
             {
                 _bombManager.LineBombDirection = direction;
                 FruitMatch(fruits);
             }
         }
-        else if (bombs.Count == 2)
+        else if (_bombs.Count == 2)
         {
-            if (bombs[0].ColorType == bombs[1].ColorType && bombs[0].ColorType == fruits[0].ColorType)
+            if (_bombs[0].ColorType == _bombs[1].ColorType && _bombs[0].ColorType == fruits[0].ColorType)
             {
                 _bombManager.LineBombDirection = direction;
                 FruitMatch(fruits);
             }
         }
-        else if (bombs.Count == 1)
+        else if (_bombs.Count == 1)
         {
-            if (bombs[0].ColorType == fruitsList[0].ColorType && fruitsList[0].FruitType == fruitsList[1].FruitType)
+            if (_bombs[0].ColorType == _fruitsList[0].ColorType && _fruitsList[0].FruitType == _fruitsList[1].FruitType)
             {
                 _bombManager.LineBombDirection = direction;
                 FruitMatch(fruits);
@@ -61,9 +64,8 @@ public class MatchFinder : MonoBehaviour
 
     void FruitMatch(Fruit[] fruits)
     {
-        AddMatchFruits(fruits[0]);
-        AddMatchFruits(fruits[1]);
-        AddMatchFruits(fruits[2]);
+        for (int i = 0; i < fruits.Length; i++)
+            AddMatchFruits(fruits[i]);
     }
 
     void AddMatchFruits(Fruit fruit)
@@ -89,17 +91,66 @@ public class MatchFinder : MonoBehaviour
         }
     }
 
-    public void BombCount(out List<Fruit> fruitsList, out List<Fruit> bombs, Fruit[] fruits)
+    void BombCount(Fruit[] fruits)
     {
-        bombs = new List<Fruit>();
-        fruitsList = new List<Fruit>();
-
         for (int i = 0; i < fruits.Length; i++)
         {
             if (fruits[i].IsBomb)
-                bombs.Add(fruits[i]);
+                _bombs.Add(fruits[i]);
         }
-        fruitsList = fruits.Where(child => child != child.IsBomb).ToList();
+        _fruitsList = fruits.Where(child => child != child.IsBomb).ToList();
+    }
+
+    bool CheckBombMatch()
+    {
+        if (_bombs.Count == 3)
+        {
+            if (_bombs[0].ColorType == _bombs[1].ColorType && _bombs[0].ColorType == _bombs[2].ColorType)
+                return true;
+        }
+        else if (_bombs.Count == 2)
+        {
+            if (_bombs[0].ColorType == _bombs[1].ColorType && _bombs[0].ColorType == _fruitsList[0].ColorType)
+                return true;
+        }
+        else if (_bombs.Count == 1)
+        {
+            if (_bombs[0].ColorType == _fruitsList[0].ColorType && _fruitsList[0].FruitType == _fruitsList[1].FruitType)
+                return true;
+        }
+        return false;
+    }
+
+    void ClearList()
+    {
+        _fruitsList.Clear();
+        _bombs.Clear();
+    }
+
+    public bool CheckMatch(Fruit[] fruits)
+    {
+        BombCount(fruits);
+        Vector2Int firstPos = new Vector2Int(fruits[0].Column, fruits[0].Row);
+        Vector2Int secondPos = new Vector2Int(fruits[1].Column, fruits[1].Row);
+        Vector2Int thirdPos = new Vector2Int(fruits[2].Column, fruits[2].Row);
+
+        if (_bombs.Count != 0)
+        {
+            if (CheckBombMatch())
+            {
+                ClearList();
+                return true;
+            }
+        }
+        else if (_fruitManager.AllFruits[firstPos.x, firstPos.y].FruitType == _fruitManager.AllFruits[secondPos.x, secondPos.y].FruitType
+              && _fruitManager.AllFruits[firstPos.x, firstPos.y].FruitType == _fruitManager.AllFruits[thirdPos.x, thirdPos.y].FruitType)
+        {
+            ClearList();
+            return true;
+        }
+
+        ClearList();
+        return false;
     }
 
     public void FindAllMatch()

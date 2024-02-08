@@ -5,6 +5,8 @@ using Utils;
 public class BombManager : MonoBehaviour
 {
     // ╫л╠шео
+    List<Fruit> _creatableFruits = new List<Fruit>();
+
     FactoryManager _factoryManager;
     FruitManager _fruitManager;
     TileManager _tileManager;
@@ -40,18 +42,17 @@ public class BombManager : MonoBehaviour
 
     void CheckCreatableBomb(Fruit fruit)
     {
-        List<Fruit> creatableFruits;
         int columnMatch;
         int rowMatch;
-        CalculateMatch(out creatableFruits, out columnMatch, out rowMatch, fruit);
+        CalculateMatch(out columnMatch, out rowMatch, fruit);
 
-        if (creatableFruits.Count != 0)
+        if (_creatableFruits.Count != 0)
         {
             Fruit currentFruit = _fruitManager.CurrentFruit;
 
-            for (int i = 0; i < creatableFruits.Count; i++)
+            for (int i = 0; i < _creatableFruits.Count; i++)
             {
-                if (creatableFruits[i] == currentFruit)
+                if (_creatableFruits[i] == currentFruit)
                 {
                     if (columnMatch == 4 || rowMatch == 4)
                     {
@@ -66,7 +67,7 @@ public class BombManager : MonoBehaviour
                         CreateBomb(EBombType.LineBomb, currentFruit);
                     }
                 }
-                if (creatableFruits[i] == currentFruit.OtherFruit)
+                if (_creatableFruits[i] == currentFruit.OtherFruit)
                 {
                     if (columnMatch == 4 || rowMatch == 4)
                     {
@@ -83,13 +84,13 @@ public class BombManager : MonoBehaviour
                 }
             }
         }
+        _creatableFruits.Clear();
     }
 
-    void CalculateMatch(out List<Fruit> creatableFruits, out int columnMatch, out int rowMatch, Fruit fruit)
+    void CalculateMatch(out int columnMatch, out int rowMatch, Fruit fruit)
     {
         List<Fruit> matchFruits = _matchFinder.MatchFruits;
-        creatableFruits = new List<Fruit>();
-        creatableFruits.Add(fruit);
+        _creatableFruits.Add(fruit);
         columnMatch = 0;
         rowMatch = 0;
 
@@ -104,24 +105,24 @@ public class BombManager : MonoBehaviour
             if (nextFruit.Column == column && nextFruit.FruitType == fruit.FruitType)
             {
                 columnMatch++;
-                creatableFruits.Add(nextFruit);
+                _creatableFruits.Add(nextFruit);
             }
             if (nextFruit.Row == row && nextFruit.FruitType == fruit.FruitType)
             {
                 rowMatch++;
-                creatableFruits.Add(nextFruit);
+                _creatableFruits.Add(nextFruit);
             }
             if (fruit.IsBomb || nextFruit.IsBomb)
             {
                 if (nextFruit.Column == column && nextFruit.ColorType == fruit.ColorType)
                 {
                     columnMatch++;
-                    creatableFruits.Add(nextFruit);
+                    _creatableFruits.Add(nextFruit);
                 }
                 if (nextFruit.Row == row && nextFruit.ColorType == fruit.ColorType)
                 {
                     rowMatch++;
-                    creatableFruits.Add(nextFruit);
+                    _creatableFruits.Add(nextFruit);
                 }
             }
         }
@@ -149,7 +150,7 @@ public class BombManager : MonoBehaviour
         _matchFinder.MatchFruits.Clear();
     }
 
-    public void GetColumnFruits(int column, out List<Fruit> fruits)
+    public void GetColumnFruits(out List<Fruit> fruits, int column)
     {
         fruits = new List<Fruit>();
         for (int i = 0; i < _fruitManager.Height; i++)
@@ -166,7 +167,7 @@ public class BombManager : MonoBehaviour
         }
     }
 
-    public void GetRowFruits(int row, out List<Fruit> fruits)
+    public void GetRowFruits(out List<Fruit> fruits, int row)
     {
         fruits = new List<Fruit>();
         for (int i = 0; i < _fruitManager.Width; i++)
@@ -183,7 +184,7 @@ public class BombManager : MonoBehaviour
         }
     }
 
-    public void GetSquareFruits(int column, int row, out List<Fruit> fruits)
+    public void GetSquareFruits(out List<Fruit> fruits, int column, int row)
     {
         fruits = new List<Fruit>();
         for (int i = column - 1; i <= column + 1; i++)

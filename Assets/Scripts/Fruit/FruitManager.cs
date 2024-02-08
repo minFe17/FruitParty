@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 using Random = UnityEngine.Random;
@@ -8,6 +6,7 @@ using Random = UnityEngine.Random;
 public class FruitManager : MonoBehaviour
 {
     // ╫л╠шео
+    Fruit[] _fruits;
     Fruit[,] _allFruits;
 
     FactoryManager _factoryManager;
@@ -116,7 +115,7 @@ public class FruitManager : MonoBehaviour
         if (_allFruits[column + direction.x, row + direction.y] != null)
         {
             Fruit temp = _allFruits[column + direction.x, row + direction.y] as Fruit;
-            _allFruits[column + (int)direction.x, row + (int)direction.y] = _allFruits[column, row];
+            _allFruits[column + direction.x, row + direction.y] = _allFruits[column, row];
             _allFruits[column, row] = temp;
         }
     }
@@ -129,62 +128,25 @@ public class FruitManager : MonoBehaviour
             {
                 if (_allFruits[i, j] != null)
                 {
-                    List<Fruit> fruitsList;
-                    List<Fruit> bombs;
+
                     if (i < _width - 2)
                     {
                         if (_allFruits[i + 1, j] != null && _allFruits[i + 2, j] != null)
                         {
-                            Fruit[] fruits = { _allFruits[i, j], _allFruits[i + 1, j], _allFruits[i + 2, j] };
-                            _matchFinder.BombCount(out fruitsList, out bombs, fruits);
-                            if (bombs.Count != 0)
-                            {
-                                if (CheckBombMatch(fruitsList, bombs))
-                                    return true;
-                            }
-
-                            else if (_allFruits[i, j].FruitType == _allFruits[i + 1, j].FruitType && _allFruits[i, j].FruitType == _allFruits[i + 2, j].FruitType)
-                                return true;
+                            _fruits = new Fruit[] { _allFruits[i, j], _allFruits[i + 1, j], _allFruits[i + 2, j] };
+                            _matchFinder.CheckMatch(_fruits);
                         }
                     }
                     if (j < _height - 2)
                     {
                         if (_allFruits[i, j + 1] != null && _allFruits[i, j + 2] != null)
                         {
-                            Fruit[] fruits = { _allFruits[i, j], _allFruits[i, j + 1], _allFruits[i, j + 2] };
-                            _matchFinder.BombCount(out fruitsList, out bombs, fruits);
-                            if (bombs.Count != 0)
-                            {
-                                if (CheckBombMatch(fruitsList, bombs))
-                                    return true;
-                            }
-
-                            else if (_allFruits[i, j].FruitType == _allFruits[i, j + 1].FruitType && _allFruits[i, j].FruitType == _allFruits[i, j + 2].FruitType)
-                                return true;
+                            _fruits = new Fruit[] { _allFruits[i, j], _allFruits[i, j + 1], _allFruits[i, j + 2] };
+                            _matchFinder.CheckMatch(_fruits);
                         }
                     }
                 }
             }
-        }
-        return false;
-    }
-
-    bool CheckBombMatch(List<Fruit> fruits, List<Fruit> bombs)
-    {
-        if (bombs.Count == 3)
-        {
-            if (bombs[0].ColorType == bombs[1].ColorType && bombs[0].ColorType == bombs[2].ColorType)
-                return true;
-        }
-        else if (bombs.Count == 2)
-        {
-            if (bombs[0].ColorType == bombs[1].ColorType && bombs[0].ColorType == fruits[0].ColorType)
-                return true;
-        }
-        else if (bombs.Count == 1)
-        {
-            if (bombs[0].ColorType == fruits[0].ColorType && fruits[0].FruitType == fruits[1].FruitType)
-                return true;
         }
         return false;
     }
@@ -351,7 +313,7 @@ public class FruitManager : MonoBehaviour
         _currentFruit = null;
         _tileManager.CreateMoreLavaTiles();
 
-            _eventManager.Shuffle.EventEffect();
+        _eventManager.Shuffle.EventEffect();
         yield return new WaitForSeconds(_refillDelay);
 
         _gameManager.GameState = EGameStateType.Move;
