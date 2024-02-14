@@ -142,7 +142,7 @@ public class BombManager : MonoBehaviour
     {
         Vector2Int position = new Vector2Int(fruit.Column, fruit.Row);
         _factoryManager.ColorType = fruit.ColorType;
-        Bomb bomb = (Bomb)_factoryManager.MakeObject<EBombType, Bomb>(bombType, position);
+        Bomb bomb = _factoryManager.MakeObject<EBombType, Bomb>(bombType, position);
         bomb.transform.position = fruit.transform.position;
 
         _fruitManager.DestroyFruit(fruit);

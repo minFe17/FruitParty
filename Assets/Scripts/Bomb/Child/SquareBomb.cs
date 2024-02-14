@@ -10,8 +10,7 @@ public class SquareBomb : Bomb
     {
         base.Awake();
         _bombType = EBombType.SquareBomb;
-        if (_colorType == EColorType.Max)
-            ChangeColor();
+        ChangeColor();
     }
 
     protected override void SetSprite()

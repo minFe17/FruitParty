@@ -11,8 +11,7 @@ public class LineBomb : Bomb
     {
         base.Awake();
         _bombType = EBombType.LineBomb;
-        if (_colorType == EColorType.Max)
-            ChangeColor();
+        ChangeColor();
     }
 
     protected override void SetSprite()

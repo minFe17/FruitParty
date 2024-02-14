@@ -63,7 +63,7 @@ public class TileManager : MonoBehaviour
     {
         TileType tileType;
         Vector2Int position = new Vector2Int(_column, _row);
-        Tile tile = (Tile)_factoryManager.MakeObject<ETileKindType, Tile>(type, position);
+        Tile tile = _factoryManager.MakeObject<ETileKindType, Tile>(type, position);
         AddBoardLayout(out tileType, type, tile);
         tile.Init(tileType, _column, _row);
         return tile;
@@ -217,7 +217,7 @@ public class TileManager : MonoBehaviour
     public void CreateNormalTile(int column, int row)
     {
         Vector2Int position = new Vector2Int(column, row);
-        Tile tile = (Tile)_factoryManager.MakeObject<ETileKindType, Tile>(ETileKindType.Normal, position);
+        Tile tile = _factoryManager.MakeObject<ETileKindType, Tile>(ETileKindType.Normal, position);
         tile.transform.parent = _tileParent.transform;
         _allTiles[column, row] = tile.gameObject;
     }

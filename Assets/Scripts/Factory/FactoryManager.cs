@@ -7,8 +7,8 @@ using Utils;
 public class FactoryManager : MonoBehaviour
 {
     //╫л╠шео
-    Factory<Fruit> _fruitFactory = new Factory<Fruit>();
     Dictionary<Type, IFactorys> _factorys = new Dictionary<Type, IFactorys>();
+    Factory<Fruit> _fruitFactory = new Factory<Fruit>();
     GameObject _factoryPrefab;
     AddressableManager _addressableManager;
 
@@ -51,10 +51,10 @@ public class FactoryManager : MonoBehaviour
         factory.AddFactorys(key, value);
     }
 
-    public object MakeObject<TEnum, T>(TEnum key, Vector2Int position) where TEnum : Enum
+    public T MakeObject<TEnum, T>(TEnum key, Vector2Int position) where TEnum : Enum
     {
         IFactorys factory;
         _factorys.TryGetValue(typeof(TEnum), out factory);
-        return factory.MakeObject(key, position);
+        return (T)factory.MakeObject(key, position);
     }
 }

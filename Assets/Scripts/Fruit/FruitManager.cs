@@ -175,7 +175,7 @@ public class FruitManager : MonoBehaviour
     public void MakeFruit(EFruitType type, int column, int row)
     {
         Vector2Int position = new Vector2Int(column, row);
-        Fruit fruit = (Fruit)_factoryManager.MakeObject<EFruitType, Fruit>(type, position);
+        Fruit fruit = _factoryManager.MakeObject<EFruitType, Fruit>(type, position);
 
         _allFruits[column, row] = fruit;
         fruit.transform.position = new Vector2(column, row);
