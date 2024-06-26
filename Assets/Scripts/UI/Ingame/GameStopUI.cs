@@ -55,7 +55,7 @@ public class GameStopUI : MonoBehaviour
     {
         _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
         _uiAnimator.SetBool("isStop", false);
-        _gameManager.GameState = EGameStateType.Move;
+        _gameManager.ChangeGameState(EGameStateType.Move);
         _csvManager.WriteSoundData();
     }
 

@@ -15,7 +15,7 @@ public class Typhoon : Event, IEvent
 
     void IEvent.EventEffect()
     {
-        _gameManager.GameState = EGameStateType.Event;
+        _gameManager.ChangeGameState(EGameStateType.Event);
         StartCoroutine(TyphoonRoutine());
     }
 
@@ -81,6 +81,6 @@ public class Typhoon : Event, IEvent
 
         _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventUIDelay);
-        _gameManager.GameState = EGameStateType.Move;
+        _gameManager.ChangeGameState(EGameStateType.Move);
     }
 }

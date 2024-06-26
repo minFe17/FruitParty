@@ -17,7 +17,7 @@ public class EarthQuake : Event, IEvent
 
     void IEvent.EventEffect()
     {
-        _gameManager.GameState = EGameStateType.Event;
+        _gameManager.ChangeGameState(EGameStateType.Event);
         StartCoroutine(EarthQuakeRoutine());
     }
 
@@ -48,6 +48,6 @@ public class EarthQuake : Event, IEvent
 
         _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventUIDelay);
-        _gameManager.GameState = EGameStateType.Move;
+        _gameManager.ChangeGameState(EGameStateType.Move);
     }
 }

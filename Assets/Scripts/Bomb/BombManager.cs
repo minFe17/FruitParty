@@ -150,90 +150,18 @@ public class BombManager : MonoBehaviour
         _matchFinder.MatchFruits.Clear();
     }
 
-    public void GetColumnFruits(out List<Fruit> fruits, int column)
+    public void CheckTile(int column, int row)
     {
-        fruits = new List<Fruit>();
-        for (int i = 0; i < _fruitManager.Height; i++)
-        {
-            if (_fruitManager.AllFruits[column, i] != null)
-            {
-                Fruit fruit = _fruitManager.AllFruits[column, i];
-                if (fruit.IsBomb && fruit.BombType == EBombType.LineBomb)
-                    _lineBombDirection = ELineBombDirectionType.Row;
-
-                fruits.Add(fruit);
-                fruit.IsMatch = true;
-            }
-        }
+        CheckConcreteTile(column, row);
+        CheckLavaTile(column, row);
     }
 
-    public void GetRowFruits(out List<Fruit> fruits, int row)
+    public void ChangeLineDirection()
     {
-        fruits = new List<Fruit>();
-        for (int i = 0; i < _fruitManager.Width; i++)
-        {
-            if (_fruitManager.AllFruits[i, row] != null)
-            {
-                Fruit fruit = _fruitManager.AllFruits[i, row];
-                if (fruit.IsBomb && fruit.BombType == EBombType.LineBomb)
-                    _lineBombDirection = ELineBombDirectionType.Column;
-
-                fruits.Add(fruit);
-                fruit.IsMatch = true;
-            }
-        }
+        if (_lineBombDirection == ELineBombDirectionType.Column)
+            _lineBombDirection = ELineBombDirectionType.Row;
+        else if (_lineBombDirection == ELineBombDirectionType.Row)
+            _lineBombDirection = ELineBombDirectionType.Column;
     }
 
-    public void GetSquareFruits(out List<Fruit> fruits, int column, int row)
-    {
-        fruits = new List<Fruit>();
-        for (int i = column - 1; i <= column + 1; i++)
-        {
-            for (int j = row - 1; j <= row + 1; j++)
-            {
-                if (i >= 0 && i < _fruitManager.Width && j >= 0 && j < _fruitManager.Height)
-                {
-                    if (_fruitManager.AllFruits[i, j] != null)
-                    {
-                        Fruit fruit = _fruitManager.AllFruits[i, j];
-                        fruits.Add(fruit);
-                        fruit.IsMatch = true;
-                    }
-                }
-            }
-        }
-    }
-
-    public void HitTileColumnLineBomb(int column)
-    {
-        for (int i = 0; i < _fruitManager.Height; i++)
-        {
-            CheckConcreteTile(column, i);
-            CheckLavaTile(column, i);
-        }
-    }
-
-    public void HitTileRowLineBomb(int row)
-    {
-        for (int i = 0; i < _fruitManager.Width; i++)
-        {
-            CheckConcreteTile(i, row);
-            CheckLavaTile(i, row);
-        }
-    }
-
-    public void HitTileSquareBomb(int column, int row)
-    {
-        for (int i = column - 1; i <= column + 1; i++)
-        {
-            for (int j = row - 1; j <= row + 1; j++)
-            {
-                if (i >= 0 && i < _fruitManager.Width && j >= 0 && j < _fruitManager.Height)
-                {
-                    CheckConcreteTile(i, j);
-                    CheckLavaTile(i, j);
-                }
-            }
-        }
-    }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class LineBomb : Bomb
 {
     StringBuilder _stringBuilder = new StringBuilder();
+    ELineBombDirectionType _lineDirection;
 
     protected override void Awake()
     {
@@ -23,30 +24,86 @@ public class LineBomb : Bomb
         _spriteRenderer.sprite = _spriteManager.BombAtlas.GetSprite(_stringBuilder.ToString());
     }
 
+    protected override void CheckHitTile()
+    {
+        if (_lineDirection == ELineBombDirectionType.Column)
+            HitTileColumn();
+        else if (_lineDirection == ELineBombDirectionType.Row)
+            HitTileRow();
+    }
+
+    protected override void GetFruits(out List<Fruit> fruits)
+    {
+        fruits = new List<Fruit>();
+        if (_lineDirection == ELineBombDirectionType.Column)
+            GetColumnFruit(out fruits);
+        else if (_lineDirection == ELineBombDirectionType.Row)
+            GetRowFruit(out fruits);
+    }
+
     public override void OnEffect()
     {
-        ELineBombDirectionType lineDirection = _bombManager.LineBombDirection;
+        _lineDirection = _bombManager.LineBombDirection;
         List<Fruit> fruits;
         if (!_isUse)
         {
-            if (lineDirection == ELineBombDirectionType.None || lineDirection == ELineBombDirectionType.Max)
-                lineDirection = (ELineBombDirectionType)Random.Range(1, (int)ELineBombDirectionType.Max);
+            if (_lineDirection == ELineBombDirectionType.None || _lineDirection == ELineBombDirectionType.Max)
+                _lineDirection = (ELineBombDirectionType)Random.Range(1, (int)ELineBombDirectionType.Max);
 
-            if (lineDirection == ELineBombDirectionType.Column)
-            {
-                _bombManager.GetColumnFruits(out fruits, _column);
-                _matchFinder.MatchFruits.Union(fruits);
-                _bombManager.HitTileColumnLineBomb(_column);
-            }
-            else if (lineDirection == ELineBombDirectionType.Row)
-            {
-                _bombManager.GetRowFruits(out fruits, _row);
-                _matchFinder.MatchFruits.Union(fruits);
-                _bombManager.HitTileRowLineBomb(_row);
-            }
+            GetFruits(out fruits);
+            _matchFinder.MatchFruits.Union(fruits);
+            CheckHitTile();
 
             _bombManager.LineBombDirection = ELineBombDirectionType.None;
             _isUse = true;
+        }
+    }
+
+    void GetColumnFruit(out List<Fruit> fruits)
+    {
+        fruits = new List<Fruit>();
+        for (int i = 0; i < _fruitManager.Height; i++)
+        {
+            if (_fruitManager.AllFruits[_column, i] != null)
+            {
+                Fruit fruit = _fruitManager.AllFruits[_column, i];
+                if (fruit.IsBomb && fruit.BombType == EBombType.LineBomb)
+                    _bombManager.ChangeLineDirection();
+
+                fruits.Add(fruit);
+                fruit.IsMatch = true;
+            }
+        }
+    }
+
+    void GetRowFruit(out List<Fruit> fruits)
+    {
+        fruits = new List<Fruit>();
+        for (int i = 0; i < _fruitManager.Width; i++)
+        {
+            if (_fruitManager.AllFruits[i, _row] != null)
+            {
+                Fruit fruit = _fruitManager.AllFruits[i, _row];
+                if (fruit.IsBomb && fruit.BombType == EBombType.LineBomb)
+                    _bombManager.ChangeLineDirection();
+
+                fruits.Add(fruit);
+                fruit.IsMatch = true;
+            }
+        }
+    }
+
+    void HitTileColumn()
+    {
+        for (int i = 0; i < _fruitManager.Height; i++)
+            _bombManager.CheckTile(_column, i);
+    }
+
+    void HitTileRow()
+    {
+        for (int i = 0; i < _fruitManager.Width; i++)
+        {
+            _bombManager.CheckTile(i, _row);
         }
     }
 }

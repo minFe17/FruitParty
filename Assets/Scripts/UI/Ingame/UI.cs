@@ -39,7 +39,7 @@ public class UI : MonoBehaviour
     void GameStart()
     {
         StartBGM();
-        _gameManager.GameState = EGameStateType.Move;
+        _gameManager.ChangeGameState(EGameStateType.Move);
         _gameManager.IsGameStart = true;
     }
 

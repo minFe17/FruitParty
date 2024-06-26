@@ -76,21 +76,6 @@ public class MatchFinder : MonoBehaviour
             fruit.IsMatch = true;
     }
 
-    public void MatchFruitOfType(EColorType color)
-    {
-        for (int i = 0; i < _fruitManager.Width; i++)
-        {
-            for (int j = 0; j < _fruitManager.Height; j++)
-            {
-                if (_fruitManager.AllFruits[i, j] != null)
-                {
-                    if (_fruitManager.AllFruits[i, j].ColorType == color)
-                        _fruitManager.AllFruits[i, j].IsMatch = true;
-                }
-            }
-        }
-    }
-
     void BombCount(Fruit[] fruits)
     {
         for (int i = 0; i < fruits.Length; i++)

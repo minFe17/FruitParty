@@ -71,8 +71,8 @@ public class TileManager : MonoBehaviour
 
     void CalculateHaveFruitTile(ETileKindType type)
     {
-        int tileX = 0;
-        int tileY = 0;
+        int tileX;
+        int tileY;
         bool canCreateTilePosition = true;
         do
         {
@@ -107,8 +107,8 @@ public class TileManager : MonoBehaviour
 
     void CalculateObstacleTile()
     {
-        int tileX = 0;
-        int tileY = 0;
+        int tileX;
+        int tileY;
         bool canCreateTilePosition = true;
         do
         {

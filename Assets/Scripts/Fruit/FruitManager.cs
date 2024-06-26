@@ -110,6 +110,26 @@ public class FruitManager : MonoBehaviour
         return false;
     }
 
+    bool CheckColumnMatch(int column, int row, EFruitType type)
+    {
+        if (_allFruits[column - 1, row] != null && _allFruits[column - 2, row] != null)
+        {
+            if (_allFruits[column - 1, row].FruitType == type && _allFruits[column - 2, row].FruitType == type)
+                return true;
+        }
+        return false;
+    }
+
+    bool CheckRowMatch(int column, int row, EFruitType type)
+    {
+        if (_allFruits[column, row - 1] != null && _allFruits[column, row - 2] != null)
+        {
+            if (_allFruits[column, row - 1].FruitType == type && _allFruits[column, row - 2].FruitType == type)
+                return true;
+        }
+        return false;
+    }
+
     void SwitchFruit(int column, int row, Vector2Int direction)
     {
         if (_allFruits[column + direction.x, row + direction.y] != null)
@@ -186,34 +206,22 @@ public class FruitManager : MonoBehaviour
     {
         if (column > 1 && row > 1)
         {
-            if (_allFruits[column - 1, row] != null && _allFruits[column - 2, row] != null)
-            {
-                if (_allFruits[column - 1, row].FruitType == type && _allFruits[column - 2, row].FruitType == type)
-                    return true;
-            }
-            if (_allFruits[column, row - 1] != null && _allFruits[column, row - 2] != null)
-            {
-                if (_allFruits[column, row - 1].FruitType == type && _allFruits[column, row - 2].FruitType == type)
-                    return true;
-            }
+            if(CheckColumnMatch(column, row, type))
+                return true;
+            if(CheckRowMatch(column, row, type))
+                return true;
         }
         else if (column <= 1 || row <= 1)
         {
             if (column > 1)
             {
-                if (_allFruits[column - 1, row] != null && _allFruits[column - 2, row] != null)
-                {
-                    if (_allFruits[column - 1, row].FruitType == type && _allFruits[column - 2, row].FruitType == type)
-                        return true;
-                }
+                if (CheckColumnMatch(column, row, type))
+                    return true;
             }
             if (row > 1)
             {
-                if (_allFruits[column, row - 1] != null && _allFruits[column, row - 2] != null)
-                {
-                    if (_allFruits[column, row - 1].FruitType == type && _allFruits[column, row - 2].FruitType == type)
-                        return true;
-                }
+                if (CheckRowMatch(column, row, type))
+                    return true;
             }
         }
         return false;
@@ -316,7 +324,7 @@ public class FruitManager : MonoBehaviour
         _eventManager.Shuffle.EventEffect();
         yield return new WaitForSeconds(_refillDelay);
 
-        _gameManager.GameState = EGameStateType.Move;
+        _gameManager.ChangeGameState(EGameStateType.Move);
         _tileManager.CheckCreateMoreLavaTile();
         _streakValue = 1;
     }

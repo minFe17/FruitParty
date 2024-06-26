@@ -94,36 +94,27 @@ public class Fruit : MonoBehaviour
     {
         _targetX = _column;
         _targetY = _row;
-        if (Mathf.Abs(_targetX - transform.position.x) > 0.1f)
-        {
-            _position = new Vector2(_targetX, transform.position.y);
-            transform.position = Vector2.Lerp(transform.position, _position, _moveSpeed);
-            if (_fruitManager.AllFruits[_column, _row] != this)
-            {
-                _fruitManager.AllFruits[_column, _row] = this;
-                _matchFinder.FindAllMatch();
-            }
-        }
-        else
-        {
-            _position = new Vector2(_targetX, transform.position.y);
-            transform.position = _position;
-        }
 
-        if (Mathf.Abs(_targetY - transform.position.y) > 0.1f)
-        {
-            _position = new Vector2(transform.position.x, _targetY);
-            transform.position = Vector2.Lerp(transform.position, _position, _moveSpeed);
-            if (_fruitManager.AllFruits[_column, _row] != this)
-            {
-                _fruitManager.AllFruits[_column, _row] = this;
-                _matchFinder.FindAllMatch();
-            }
-        }
+        _position = new Vector2(_targetX, transform.position.y);
+        if (Mathf.Abs(_targetX - transform.position.x) > 0.1f)
+            Move();
         else
-        {
-            _position = new Vector2(transform.position.x, _targetY);
             transform.position = _position;
+
+        _position = new Vector2(transform.position.x, _targetY);
+        if (Mathf.Abs(_targetY - transform.position.y) > 0.1f)
+            Move();
+        else
+            transform.position = _position;
+    }
+
+    void Move()
+    {
+        transform.position = Vector2.Lerp(transform.position, _position, _moveSpeed);
+        if (_fruitManager.AllFruits[_column, _row] != this)
+        {
+            _fruitManager.AllFruits[_column, _row] = this;
+            _matchFinder.FindAllMatch();
         }
     }
 
@@ -147,13 +138,13 @@ public class Fruit : MonoBehaviour
         float y = _finalTouchPos.y - _firstTouchPos.y;
         if (Mathf.Abs(x) > _swipeResist || Mathf.Abs(y) > _swipeResist)
         {
-            _gameManager.GameState = EGameStateType.Wait;
+            _gameManager.ChangeGameState(EGameStateType.Wait);
             _swipeAngle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
             SeleteMoveFruit();
             _fruitManager.CurrentFruit = this;
         }
         else
-            _gameManager.GameState = EGameStateType.Move;
+            _gameManager.ChangeGameState(EGameStateType.Move);
     }
 
     void SeleteMoveFruit()
@@ -167,7 +158,7 @@ public class Fruit : MonoBehaviour
         else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)
             RealMoveFruit(Vector2Int.down);
         else
-            _gameManager.GameState = EGameStateType.Move;
+            _gameManager.ChangeGameState(EGameStateType.Move);
     }
 
     void RealMoveFruit(Vector2Int direction)
@@ -190,13 +181,13 @@ public class Fruit : MonoBehaviour
                     StartCoroutine(CheckMoveRoutine());
                 }
                 else
-                    _gameManager.GameState = EGameStateType.Move;
+                    _gameManager.ChangeGameState(EGameStateType.Move);
             }
             else
-                _gameManager.GameState = EGameStateType.Move;
+                _gameManager.ChangeGameState(EGameStateType.Move);
         }
         else
-            _gameManager.GameState = EGameStateType.Move;
+            _gameManager.ChangeGameState(EGameStateType.Move);
     }
 
     void DestroyFruit()
@@ -238,7 +229,7 @@ public class Fruit : MonoBehaviour
                 _column = _previousColumn;
                 _row = _previousRow;
                 yield return new WaitForSeconds(0.5f);
-                _gameManager.GameState = EGameStateType.Move;
+                _gameManager.ChangeGameState(EGameStateType.Move);
                 _fruitManager.CurrentFruit = null;
             }
             else

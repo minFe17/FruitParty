@@ -22,14 +22,48 @@ public class SquareBomb : Bomb
         _spriteRenderer.sprite = _spriteManager.BombAtlas.GetSprite(_stringBuilder.ToString());
     }
 
+    protected override void CheckHitTile()
+    {
+        for (int i = _column - 1; i <= _column + 1; i++)
+        {
+            for (int j = _row - 1; j <= _row + 1; j++)
+            {
+                if (i >= 0 && i < _fruitManager.Width && j >= 0 && j < _fruitManager.Height)
+                {
+                    _bombManager.CheckTile(i, j);
+                }
+            }
+        }
+    }
+
+    protected override void GetFruits(out List<Fruit> fruits)
+    {
+        fruits = new List<Fruit>();
+        for (int i = _column - 1; i <= _column + 1; i++)
+        {
+            for (int j = _row - 1; j <= _row + 1; j++)
+            {
+                if (i >= 0 && i < _fruitManager.Width && j >= 0 && j < _fruitManager.Height)
+                {
+                    if (_fruitManager.AllFruits[i, j] != null)
+                    {
+                        Fruit fruit = _fruitManager.AllFruits[i, j];
+                        fruits.Add(fruit);
+                        fruit.IsMatch = true;
+                    }
+                }
+            }
+        }
+    }
+
     public override void OnEffect()
     {
         if (!_isUse)
         {
             List<Fruit> fruits;
-            _bombManager.GetSquareFruits(out fruits, _column, _row);
+            GetFruits(out fruits);
             _matchFinder.MatchFruits.Union(fruits);
-            _bombManager.HitTileSquareBomb(_column, _row);
+            CheckHitTile();
             _isUse = true;
         }
     }

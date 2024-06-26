@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     float _maxTime = 100f;
     bool _isGameStart;
 
-    public EGameStateType GameState { get => _gameState; set => _gameState = value; }
+    public EGameStateType GameState { get => _gameState; }
     public float CurrentTime { get => _currentTime; }
     public float MaxTime { get => _maxTime; }
     public bool IsGameStart { set => _isGameStart = value; }
@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     public void Init()
     {
         _uiManager = GenericSingleton<UIManager>.Instance;
-        _gameState = EGameStateType.Wait;
+        ChangeGameState(EGameStateType.Wait);
         _time = 0f;
         _currentTime = 30f;
         _isGameStart = false;
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     void GameOver()
     {
-        _gameState = EGameStateType.GameOver;
+        ChangeGameState(EGameStateType.GameOver);
         _uiManager.UI.GameOver();
     }
 
@@ -64,5 +64,10 @@ public class GameManager : MonoBehaviour
         if (_currentTime >= _maxTime)
             _currentTime = _maxTime;
         _uiManager.GameUIPanel.ShowRemainTime();
+    }
+
+    public void ChangeGameState(EGameStateType gameState)
+    {
+        _gameState = gameState;
     }
 }
