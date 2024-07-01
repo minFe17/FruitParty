@@ -172,35 +172,28 @@ public class TileManager : MonoBehaviour
     {
         if (column > 0)
         {
-            CheckConcreteTile(column - 1, row);
-            CheckLavaTile(column - 1, row);
+            CheckTiles(column - 1, row);
         }
         if (column < _width - 1)
         {
-            CheckConcreteTile(column + 1, row);
-            CheckLavaTile(column + 1, row);
+            CheckTiles(column + 1, row);
         }
 
         if (row > 0)
         {
-            CheckConcreteTile(column, row - 1);
-            CheckLavaTile(column, row - 1);
+            CheckTiles(column, row - 1);
         }
         if (row < _height - 1)
         {
-            CheckConcreteTile(column, row + 1);
-            CheckLavaTile(column, row + 1);
+            CheckTiles(column, row + 1);
         }
     }
 
-    void CheckConcreteTile(int column, int row)
+    void CheckTiles(int column, int row)
     {
         if (_concreteTiles[column, row])
             DestroyTile(_concreteTiles[column, row]);
-    }
 
-    void CheckLavaTile(int column, int row)
-    {
         if (_lavaTiles[column, row])
         {
             DestroyTile(_lavaTiles[column, row]);
