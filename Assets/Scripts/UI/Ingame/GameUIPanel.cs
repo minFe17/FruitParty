@@ -20,14 +20,12 @@ public class GameUIPanel : MonoBehaviour
 
     SpriteAtlas _uiAtlas;
     GameManager _gameManager;
-    SoundManager _soundManager;
     AudioClipManager _audioClipManager;
 
     void Awake()
     {
         _uiAtlas = GenericSingleton<SpriteManager>.Instance.UIAtlas;
         _gameManager = GenericSingleton<GameManager>.Instance;
-        _soundManager = GenericSingleton<SoundManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
 
         SetSprite();
@@ -57,7 +55,7 @@ public class GameUIPanel : MonoBehaviour
     public void Stop()
     {
         _animator.SetBool("isStop", true);
-        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
+        _audioClipManager.PlaySFX(ESFXSoundType.Button);
         _gameManager.ChangeGameState(EGameStateType.Pause);
     }
 }

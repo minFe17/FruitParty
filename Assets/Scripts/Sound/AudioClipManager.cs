@@ -11,33 +11,59 @@ public class AudioClipManager : MonoBehaviour
 
     [Header("SFX")]
     List<AudioClip> _fruitMatchSFX = new List<AudioClip>();
-    AudioClip _buttonSFX;
-    AudioClip _gameOverSFX;
+    List<AudioClip> _sfxAudios = new List<AudioClip>();
 
     AddressableManager _addressableManager;
-
-    public AudioClip InGameBGM { get => _inGameBGM; }
-    public List<AudioClip> FruitMatchSFX { get => _fruitMatchSFX; }
-    public AudioClip ButtonSfX { get => _buttonSFX; }
-    public AudioClip GameOverSFX { get => _gameOverSFX; }
+    SoundManager _soundManager;
 
     public async Task Init()
     {
         _addressableManager = GenericSingleton<AddressableManager>.Instance;
+        _soundManager = GenericSingleton<SoundManager>.Instance;
         await LoadAsset();
-        await AddMatchAudio();
     }
 
     async Task LoadAsset()
     {
         _inGameBGM = await _addressableManager.GetAddressableAsset<AudioClip>("BGM");
-        _buttonSFX = await _addressableManager.GetAddressableAsset<AudioClip>("Button");
-        _gameOverSFX = await _addressableManager.GetAddressableAsset<AudioClip>("GameOver");
+        await SetSFX();
     }
 
-    async Task AddMatchAudio()
+    async Task SetSFX()
     {
-        _fruitMatchSFX.Add(await _addressableManager.GetAddressableAsset<AudioClip>("FruitMatch1"));
-        _fruitMatchSFX.Add(await _addressableManager.GetAddressableAsset<AudioClip>("FruitMatch2"));
+        for (int i = 0; i < (int)EFruitMatchSFXType.Max; i++)
+        {
+            string matchSoundName = ((EFruitMatchSFXType)i).ToString();
+            AudioClip audioSound = await _addressableManager.GetAddressableAsset<AudioClip>(matchSoundName);
+            _sfxAudios.Add(audioSound);
+        }
+
+        for (int i = 0; i < (int)ESFXSoundType.Max; i++)
+        {
+            string audioSoundName = ((ESFXSoundType)i).ToString();
+            AudioClip audioSound = await _addressableManager.GetAddressableAsset<AudioClip>(audioSoundName);
+            _sfxAudios.Add(audioSound);
+        }
+    }
+
+    public void PlayBGM()
+    {
+        _soundManager.StartBGM(_inGameBGM);
+    }
+
+    public void StopBGM()
+    {
+        _soundManager.StopBGM();
+    }
+
+    public void PlayMatchSFX()
+    {
+        int randomSound = Random.Range(0, (int)EFruitMatchSFXType.Max);
+        _soundManager.PlaySFX(_sfxAudios[randomSound]);
+    }
+
+    public void PlaySFX(ESFXSoundType soundType)
+    {
+        _soundManager.PlaySFX(_sfxAudios[(int)soundType]);
     }
 }

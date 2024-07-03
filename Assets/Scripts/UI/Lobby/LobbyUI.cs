@@ -8,14 +8,12 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] Text _highScore;
 
     Animator _animator;
-    SoundManager _soundManager;
     AudioClipManager _audioClipManager;
     ScoreManager _scoreManager;
 
     void Start()
     {
         _animator = GetComponent<Animator>();
-        _soundManager = GenericSingleton<SoundManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
         ReadHighScore();
@@ -38,13 +36,13 @@ public class LobbyUI : MonoBehaviour
 
     public void GameStart()
     {
-        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
+        _audioClipManager.PlaySFX(ESFXSoundType.Button);
         Invoke("MoveGameScene", 0.1f);
     }
 
     public void OpenOption()
     {
-        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
+        _audioClipManager.PlaySFX(ESFXSoundType.Button);
         _animator.SetBool("isOpenOption", true);
     }
 }

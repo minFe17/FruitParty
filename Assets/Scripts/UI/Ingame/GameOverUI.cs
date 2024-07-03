@@ -21,7 +21,6 @@ public class GameOverUI : MonoBehaviour
 
     SpriteManager _spriteManager;
     ScoreManager _scoreManager;
-    SoundManager _soundManager;
     AudioClipManager _audioClipManager;
 
     string _sceneName;
@@ -32,15 +31,14 @@ public class GameOverUI : MonoBehaviour
         SetSprite();
         ShowScore();
         CheckNewHighScore();
-        _soundManager.StopBGM();
-        _soundManager.PlaySFX(_audioClipManager.GameOverSFX);
+        _audioClipManager.StopBGM();
+        _audioClipManager.PlaySFX(ESFXSoundType.GameOver);
     }
 
     void SetManager()
     {
         _spriteManager = GenericSingleton<SpriteManager>.Instance;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
-        _soundManager = GenericSingleton<SoundManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
     }
 
@@ -72,14 +70,14 @@ public class GameOverUI : MonoBehaviour
 
     public void Retry()
     {
-        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
+        _audioClipManager.PlaySFX(ESFXSoundType.Button);
         _sceneName = "InGameScene";
         Invoke("ChangeScene", 0.1f);
     }
 
     public void ToLobby()
     {
-        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
+        _audioClipManager.PlaySFX(ESFXSoundType.Button);
         _sceneName = "Lobby";
         Invoke("ChangeScene", 0.1f);
     }

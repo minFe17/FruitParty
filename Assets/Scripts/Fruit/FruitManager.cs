@@ -17,7 +17,6 @@ public class FruitManager : MonoBehaviour
     TileManager _tileManager;
     BombManager _bombManager;
     EventManager _eventManager;
-    SoundManager _soundManager;
     AudioClipManager _audioClipManager;
     Fruit _currentFruit;
 
@@ -53,7 +52,6 @@ public class FruitManager : MonoBehaviour
         _tileManager = GenericSingleton<TileManager>.Instance;
         _bombManager = GenericSingleton<BombManager>.Instance;
         _eventManager = GenericSingleton<EventManager>.Instance;
-        _soundManager = GenericSingleton<SoundManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
     }
 
@@ -173,8 +171,7 @@ public class FruitManager : MonoBehaviour
 
     void PlayMatchAudio()
     {
-        int randomAudio = Random.Range(0, _audioClipManager.FruitMatchSFX.Count);
-        _soundManager.PlaySFX(_audioClipManager.FruitMatchSFX[randomAudio]);
+        _audioClipManager.PlayMatchSFX();
     }
 
     public void CreateFruit(Vector2Int position)

@@ -16,7 +16,6 @@ public class GameStopUI : MonoBehaviour
     [SerializeField] Image _lobbyImage;
 
     GameManager _gameManager;
-    SoundManager _soundManager;
     AudioClipManager _audioClipManager;
     CSVManager _csvManager;
 
@@ -32,7 +31,6 @@ public class GameStopUI : MonoBehaviour
     void SetManager()
     {
         _gameManager = GenericSingleton<GameManager>.Instance;
-        _soundManager = GenericSingleton<SoundManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
         _csvManager = GenericSingleton<CSVManager>.Instance;
     }
@@ -53,7 +51,7 @@ public class GameStopUI : MonoBehaviour
 
     public void Resume()
     {
-        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
+        _audioClipManager.PlaySFX(ESFXSoundType.Button);
         _uiAnimator.SetBool("isStop", false);
         _gameManager.ChangeGameState(EGameStateType.Move);
         _csvManager.WriteSoundData();
@@ -61,7 +59,7 @@ public class GameStopUI : MonoBehaviour
 
     public void ToLobby()
     {
-        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
+        _audioClipManager.PlaySFX(ESFXSoundType.Button);
         _csvManager.WriteSoundData();
         Invoke("MoveLobbyScene", 0.1f);
     }

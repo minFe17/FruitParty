@@ -10,14 +10,12 @@ public class OptionUI : MonoBehaviour
     [SerializeField] Image _panelSprite;
     [SerializeField] Image _okButtonSprite;
 
-    SoundManager _soundManager;
     AudioClipManager _audioClipManager;
     CSVManager _csvManager;
     SpriteManager _spriteManager;
 
     void Start()
     {
-        _soundManager = GenericSingleton<SoundManager>.Instance;
         _csvManager = GenericSingleton<CSVManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
         _spriteManager = GenericSingleton<SpriteManager>.Instance;
@@ -32,7 +30,7 @@ public class OptionUI : MonoBehaviour
 
     public void CloseOption()
     {
-        _soundManager.PlaySFX(_audioClipManager.ButtonSfX);
+        _audioClipManager.PlaySFX(ESFXSoundType.Button);
         _animator.SetBool("isOpenOption", false);
         _csvManager.WriteSoundData();
     }

@@ -46,7 +46,7 @@ public class UI : MonoBehaviour
     void StartBGM()
     {
         _soundManager.CreateSoundController();
-        _soundManager.StartBGM(_audioClipManager.InGameBGM);
+        _audioClipManager.PlayBGM();
     }
 
     public void GameOver()
