@@ -78,17 +78,23 @@ public class FruitManager : MonoBehaviour
             {
                 if (_allFruits[i, j] == null && !_tileManager.BlankTiles[i, j] && _tileManager.ConcreteTiles[i, j] == null && _tileManager.LavaTiles[i, j] == null)
                 {
-                    int fruitNumber = Random.Range(0, _factoryManager.FruitCount);
-                    int iterations = 0;
-                    while (MatchAt(i, j, (EFruitType)fruitNumber) && iterations < 100)
-                    {
-                        iterations++;
-                        fruitNumber = Random.Range(0, _factoryManager.FruitCount);
-                    }
-                    MakeFruit((EFruitType)fruitNumber, i, j);
+                    SelectCreateFruit(i, j);
                 }
             }
         }
+    }
+
+    void SelectCreateFruit(int x, int y)
+    {
+        int fruitNumber;
+        int iterations = 0;
+        do
+        {
+            fruitNumber = Random.Range(0, (int)EFruitType.Max);
+            iterations++;
+        }
+        while (MatchAt(x, y, (EFruitType)fruitNumber) && iterations <= 100);
+        MakeFruit((EFruitType)fruitNumber, x, y);
     }
 
     bool MatchOnBoard()
@@ -146,13 +152,13 @@ public class FruitManager : MonoBehaviour
             {
                 if (_allFruits[i, j] != null)
                 {
-
                     if (i < _width - 2)
                     {
                         if (_allFruits[i + 1, j] != null && _allFruits[i + 2, j] != null)
                         {
                             _fruits = new Fruit[] { _allFruits[i, j], _allFruits[i + 1, j], _allFruits[i + 2, j] };
-                            _matchFinder.CheckMatch(_fruits);
+                            if (_matchFinder.CheckMatch(_fruits))
+                                return true;
                         }
                     }
                     if (j < _height - 2)
@@ -160,7 +166,8 @@ public class FruitManager : MonoBehaviour
                         if (_allFruits[i, j + 1] != null && _allFruits[i, j + 2] != null)
                         {
                             _fruits = new Fruit[] { _allFruits[i, j], _allFruits[i, j + 1], _allFruits[i, j + 2] };
-                            _matchFinder.CheckMatch(_fruits);
+                            if (_matchFinder.CheckMatch(_fruits))
+                                return true;
                         }
                     }
                 }
@@ -176,17 +183,9 @@ public class FruitManager : MonoBehaviour
 
     public void CreateFruit(Vector2Int position)
     {
-        int fruitNumber;
-        int iterations = 0;
         int x = position.x;
         int y = position.y;
-        do
-        {
-            fruitNumber = Random.Range(0, (int)EFruitType.Max);
-            iterations++;
-        }
-        while (MatchAt(x, y, (EFruitType)fruitNumber) && iterations <= 100);
-        MakeFruit((EFruitType)fruitNumber, x, y);
+        SelectCreateFruit(x, y);
     }
 
     public void MakeFruit(EFruitType type, int column, int row)
@@ -203,9 +202,9 @@ public class FruitManager : MonoBehaviour
     {
         if (column > 1 && row > 1)
         {
-            if(CheckColumnMatch(column, row, type))
+            if (CheckColumnMatch(column, row, type))
                 return true;
-            if(CheckRowMatch(column, row, type))
+            if (CheckRowMatch(column, row, type))
                 return true;
         }
         else if (column <= 1 || row <= 1)
@@ -248,17 +247,14 @@ public class FruitManager : MonoBehaviour
 
     public bool SwitchAndCheck(int column, int row, Vector2Int direction)
     {
+        bool checkResult = false;
         SwitchFruit(column, row, direction);
         if (CheckForMatch())
         {
-            SwitchFruit(column, row, direction);
-            return true;
+            checkResult = true;
         }
-        else
-        {
-            SwitchFruit(column, row, direction);
-            return false;
-        }
+        SwitchFruit(column, row, direction);
+        return checkResult;
     }
 
     public void DestroyFruit(Fruit fruit)
