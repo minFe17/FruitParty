@@ -24,41 +24,23 @@ public class MatchFinder : MonoBehaviour
 
     void FindFruitMatch(Fruit[] fruits, ELineBombDirectionType direction)
     {
-        _fruitsList.Clear();
-        _bombs.Clear();
+        ClearList();
         BombCount(fruits);
 
         if (_bombs.Count != 0)
             CheckBomb(fruits, direction);
         else if (fruits[0].FruitType == fruits[1].FruitType && fruits[0].FruitType == fruits[2].FruitType)
             FruitMatch(fruits);
+
+        ClearList();
     }
 
     void CheckBomb(Fruit[] fruits, ELineBombDirectionType direction)
     {
-        if (_bombs.Count == 3)
+        if (CheckBombMatch())
         {
-            if (_bombs[0].ColorType == _bombs[1].ColorType && _bombs[0].ColorType == _bombs[2].ColorType)
-            {
-                _bombManager.LineBombDirection = direction;
-                FruitMatch(fruits);
-            }
-        }
-        else if (_bombs.Count == 2)
-        {
-            if (_bombs[0].ColorType == _bombs[1].ColorType && _bombs[0].ColorType == fruits[0].ColorType)
-            {
-                _bombManager.LineBombDirection = direction;
-                FruitMatch(fruits);
-            }
-        }
-        else if (_bombs.Count == 1)
-        {
-            if (_bombs[0].ColorType == _fruitsList[0].ColorType && _fruitsList[0].FruitType == _fruitsList[1].FruitType)
-            {
-                _bombManager.LineBombDirection = direction;
-                FruitMatch(fruits);
-            }
+            _bombManager.LineBombDirection = direction;
+            FruitMatch(fruits);
         }
     }
 
@@ -90,18 +72,15 @@ public class MatchFinder : MonoBehaviour
     {
         if (_bombs.Count == 3)
         {
-            if (_bombs[0].ColorType == _bombs[1].ColorType && _bombs[0].ColorType == _bombs[2].ColorType)
-                return true;
+            return (_bombs[0].ColorType == _bombs[1].ColorType && _bombs[0].ColorType == _bombs[2].ColorType);
         }
         else if (_bombs.Count == 2)
         {
-            if (_bombs[0].ColorType == _bombs[1].ColorType && _bombs[0].ColorType == _fruitsList[0].ColorType)
-                return true;
+            return (_bombs[0].ColorType == _bombs[1].ColorType && _bombs[0].ColorType == _fruitsList[0].ColorType);
         }
         else if (_bombs.Count == 1)
         {
-            if (_bombs[0].ColorType == _fruitsList[0].ColorType && _fruitsList[0].FruitType == _fruitsList[1].FruitType)
-                return true;
+            return (_bombs[0].ColorType == _fruitsList[0].ColorType && _fruitsList[0].FruitType == _fruitsList[1].FruitType);
         }
         return false;
     }
@@ -127,8 +106,7 @@ public class MatchFinder : MonoBehaviour
                 return true;
             }
         }
-        else if (_fruitManager.AllFruits[firstPos.x, firstPos.y].FruitType == _fruitManager.AllFruits[secondPos.x, secondPos.y].FruitType
-              && _fruitManager.AllFruits[firstPos.x, firstPos.y].FruitType == _fruitManager.AllFruits[thirdPos.x, thirdPos.y].FruitType)
+        else if (fruits[0].FruitType == fruits[1].FruitType && fruits[0].FruitType == fruits[2].FruitType)
         {
             ClearList();
             return true;
