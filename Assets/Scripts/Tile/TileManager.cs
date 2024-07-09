@@ -97,9 +97,7 @@ public class TileManager : MonoBehaviour
                     }
                 }
                 else
-                {
                     canCreateTilePosition = true;
-                }
             }
         }
         while (!canCreateTilePosition);
@@ -124,9 +122,7 @@ public class TileManager : MonoBehaviour
                     break;
                 }
                 else
-                {
                     canCreateTilePosition = true;
-                }
             }
         }
         while (!canCreateTilePosition);
@@ -154,39 +150,29 @@ public class TileManager : MonoBehaviour
 
     void CheckHaveFruitTile(int column, int row)
     {
+        if (_lockTiles[column, row] == null && _iceTiles[column, row] == null)
+            return;
+
         if (_lockTiles[column, row] != null)
-        {
             DestroyTile(_lockTiles[column, row]);
-            _fruitManager.StreakValue--;
-            return;
-        }
+
         if (_iceTiles[column, row] != null)
-        {
             _iceTiles[column, row].TakeDamage();
-            _fruitManager.StreakValue--;
-            return;
-        }
+
+        _fruitManager.StreakValue--;
     }
 
     void CheckHitTile(int column, int row)
     {
         if (column > 0)
-        {
             CheckTiles(column - 1, row);
-        }
         if (column < _width - 1)
-        {
             CheckTiles(column + 1, row);
-        }
 
         if (row > 0)
-        {
             CheckTiles(column, row - 1);
-        }
         if (row < _height - 1)
-        {
             CheckTiles(column, row + 1);
-        }
     }
 
     void CheckTiles(int column, int row)
