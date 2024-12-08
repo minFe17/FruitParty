@@ -25,7 +25,7 @@ public class HintManager : MonoBehaviour
         _factoryManager = GenericSingleton<FactoryManager>.Instance;
         _objectPoolManager = GenericSingleton<ObjectPoolManager>.Instance;
         _fruitManager = GenericSingleton<FruitManager>.Instance;
-        _hintDelay = 10f;
+        _hintDelay = 5f;
         _hintCoolTime = _hintDelay;
     }
 
@@ -51,7 +51,7 @@ public class HintManager : MonoBehaviour
         if (movableFruit != null)
         {
             Vector2Int position = new Vector2Int(movableFruit.Column, movableFruit.Row);
-            _factoryManager.MakeObject<EEffectType, GameObject>(EEffectType.Hint, position);
+            _currentHint = _factoryManager.MakeObject<EEffectType, GameObject>(EEffectType.Hint, position);
         }
     }
 
