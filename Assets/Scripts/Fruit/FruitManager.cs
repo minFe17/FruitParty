@@ -138,7 +138,7 @@ public class FruitManager : MonoBehaviour
     {
         if (_allFruits[column + direction.x, row + direction.y] != null)
         {
-            Fruit temp = _allFruits[column + direction.x, row + direction.y] as Fruit;
+            Fruit temp = _allFruits[column + direction.x, row + direction.y];
             _allFruits[column + direction.x, row + direction.y] = _allFruits[column, row];
             _allFruits[column, row] = temp;
         }
@@ -250,9 +250,8 @@ public class FruitManager : MonoBehaviour
         bool checkResult = false;
         SwitchFruit(column, row, direction);
         if (CheckForMatch())
-        {
             checkResult = true;
-        }
+
         SwitchFruit(column, row, direction);
         return checkResult;
     }

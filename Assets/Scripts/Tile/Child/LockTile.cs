@@ -2,7 +2,7 @@ public class LockTile : Tile
 {
     void Update()
     {
-        if (_tileManager.ConcreteTiles[_x, _y] == null)
+        if (_tileManager.LockTiles[_x, _y] == null)
             DestroyTile();
     }
 

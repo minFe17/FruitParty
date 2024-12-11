@@ -155,7 +155,6 @@ MonoBehaviour:
   _camera: {fileID: 804093443806864439}
   _width: 7
   _height: 10
-  _offset: 20
 --- !u!4 &261147251
 Transform:
   m_ObjectHideFlags: 0

@@ -90,17 +90,14 @@ public class Shuffle : Event, IEvent
                 {
                     if (i < _width - 1)
                     {
-                        if (!_fruitManager.SwitchAndCheck(i, j, Vector2Int.right))
-                        {
+                        if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.right))
                             return false;
-                        }
+
                     }
                     if (j < _height - 1)
                     {
-                        if (!_fruitManager.SwitchAndCheck(i, j, Vector2Int.up))
-                        {
+                        if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.up))
                             return false;
-                        }
                     }
                 }
             }
