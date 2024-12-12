@@ -16,6 +16,8 @@ public class GameStopUI : MonoBehaviour
     [SerializeField] Image _lobbyImage;
 
     GameManager _gameManager;
+    FruitManager _fruitManager;
+    TileManager _tileManager;
     AudioClipManager _audioClipManager;
     CSVManager _csvManager;
 
@@ -31,6 +33,8 @@ public class GameStopUI : MonoBehaviour
     void SetManager()
     {
         _gameManager = GenericSingleton<GameManager>.Instance;
+        _fruitManager = GenericSingleton<FruitManager>.Instance;
+        _tileManager = GenericSingleton<TileManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
         _csvManager = GenericSingleton<CSVManager>.Instance;
     }
@@ -59,6 +63,8 @@ public class GameStopUI : MonoBehaviour
 
     public void ToLobby()
     {
+        _fruitManager.DestroyAllFruit();
+        _tileManager.DestroyAllTile();
         _audioClipManager.PlaySFX(ESFXSoundType.Button);
         _csvManager.WriteSoundData();
         Invoke("MoveLobbyScene", 0.1f);

@@ -295,12 +295,6 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public void DestroyTile(Tile tile)
-    {
-        _boardLayout.Remove(tile.TileType);
-        tile.DestroyTile();
-    }
-
     public void ResetTile()
     {
         for (int i = 0; i < _boardLayout.Count; i++)
@@ -311,5 +305,22 @@ public class TileManager : MonoBehaviour
                 _boardLayout[i].Tile.DestroyTile();
         }
         _boardLayout.Clear();
+    }
+
+    public void DestroyTile(Tile tile)
+    {
+        _boardLayout.Remove(tile.TileType);
+        tile.DestroyTile();
+    }
+
+    public void DestroyAllTile()
+    {
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                _allTiles[i, j].GetComponent<Tile>().DestroyTile();
+            }
+        }
     }
 }

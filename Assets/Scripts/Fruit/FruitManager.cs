@@ -262,6 +262,18 @@ public class FruitManager : MonoBehaviour
         _allFruits[fruit.Column, fruit.Row] = null;
     }
 
+    public void DestroyAllFruit()
+    {
+        for (int i = 0; i < _width; i++)
+        {
+            for (int j = 0; j < _height; j++)
+            {
+                if (_allFruits[i, j] != null)
+                    DestroyFruit(_allFruits[i, j]);
+            }
+        }
+    }
+
     IEnumerator DecreaseRowRoutine()
     {
         for (int i = 0; i < _width; i++)

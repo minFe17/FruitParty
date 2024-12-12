@@ -47,6 +47,7 @@ public class HintManager : MonoBehaviour
 
     void ShowHint()
     {
+        _movableFruits.Clear();
         Fruit movableFruit = PickOneRandomFruit();
         if (movableFruit != null)
         {

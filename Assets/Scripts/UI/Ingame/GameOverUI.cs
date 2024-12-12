@@ -19,6 +19,8 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] Image _lobbyButton;
     [SerializeField] Image _lobbyImage;
 
+    FruitManager _fruitManager;
+    TileManager _tileManager;
     SpriteManager _spriteManager;
     ScoreManager _scoreManager;
     AudioClipManager _audioClipManager;
@@ -37,6 +39,8 @@ public class GameOverUI : MonoBehaviour
 
     void SetManager()
     {
+        _fruitManager = GenericSingleton<FruitManager>.Instance;
+        _tileManager = GenericSingleton<TileManager>.Instance;
         _spriteManager = GenericSingleton<SpriteManager>.Instance;
         _scoreManager = GenericSingleton<ScoreManager>.Instance;
         _audioClipManager = GenericSingleton<AudioClipManager>.Instance;
@@ -70,6 +74,8 @@ public class GameOverUI : MonoBehaviour
 
     public void Retry()
     {
+        _fruitManager.DestroyAllFruit();
+        _tileManager.DestroyAllTile();
         _audioClipManager.PlaySFX(ESFXSoundType.Button);
         _sceneName = "InGameScene";
         Invoke("ChangeScene", 0.1f);
@@ -77,6 +83,8 @@ public class GameOverUI : MonoBehaviour
 
     public void ToLobby()
     {
+        _fruitManager.DestroyAllFruit();
+        _tileManager.DestroyAllTile();
         _audioClipManager.PlaySFX(ESFXSoundType.Button);
         _sceneName = "Lobby";
         Invoke("ChangeScene", 0.1f);
