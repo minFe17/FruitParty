@@ -48,8 +48,6 @@ public class EarthQuake : Event, IEvent
 
         _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventUIDelay);
-
-        if(_gameManager.GameState != EGameStateType.Pause)
-            _gameManager.ChangeGameState(EGameStateType.Move);
+        _gameManager.ChangeGameState(EGameStateType.Move);
     }
 }

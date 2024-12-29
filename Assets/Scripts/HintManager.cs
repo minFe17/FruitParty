@@ -54,7 +54,6 @@ public class HintManager : MonoBehaviour
             Vector2Int position = new Vector2Int(movableFruit.Column, movableFruit.Row);
             _currentHint = _factoryManager.MakeObject<EEffectType, GameObject>(EEffectType.Hint, position);
         }
-        _movableFruits.Clear();
     }
 
     Fruit PickOneRandomFruit()

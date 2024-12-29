@@ -55,7 +55,7 @@ public class GameUIPanel : MonoBehaviour
     public void Stop()
     {
         _animator.SetBool("isStop", true);
-        _gameManager.ChangeGameState(EGameStateType.Pause);
         _audioClipManager.PlaySFX(ESFXSoundType.Button);
+        _gameManager.ChangeGameState(EGameStateType.Pause);
     }
 }
