@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
 
     void CheckTime()
     {
+        if(_gameState == EGameStateType.Pause)
+            return;
         if (_gameState == EGameStateType.Move || _gameState == EGameStateType.Wait)
         {
             if (_isGameStart)

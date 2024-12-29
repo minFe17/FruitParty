@@ -144,7 +144,10 @@ public class Fruit : MonoBehaviour
             _fruitManager.CurrentFruit = this;
         }
         else
-            _gameManager.ChangeGameState(EGameStateType.Move);
+        {
+            if (_gameManager.GameState != EGameStateType.Pause)
+                _gameManager.ChangeGameState(EGameStateType.Move);
+        }
     }
 
     void SeleteMoveFruit()
@@ -158,7 +161,10 @@ public class Fruit : MonoBehaviour
         else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)
             RealMoveFruit(Vector2Int.down);
         else
-            _gameManager.ChangeGameState(EGameStateType.Move);
+        {
+            if (_gameManager.GameState != EGameStateType.Pause)
+                _gameManager.ChangeGameState(EGameStateType.Move);
+        }
     }
 
     void RealMoveFruit(Vector2Int direction)
@@ -181,13 +187,22 @@ public class Fruit : MonoBehaviour
                     StartCoroutine(CheckMoveRoutine());
                 }
                 else
-                    _gameManager.ChangeGameState(EGameStateType.Move);
+                {
+                    if (_gameManager.GameState != EGameStateType.Pause)
+                        _gameManager.ChangeGameState(EGameStateType.Move);
+                }
             }
             else
-                _gameManager.ChangeGameState(EGameStateType.Move);
+            {
+                if (_gameManager.GameState != EGameStateType.Pause)
+                    _gameManager.ChangeGameState(EGameStateType.Move);
+            }
         }
         else
-            _gameManager.ChangeGameState(EGameStateType.Move);
+        {
+            if (_gameManager.GameState != EGameStateType.Pause)
+                _gameManager.ChangeGameState(EGameStateType.Move);
+        }
     }
 
     void DestroyFruit()
@@ -229,7 +244,9 @@ public class Fruit : MonoBehaviour
                 _column = _previousColumn;
                 _row = _previousRow;
                 yield return new WaitForSeconds(0.5f);
-                _gameManager.ChangeGameState(EGameStateType.Move);
+
+                if (_gameManager.GameState != EGameStateType.Pause)
+                    _gameManager.ChangeGameState(EGameStateType.Move);
                 _fruitManager.CurrentFruit = null;
             }
             else

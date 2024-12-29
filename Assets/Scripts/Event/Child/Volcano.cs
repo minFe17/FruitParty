@@ -52,6 +52,8 @@ public class Volcano : Event, IEvent
 
         _eventUI.OffEventUI();
         yield return new WaitForSeconds(_eventUIDelay);
-        _gameManager.ChangeGameState(EGameStateType.Move);
+
+        if (_gameManager.GameState != EGameStateType.Pause)
+            _gameManager.ChangeGameState(EGameStateType.Move);
     }
 }

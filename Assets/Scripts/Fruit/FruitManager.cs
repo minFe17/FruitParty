@@ -328,7 +328,8 @@ public class FruitManager : MonoBehaviour
         _eventManager.Shuffle.EventEffect();
         yield return new WaitForSeconds(_refillDelay);
 
-        _gameManager.ChangeGameState(EGameStateType.Move);
+        if (_gameManager.GameState != EGameStateType.Pause)
+            _gameManager.ChangeGameState(EGameStateType.Move);
         _tileManager.CheckCreateMoreLavaTile();
         _streakValue = 1;
     }

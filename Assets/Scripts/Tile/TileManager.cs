@@ -199,6 +199,7 @@ public class TileManager : MonoBehaviour
         Tile tile = _factoryManager.MakeObject<ETileKindType, Tile>(ETileKindType.Normal, position);
         tile.transform.parent = _tileParent.transform;
         _allTiles[column, row] = tile.gameObject;
+        _blankTiles[column, row] = false;
     }
 
     public void CreateBlankTiles()
