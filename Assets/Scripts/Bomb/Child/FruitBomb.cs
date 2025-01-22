@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 public class FruitBomb : Bomb
 {
     protected override void Awake()

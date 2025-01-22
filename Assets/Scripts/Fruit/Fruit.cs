@@ -90,7 +90,7 @@ public class Fruit : MonoBehaviour
         _tileManager = GenericSingleton<TileManager>.Instance;
     }
 
-    void MoveFruit()
+    void MoveFruit()    // 목표 위치로 이동
     {
         _targetX = _column;
         _targetY = _row;
@@ -108,7 +108,7 @@ public class Fruit : MonoBehaviour
             transform.position = _position;
     }
 
-    void Move()
+    void Move() // 부드럽게 이동시키는 역할
     {
         transform.position = Vector2.Lerp(transform.position, _position, _moveSpeed);
         if (_fruitManager.AllFruits[_column, _row] != this)
@@ -125,14 +125,14 @@ public class Fruit : MonoBehaviour
             _spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f, 1);
             if (!_onEffect)
             {
-                Vector2Int position = new Vector2Int(Column, Row);
-                _factoryManager.MakeObject<EEffectType, GameObject>(EEffectType.Destroy, position);
+                Vector2Int position = new Vector2Int(_column, _row);
+                _factoryManager.MakeObject<EEffectType, GameObject>(EEffectType.Destroy, position); // Factory 패턴 일반화 사요ㅛㅇ
                 _onEffect = true;
             }
         }
     }
 
-    void CalculateAngle()
+    void CalculateAngle()   // 유저 Swipe 계산
     {
         float x = _finalTouchPos.x - _firstTouchPos.x;
         float y = _finalTouchPos.y - _firstTouchPos.y;
@@ -147,15 +147,15 @@ public class Fruit : MonoBehaviour
             _gameManager.ChangeGameState(EGameStateType.Move);
     }
 
-    void SeleteMoveFruit()
+    void SeleteMoveFruit()  // 이동방향 결정
     {
-        if (_swipeAngle > -45 && _swipeAngle <= 45 && _column < _fruitManager.Width)
+        if (_swipeAngle > -45 && _swipeAngle <= 45 && _column < _fruitManager.Width)    // Right
             RealMoveFruit(Vector2Int.right);
-        else if (_swipeAngle > 45 && _swipeAngle <= 135 && _row < _fruitManager.Height)
+        else if (_swipeAngle > 45 && _swipeAngle <= 135 && _row < _fruitManager.Height) // Up
             RealMoveFruit(Vector2Int.up);
-        else if (_swipeAngle > 135 || _swipeAngle <= -135 && _column > 0)
+        else if (_swipeAngle > 135 || _swipeAngle <= -135 && _column > 0)               // Left
             RealMoveFruit(Vector2Int.left);
-        else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)
+        else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)                  // Down
             RealMoveFruit(Vector2Int.down);
         else
             _gameManager.ChangeGameState(EGameStateType.Move);
@@ -167,7 +167,7 @@ public class Fruit : MonoBehaviour
         int newY = _row + direction.y;
         if (newX >= 0 && newX < _fruitManager.Width && newY >= 0 && newY < _fruitManager.Height)
         {
-            _otherFruit = _fruitManager.AllFruits[newX, newY];
+            _otherFruit = _fruitManager.AllFruits[newX, newY];  // 현재 과일과 위치가 바뀔 과일
             _previousColumn = _column;
             _previousRow = _row;
             if (_tileManager.LockTiles[_column, _row] == null && _tileManager.LockTiles[_column + direction.x, _row + direction.y] == null)
@@ -222,7 +222,7 @@ public class Fruit : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         if (_otherFruit != null)
         {
-            if (!_isMatch && !_otherFruit.IsMatch)
+            if (!_isMatch && !_otherFruit.IsMatch)  // 매치가 되지 않았을 때
             {
                 _otherFruit.Column = _column;
                 _otherFruit.Row = _row;

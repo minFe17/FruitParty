@@ -23,11 +23,11 @@ public class BombManager : MonoBehaviour
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
     }
 
-    void CheckCreatableBomb(Fruit fruit)
+    void CheckCreatableBomb(Fruit fruit)    // 气藕 积积 啊瓷茄瘤 眉农
     {
         int columnMatch;
         int rowMatch;
-        CalculateMatch(out columnMatch, out rowMatch, fruit);
+        CalculateMatch(out columnMatch, out rowMatch, fruit);   // 概摹等 规氢苞 悼老茄 苞老 荐 眉农
 
         if (_creatableFruits.Count != 0)
         {
@@ -98,19 +98,19 @@ public class BombManager : MonoBehaviour
     {
         if (columnMatch == 4 || rowMatch == 4)
         {
-            CreateBomb(EBombType.FruitBomb, fruit);
+            CreateBomb(EBombType.FruitBomb, fruit);     // FruitBomb 积己
         }
         else if (columnMatch == 2 && rowMatch == 2)
         {
-            CreateBomb(EBombType.SquareBomb, fruit);
+            CreateBomb(EBombType.SquareBomb, fruit);    // SquareBomb 积己
         }
         else if (columnMatch == 3 || rowMatch == 3)
         {
-            CreateBomb(EBombType.LineBomb, fruit);
+            CreateBomb(EBombType.LineBomb, fruit);      // LineBomb 积己
         }
     }
 
-    void CreateBomb(EBombType bombType, Fruit fruit)
+    void CreateBomb(EBombType bombType, Fruit fruit)    // 气藕 积己
     {
         Vector2Int position = new Vector2Int(fruit.Column, fruit.Row);
         _factoryManager.ColorType = fruit.ColorType;

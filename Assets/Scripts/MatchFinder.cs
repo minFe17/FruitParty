@@ -94,9 +94,6 @@ public class MatchFinder : MonoBehaviour
     public bool CheckMatch(Fruit[] fruits)
     {
         BombCount(fruits);
-        Vector2Int firstPos = new Vector2Int(fruits[0].Column, fruits[0].Row);
-        Vector2Int secondPos = new Vector2Int(fruits[1].Column, fruits[1].Row);
-        Vector2Int thirdPos = new Vector2Int(fruits[2].Column, fruits[2].Row);
 
         if (_bombs.Count != 0)
         {

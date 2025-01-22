@@ -26,7 +26,7 @@ public class Shuffle : Event, IEvent
         }
     }
 
-    void NewPositionTarget()
+    void NewPositionTarget()    // 보드에 있는 과일들 List로 저장
     {
         for (int i = 0; i < _width; i++)
         {
@@ -56,7 +56,7 @@ public class Shuffle : Event, IEvent
                         int iterations = 0;
                         while (_fruitManager.MatchAt(i, j, _newFruit[fruitIndex].FruitType) && iterations <= 100)
                         {
-                            fruitIndex = Random.Range(0, _newFruit.Count);
+                            fruitIndex = Random.Range(0, _newFruit.Count);  // 기존 과일들을 랜덤으로 배치
                             iterations++;
                         }
 
@@ -80,7 +80,7 @@ public class Shuffle : Event, IEvent
         _fruitManager.CreateFruit(position);
     }
 
-    bool IsDeadlocked()
+    bool IsDeadlocked() // 과일들을 이동시켜 매치 가능한지 체크
     {
         for (int i = 0; i < _width; i++)
         {

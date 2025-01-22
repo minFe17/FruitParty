@@ -70,7 +70,7 @@ public class FruitManager : MonoBehaviour
         }
     }
 
-    void RefillFruit()
+    void RefillFruit()  // 새로운 과일 채우기
     {
         for (int i = 0; i < _width; i++)
         {
@@ -230,11 +230,11 @@ public class FruitManager : MonoBehaviour
 
     public void CheckMatchFruit()
     {
-        if (_matchFinder.MatchFruits.Count >= 4)
+        if (_matchFinder.MatchFruits.Count >= 4)    // 매치된 과일이 4개 이상이면 폭탄을 만들 수 있는지 체크
             _bombManager.CheckMakeBomb();
         _matchFinder.MatchFruits.Clear();
 
-        for (int i = 0; i < _width; i++)
+        for (int i = 0; i < _width; i++)        // 매칭된 과일 제거
         {
             for (int j = 0; j < _height; j++)
             {
@@ -245,7 +245,7 @@ public class FruitManager : MonoBehaviour
         StartCoroutine(DecreaseRowRoutine());
     }
 
-    public bool SwitchAndCheck(int column, int row, Vector2Int direction)
+    public bool SwitchAndCheck(int column, int row, Vector2Int direction)   // 이동 가능한 과일이 있는지 체크
     {
         bool checkResult = false;
         SwitchFruit(column, row, direction);
@@ -274,7 +274,7 @@ public class FruitManager : MonoBehaviour
         }
     }
 
-    IEnumerator DecreaseRowRoutine()
+    IEnumerator DecreaseRowRoutine()    // 빈 공간으로 과일 내려가게 만들기
     {
         for (int i = 0; i < _width; i++)
         {
@@ -298,13 +298,13 @@ public class FruitManager : MonoBehaviour
         StartCoroutine(FillFruitRoutine());
     }
 
-    IEnumerator FillFruitRoutine()
+    IEnumerator FillFruitRoutine()  // 과일 채우기
     {
         yield return new WaitForSeconds(_refillDelay);
         RefillFruit();
         yield return new WaitForSeconds(_refillDelay);
 
-        while (MatchOnBoard())
+        while (MatchOnBoard())  // 추가로 매치된 과일이 있는지 체크(과일들이 내려오거나 채워지면서)
         {
             yield return new WaitForSeconds(_refillDelay);
             _streakValue++;
@@ -323,7 +323,7 @@ public class FruitManager : MonoBehaviour
 
         _matchFinder.MatchFruits.Clear();
         _currentFruit = null;
-        _tileManager.CreateMoreLavaTiles();
+        _tileManager.CreateMoreLavaTiles(); // 용암 타일 추가 생성
 
         _eventManager.Shuffle.EventEffect();
         yield return new WaitForSeconds(_refillDelay);
