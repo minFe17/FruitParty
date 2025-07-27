@@ -25,17 +25,17 @@ public class ObjectPoolManager : MonoBehaviour
         _objectPools[typeof(EEffectType)].Init();
     }
 
-    public GameObject Push<TEnum>(TEnum type, GameObject prefab) where TEnum : Enum
+    public GameObject Pull<TEnum>(TEnum type, GameObject prefab) where TEnum : Enum
     {
         IObjectPool objectPool;
         _objectPools.TryGetValue(typeof(TEnum), out objectPool);
-        return objectPool.Push(type, prefab);
+        return objectPool.Pull(type, prefab);
     }
 
-    public void Pull<TEnum>(TEnum type, GameObject obj) where TEnum : Enum
+    public void Push<TEnum>(TEnum type, GameObject obj) where TEnum : Enum
     {
         IObjectPool objectPool;
         _objectPools.TryGetValue(typeof(TEnum), out objectPool);
-        objectPool.Pull(type, obj);
+        objectPool.Push(type, obj);
     }
 }

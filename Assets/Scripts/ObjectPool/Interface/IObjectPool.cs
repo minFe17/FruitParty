@@ -4,6 +4,6 @@ using UnityEngine;
 public interface IObjectPool
 {
     void Init();
-    GameObject Push(Enum type, GameObject prefab);
-    void Pull(Enum type, GameObject obj);
+    GameObject Pull(Enum type, GameObject prefab);
+    void Push(Enum type, GameObject obj);
 }

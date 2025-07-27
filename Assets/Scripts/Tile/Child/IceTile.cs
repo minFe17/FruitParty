@@ -42,6 +42,6 @@ public class IceTile : Tile
     public override void DestroyTile()
     {
         _tileManager.IceTiles[_x, _y] = null;
-        _objectPoolManager.Pull(ETileKindType.Ice, gameObject);
+        _objectPoolManager.Push(ETileKindType.Ice, gameObject);
     }
 }

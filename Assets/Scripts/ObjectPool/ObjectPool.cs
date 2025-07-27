@@ -25,7 +25,7 @@ public class ObjectPool<TEnum> : MonoBehaviour, IObjectPool where TEnum : Enum
         return Instantiate(prefab);
     }
 
-    GameObject IObjectPool.Push(Enum type, GameObject prefab)
+    GameObject IObjectPool.Pull(Enum type, GameObject prefab)
     {
         _queue = null;
         GameObject returnObject = null;
@@ -40,7 +40,7 @@ public class ObjectPool<TEnum> : MonoBehaviour, IObjectPool where TEnum : Enum
         return returnObject;
     }
 
-    void IObjectPool.Pull(Enum type, GameObject obj)
+    void IObjectPool.Push(Enum type, GameObject obj)
     {
         _queue = null;
         _objectPool.TryGetValue((TEnum)type, out _queue);

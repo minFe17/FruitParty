@@ -26,10 +26,18 @@ public class AddressableManager : MonoBehaviour
         return completionSource.Task;
     }
 
+    /// <summary>
+    /// Addressables 시스템을 사용해 지정된 주소에서 에셋을 비동기로 로드하고 반환
+    /// </summary>
     public async Task<T> GetAddressableAsset<T>(string address)
     {
+        // TaskCompletionSource를 만들어 비동기 작업 완료 신호를 대기
         TaskCompletionSource<T> _loadCompletionSource = new TaskCompletionSource<T>();
+
+        // LoadAssetAsync 함수 호출해 주소로부터 에셋 로드 시작
         await LoadAssetAsync(address, _loadCompletionSource);
+
+        // 에셋 로드가 완료되면 결과를 반환
         return await _loadCompletionSource.Task;
     }
 

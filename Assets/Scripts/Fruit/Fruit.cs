@@ -2,6 +2,12 @@ using System.Collections;
 using UnityEngine;
 using Utils;
 
+/// <summary>
+/// 개별 과일(Fruit) 클래스
+/// - 위치, 타입, 색상, 폭탄 여부 등 상태 관리
+/// - 스와이프 입력 받아 이동 처리 및 매치 효과 표시
+/// - 매치되면 효과 생성 및 파괴 처리 담당
+/// </summary>
 public class Fruit : MonoBehaviour
 {
     [SerializeField] protected SpriteRenderer _spriteRenderer;
@@ -22,7 +28,6 @@ public class Fruit : MonoBehaviour
     protected bool _isMatch;
     protected bool _isBomb;
 
-    HintManager _hintManager;
     GameManager _gameManager;
     TileManager _tileManager;
 
@@ -59,9 +64,9 @@ public class Fruit : MonoBehaviour
 
     protected virtual void Update()
     {
-        MoveFruit();
-        MatchFruit();
-        DestroyFruit();
+        SmoothMoveToTargetPosition();    // 목표 위치로 부드럽게 이동
+        MatchFruit();   // 매치시 효과 처리
+        DestroyFruit(); // 위치 불일치시 제거
     }
 
     protected virtual void SetSprite()
@@ -78,6 +83,9 @@ public class Fruit : MonoBehaviour
         _spriteRenderer.color = new Color(1f, 1f, 1f, 1);
     }
 
+    /// <summary>
+    /// 싱글턴 매니저 인스턴스 가져오기
+    /// </summary>
     void SetManager()
     {
         _factoryManager = GenericSingleton<FactoryManager>.Instance;
@@ -85,39 +93,51 @@ public class Fruit : MonoBehaviour
         _matchFinder = GenericSingleton<MatchFinder>.Instance;
         _bombManager = GenericSingleton<BombManager>.Instance;
         _spriteManager = GenericSingleton<SpriteManager>.Instance;
-        _hintManager = GenericSingleton<HintManager>.Instance;
         _gameManager = GenericSingleton<GameManager>.Instance;
         _tileManager = GenericSingleton<TileManager>.Instance;
     }
 
-    void MoveFruit()    // 목표 위치로 이동
+    /// <summary>
+    /// 현재 행과 열 위치에 맞춰 과일을 부드럽게 이동시킴
+    /// </summary>
+    void SmoothMoveToTargetPosition()
     {
-        _targetX = _column;
-        _targetY = _row;
+        Vector2 targetPosition = new Vector2(_column, _row);
 
-        _position = new Vector2(_targetX, transform.position.y);
-        if (Mathf.Abs(_targetX - transform.position.x) > 0.1f)
-            Move();
-        else
-            transform.position = _position;
+        // 목표 위치와 현재 위치가 어느 정도 차이나면 부드럽게 이동
+        if (Vector2.Distance(transform.position, targetPosition) > 0.1f)
+        {
+            transform.position = Vector2.Lerp(transform.position, targetPosition, _moveSpeed);
 
-        _position = new Vector2(transform.position.x, _targetY);
-        if (Mathf.Abs(_targetY - transform.position.y) > 0.1f)
-            Move();
+            // 위치가 바뀌면 FruitManager 배열 갱신 및 매치 검사 호출
+            if (_fruitManager.AllFruits[_column, _row] != this)
+            {
+                _fruitManager.AllFruits[_column, _row] = this;
+                _matchFinder.FindAllMatch();
+            }
+        }
         else
-            transform.position = _position;
+        {
+            // 목표 위치에 거의 도달하면 정확히 위치 고정
+            transform.position = targetPosition;
+        }
     }
 
-    void Move() // 부드럽게 이동시키는 역할
+    void Move()
     {
         transform.position = Vector2.Lerp(transform.position, _position, _moveSpeed);
         if (_fruitManager.AllFruits[_column, _row] != this)
         {
             _fruitManager.AllFruits[_column, _row] = this;
-            _matchFinder.FindAllMatch();
+
+            // 위치 변경 후 전체 매치 검사
+            _matchFinder.FindAllMatch(); 
         }
     }
 
+    /// <summary>
+    /// 매치된 과일은 색상 변화 및 파괴 이펙트 생성
+    /// </summary>
     void MatchFruit()
     {
         if (_isMatch)
@@ -126,13 +146,17 @@ public class Fruit : MonoBehaviour
             if (!_onEffect)
             {
                 Vector2Int position = new Vector2Int(_column, _row);
-                _factoryManager.MakeObject<EEffectType, GameObject>(EEffectType.Destroy, position); // Factory 패턴 일반화 사요ㅛㅇ
+                // 팩토리 패턴으로 이펙트 생성
+                _factoryManager.MakeObject<EEffectType, GameObject>(EEffectType.Destroy, position); 
                 _onEffect = true;
             }
         }
     }
 
-    void CalculateAngle()   // 유저 Swipe 계산
+    /// <summary>
+    /// 터치 끝 좌표로 스와이프 각도 계산 후 이동 방향 결정
+    /// </summary>
+    void CalculateAngle()
     {
         float x = _finalTouchPos.x - _firstTouchPos.x;
         float y = _finalTouchPos.y - _firstTouchPos.y;
@@ -147,49 +171,69 @@ public class Fruit : MonoBehaviour
             _gameManager.ChangeGameState(EGameStateType.Move);
     }
 
-    void SeleteMoveFruit()  // 이동방향 결정
+    /// <summary>
+    /// 스와이프 각도에 따른 이동 방향 판정 및 이동 처리
+    /// </summary>
+    void SeleteMoveFruit()
     {
         if (_swipeAngle > -45 && _swipeAngle <= 45 && _column < _fruitManager.Width)    // Right
-            RealMoveFruit(Vector2Int.right);
+            TrySwapWithAdjacentFruit(Vector2Int.right);
         else if (_swipeAngle > 45 && _swipeAngle <= 135 && _row < _fruitManager.Height) // Up
-            RealMoveFruit(Vector2Int.up);
+            TrySwapWithAdjacentFruit(Vector2Int.up);
         else if (_swipeAngle > 135 || _swipeAngle <= -135 && _column > 0)               // Left
-            RealMoveFruit(Vector2Int.left);
+            TrySwapWithAdjacentFruit(Vector2Int.left);
         else if (_swipeAngle < -45 && _swipeAngle >= -135 && _row > 0)                  // Down
-            RealMoveFruit(Vector2Int.down);
+            TrySwapWithAdjacentFruit(Vector2Int.down);
         else
             _gameManager.ChangeGameState(EGameStateType.Move);
     }
 
-    void RealMoveFruit(Vector2Int direction)
+    /// <summary>
+    /// 지정된 방향의 인접 과일과 위치를 교환 시도하고 이동 결과를 검사함
+    /// </summary>
+    void TrySwapWithAdjacentFruit(Vector2Int direction)
     {
         int newX = _column + direction.x;
         int newY = _row + direction.y;
-        if (newX >= 0 && newX < _fruitManager.Width && newY >= 0 && newY < _fruitManager.Height)
+
+        // 보드 범위 검사
+        if (newX < 0 || newX >= _fruitManager.Width || newY < 0 || newY >= _fruitManager.Height)
         {
-            _otherFruit = _fruitManager.AllFruits[newX, newY];  // 현재 과일과 위치가 바뀔 과일
-            _previousColumn = _column;
-            _previousRow = _row;
-            if (_tileManager.LockTiles[_column, _row] == null && _tileManager.LockTiles[_column + direction.x, _row + direction.y] == null)
-            {
-                if (_otherFruit != null)
-                {
-                    _otherFruit.Column += -1 * direction.x;
-                    _otherFruit.Row += -1 * direction.y;
-                    _column += direction.x;
-                    _row += direction.y;
-                    StartCoroutine(CheckMoveRoutine());
-                }
-                else
-                    _gameManager.ChangeGameState(EGameStateType.Move);
-            }
-            else
-                _gameManager.ChangeGameState(EGameStateType.Move);
+            _gameManager.ChangeGameState(EGameStateType.Move);
+            return;
+        }
+
+        // 인접 과일 가져오기
+        _otherFruit = _fruitManager.AllFruits[newX, newY];
+        _previousColumn = _column;
+        _previousRow = _row;
+
+        // 잠금 타일 여부 확인
+        if (_tileManager.LockTiles[_column, _row] != null || _tileManager.LockTiles[newX, newY] != null)
+        {
+            _gameManager.ChangeGameState(EGameStateType.Move);
+            return;
+        }
+
+        if (_otherFruit != null)
+        {
+            // 위치 값 교환
+            _otherFruit.Column -= direction.x;
+            _otherFruit.Row -= direction.y;
+            _column += direction.x;
+            _row += direction.y;
+
+            // 이동 후 매치 체크 코루틴 실행
+            StartCoroutine(CheckMoveRoutine());
         }
         else
             _gameManager.ChangeGameState(EGameStateType.Move);
     }
 
+
+    /// <summary>
+    /// 자신의 위치와 일치하지 않으면 과일 제거 요청
+    /// </summary>
     void DestroyFruit()
     {
         if (_fruitManager.AllFruits[_column, _row] != this)
@@ -198,7 +242,6 @@ public class Fruit : MonoBehaviour
 
     void OnMouseDown()
     {
-        _hintManager.DestroyHint();
         if (_gameManager.GameState == EGameStateType.Move)
             _firstTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
@@ -212,6 +255,9 @@ public class Fruit : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 이동 시도 후 일정 시간 대기하여 매치 여부 판단 및 위치 복구 처리
+    /// </summary>
     IEnumerator CheckMoveRoutine()
     {
         if (this.IsBomb && _bombType == EBombType.FruitBomb)
@@ -220,21 +266,26 @@ public class Fruit : MonoBehaviour
             _otherFruit.IsMatch = true;
 
         yield return new WaitForSeconds(0.5f);
+
         if (_otherFruit != null)
         {
-            if (!_isMatch && !_otherFruit.IsMatch)  // 매치가 되지 않았을 때
+            // 매치 실패 시 위치 제자리로
+            if (!_isMatch && !_otherFruit.IsMatch)
             {
                 _otherFruit.Column = _column;
                 _otherFruit.Row = _row;
                 _column = _previousColumn;
                 _row = _previousRow;
+
                 yield return new WaitForSeconds(0.5f);
                 _gameManager.ChangeGameState(EGameStateType.Move);
                 _fruitManager.CurrentFruit = null;
             }
             else
+            {
+                // 매치 성공 시 후속 처리
                 _fruitManager.CheckMatchFruit();
-
+            }
             _otherFruit = null;
         }
     }

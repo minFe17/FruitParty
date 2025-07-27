@@ -10,7 +10,7 @@ public class HintEffectFactory : EffectFactoryBase, IFactory<GameObject>
 
     public GameObject MakeObject(Vector2Int position)
     {
-        GameObject temp = _objectPoolManager.Push(_effectType, _prefab);
+        GameObject temp = _objectPoolManager.Pull(_effectType, _prefab);
         temp.transform.position = (Vector2)position;
         return temp;
     }

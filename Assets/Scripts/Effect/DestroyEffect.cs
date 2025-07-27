@@ -17,6 +17,6 @@ public class DestroyEffect : MonoBehaviour
 
     void OnParticleSystemStopped()
     {
-        _objectPoolManager.Pull(EEffectType.Destroy, gameObject);
+        _objectPoolManager.Push(EEffectType.Destroy, gameObject);
     }
 }

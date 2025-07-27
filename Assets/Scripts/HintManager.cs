@@ -70,32 +70,51 @@ public class HintManager : MonoBehaviour
 
     void FindMovableFruit()
     {
+        _movableFruits.Clear();
+
         for (int i = 0; i < _fruitManager.Width; i++)
         {
             for (int j = 0; j < _fruitManager.Height; j++)
             {
-                if (_fruitManager.AllFruits[i, j] != null)
+                Fruit fruit = _fruitManager.AllFruits[i, j];
+                if (fruit == null) continue;
+
+                // 오른쪽 검사
+                if (i < _fruitManager.Width - 1)
                 {
-                    if (i < _fruitManager.Width - 1)
+                    Fruit right = _fruitManager.AllFruits[i + 1, j];
+                    if (right != null)
                     {
                         if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.right))
-                            _movableFruits.Add(_fruitManager.AllFruits[i, j]);
+                        {
+                            _movableFruits.Add(fruit);
+                            continue; // 이미 오른쪽 가능하면 추가됨
+                        }
                     }
-                    if (j < _fruitManager.Height - 1)
+                }
+
+                // 위쪽 검사
+                if (j < _fruitManager.Height - 1)
+                {
+                    Fruit up = _fruitManager.AllFruits[i, j + 1];
+                    if (up != null)
                     {
                         if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.up))
-                            _movableFruits.Add(_fruitManager.AllFruits[i, j]);
+                        {
+                            _movableFruits.Add(fruit);
+                        }
                     }
                 }
             }
         }
     }
 
+
     public void DestroyHint()
     {
         if (_currentHint != null)
         {
-            _objectPoolManager.Pull(EEffectType.Hint, _currentHint);
+            _objectPoolManager.Push(EEffectType.Hint, _currentHint);
             _currentHint = null;
             _hintCoolTime = _hintDelay;
         }

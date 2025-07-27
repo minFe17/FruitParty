@@ -10,7 +10,7 @@ public class LemonFactory : FruitFactoryBase, IFactory<Fruit>
 
     public Fruit MakeObject(Vector2Int position)
     {
-        GameObject temp = _objectPoolManager.Push(_fruitType, _prefab);
+        GameObject temp = _objectPoolManager.Pull(_fruitType, _prefab);
         Fruit fruit = temp.GetComponent<Fruit>();
         fruit.Column = position.x;
         fruit.Row = position.y;
