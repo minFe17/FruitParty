@@ -252,6 +252,7 @@ public class Fruit : MonoBehaviour
         {
             _finalTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             CalculateAngle();
+            GenericSingleton<HintManager>.Instance.DestroyHint();
         }
     }
 

@@ -49,6 +49,7 @@ public class HintManager : MonoBehaviour
     {
         _movableFruits.Clear();
         Fruit movableFruit = PickOneRandomFruit();
+        Debug.Log($"{movableFruit.Column}, {movableFruit.Row}");
         if (movableFruit != null)
         {
             Vector2Int position = new Vector2Int(movableFruit.Column, movableFruit.Row);
@@ -112,6 +113,7 @@ public class HintManager : MonoBehaviour
 
     public void DestroyHint()
     {
+        Debug.Log(1);
         if (_currentHint != null)
         {
             _objectPoolManager.Push(EEffectType.Hint, _currentHint);
