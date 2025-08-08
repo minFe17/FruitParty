@@ -109,7 +109,6 @@ public class HintManager : MonoBehaviour
         }
     }
 
-
     public void DestroyHint()
     {
         if (_currentHint != null)
