@@ -100,15 +100,12 @@ public class HintManager : MonoBehaviour
                     if (up != null)
                     {
                         if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.up))
-                        {
                             _movableFruits.Add(fruit);
-                        }
                     }
                 }
             }
         }
     }
-
 
     public void DestroyHint()
     {
