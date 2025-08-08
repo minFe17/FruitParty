@@ -37,6 +37,8 @@ public class Fruit : MonoBehaviour
 
     int _previousColumn;
     int _previousRow;
+    int _targetX;
+    int _targetY;
     float _swipeAngle;
     float _swipeResist = 1f;
     bool _onEffect;
@@ -250,7 +252,6 @@ public class Fruit : MonoBehaviour
         {
             _finalTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             CalculateAngle();
-            GenericSingleton<HintManager>.Instance.DestroyHint();
         }
     }
 
