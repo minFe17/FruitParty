@@ -49,7 +49,6 @@ public class HintManager : MonoBehaviour
     {
         _movableFruits.Clear();
         Fruit movableFruit = PickOneRandomFruit();
-        Debug.Log($"{movableFruit.Column}, {movableFruit.Row}");
         if (movableFruit != null)
         {
             Vector2Int position = new Vector2Int(movableFruit.Column, movableFruit.Row);
@@ -101,19 +100,15 @@ public class HintManager : MonoBehaviour
                     if (up != null)
                     {
                         if (_fruitManager.SwitchAndCheck(i, j, Vector2Int.up))
-                        {
                             _movableFruits.Add(fruit);
-                        }
                     }
                 }
             }
         }
     }
 
-
     public void DestroyHint()
     {
-        Debug.Log(1);
         if (_currentHint != null)
         {
             _objectPoolManager.Push(EEffectType.Hint, _currentHint);
