@@ -5,7 +5,8 @@
 
 - **플랫폼** : PC (Windows)
 - **Unity 버전** : 2021.3.27f1
-- **📄 노션 링크** : [Notion 링크](https://mincheolstudy.notion.site/Fruit-Party-182d4b6c965c80a79306f857e3192a34)
+- **📄 기술문서 링크** : [기술문서 링크](https://drive.google.com/drive/folders/1gcQ5xP3MlVEgDHBIyB4wQR_PSS4JhcN1?hl=ko)
+- **🎬 영상 링크** : [영상 링크](https://youtu.be/m7JyDBa5KTA)
 ---
 
 ## 🎯 기술 목표
